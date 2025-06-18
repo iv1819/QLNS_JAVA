@@ -453,7 +453,7 @@ public class EmployeeM extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtMaNVActionPerformed(java.awt.event.ActionEvent evt) {
-        // Không cần xử lý gì ở đây
+        
     }
 
     /**
