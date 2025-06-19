@@ -1,27 +1,30 @@
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\com\mycompany\qlins\QliNS.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Controller\BookController.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Controller\CustomerController.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Controller\EmployeeController.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Controller\MainMenuController.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Database\Book_Connect.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Database\Connect_sqlServer.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Database\Customer_Connect.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Database\Employee_Connect.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Model\Account.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Model\Author.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Model\Book.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Model\Category.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Model\Customer.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Model\Employee.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Model\OD.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Model\Order.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Model\Position.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Model\Provider.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Model\Publisher.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\Model\VPP.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\View\BookItemPanel.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\View\BookM.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\View\CustomerM.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\View\EmployeeM.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\View\MainMenu.java
-C:\Users\Admin\Documents\Zalo Received Files\QLINS\src\main\java\View\MainMenu_Manager.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\com\mycompany\qlins\QliNS.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Controller\BookController.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Controller\CustomerController.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Controller\EmployeeController.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Controller\MainMenuController.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Controller\PositionController.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Database\Book_Connect.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Database\Connect_sqlServer.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Database\Customer_Connect.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Database\Employee_Connect.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Database\Position_Connect.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Model\Account.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Model\Author.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Model\Book.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Model\Category.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Model\Customer.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Model\Employee.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Model\OD.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Model\Order.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Model\Position.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Model\Provider.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Model\Publisher.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\Model\VPP.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\View\BookItemPanel.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\View\BookM.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\View\CustomerM.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\View\EmployeeM.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\View\MainMenu.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\View\MainMenu_Manager.java
+C:\Users\LAPTOP\Documents\NetBeansProjects\QLNS_JAVA\src\main\java\View\PositionM.java

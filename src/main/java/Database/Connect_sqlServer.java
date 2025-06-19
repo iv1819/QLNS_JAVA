@@ -17,7 +17,7 @@ public class Connect_sqlServer {
     public Connect_sqlServer() {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-String connectionUrl = "jdbc:sqlserver://LAPTOP-35O054C8\\MSSQLSERVER01:50055;databaseName=QLNS_MVC ;encrypt=false;";
+String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=QLNS_JAVA ;encrypt=false;";
 conn = DriverManager.getConnection(connectionUrl, "user1","12345");
         } 
         catch (Exception e) {

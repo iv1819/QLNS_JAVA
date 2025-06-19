@@ -51,6 +51,13 @@ public class MainMenu_Manager extends javax.swing.JFrame {
                 dispose();
             }
         });
+        
+        // Xử lý nút Quản lý chức vụ
+        btnPositionM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPositionMActionPerformed(evt);
+            }
+        });
     }
 
     /**
@@ -65,10 +72,8 @@ public class MainMenu_Manager extends javax.swing.JFrame {
         btnBack = new javax.swing.JButton();
         btnEmployeeM = new javax.swing.JButton();
         btnCustomerM = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnPositionM = new javax.swing.JButton();
         btnBookM = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,13 +83,19 @@ public class MainMenu_Manager extends javax.swing.JFrame {
 
         btnCustomerM.setText("Quản lý khách hàng");
 
-        jButton3.setText("jButton1");
+        btnPositionM.setText("Quản lý chức vụ");
+        btnPositionM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPositionMActionPerformed(evt);
+            }
+        });
 
         btnBookM.setText("Quản lý sách");
-
-        jButton5.setText("jButton1");
-
-        jButton6.setText("jButton1");
+        btnBookM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBookMActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -97,19 +108,13 @@ public class MainMenu_Manager extends javax.swing.JFrame {
                     .addComponent(btnBookM, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPositionM, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEmployeeM, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(150, 150, 150))
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(106, 106, 106)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(581, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,22 +125,25 @@ public class MainMenu_Manager extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBookM, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEmployeeM, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
+                .addGap(75, 75, 75)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCustomerM, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(317, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(46, 46, 46)))
+                    .addComponent(btnPositionM, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(135, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnPositionMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPositionMActionPerformed
+        PositionM positionM = new PositionM();
+        positionM.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnPositionMActionPerformed
+
+    private void btnBookMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookMActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBookMActionPerformed
 
     /**
      * @param args the command line arguments
@@ -177,8 +185,6 @@ public class MainMenu_Manager extends javax.swing.JFrame {
     private javax.swing.JButton btnBookM;
     private javax.swing.JButton btnCustomerM;
     private javax.swing.JButton btnEmployeeM;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton btnPositionM;
     // End of variables declaration//GEN-END:variables
 }

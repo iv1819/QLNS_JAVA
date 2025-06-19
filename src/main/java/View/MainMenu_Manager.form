@@ -31,8 +31,7 @@
               </Group>
               <EmptySpace pref="227" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jButton5" min="-2" pref="204" max="-2" attributes="0"/>
-                  <Component id="jButton3" min="-2" pref="204" max="-2" attributes="0"/>
+                  <Component id="btnPositionM" min="-2" pref="204" max="-2" attributes="0"/>
                   <Component id="btnEmployeeM" min="-2" pref="204" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
@@ -41,13 +40,6 @@
               <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
               <Component id="btnBack" min="-2" pref="127" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
-          </Group>
-          <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
-                  <Component id="jButton6" min="-2" pref="204" max="-2" attributes="0"/>
-                  <EmptySpace pref="581" max="32767" attributes="0"/>
-              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -61,21 +53,12 @@
                   <Component id="btnBookM" alignment="3" min="-2" pref="86" max="-2" attributes="0"/>
                   <Component id="btnEmployeeM" alignment="3" min="-2" pref="86" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnCustomerM" alignment="3" min="-2" pref="86" max="-2" attributes="0"/>
-                  <Component id="jButton3" alignment="3" min="-2" pref="86" max="-2" attributes="0"/>
+                  <Component id="btnPositionM" alignment="3" min="-2" pref="86" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-              <Component id="jButton5" min="-2" pref="86" max="-2" attributes="0"/>
-              <EmptySpace pref="51" max="32767" attributes="0"/>
-          </Group>
-          <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="317" max="32767" attributes="0"/>
-                  <Component id="jButton6" min="-2" pref="86" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-              </Group>
+              <EmptySpace pref="135" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -96,25 +79,21 @@
         <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; kh&#xe1;ch h&#xe0;ng"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton3">
+    <Component class="javax.swing.JButton" name="btnPositionM">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jButton1"/>
+        <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; ch&#x1ee9;c v&#x1ee5;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPositionMActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnBookM">
       <Properties>
         <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; s&#xe1;ch"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButton5">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jButton1"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jButton6">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jButton1"/>
-      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBookMActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

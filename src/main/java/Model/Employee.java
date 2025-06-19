@@ -17,12 +17,13 @@ public class Employee {
     private String maCV;
     private String sdt;
     private double luong;
+    private String tenCV; // Tên chức vụ
 
     public Employee() {
         // Constructor mặc định
     }
 
-    public Employee(String maNV, String tenNV, Date ngaySinh, Date ngayVaoLam, String maCV, String sdt, double luong) {
+    public Employee(String maNV, String tenNV, Date ngaySinh, Date ngayVaoLam, String maCV, String sdt, double luong, String tenCV) {
         this.maNV = maNV;
         this.tenNV = tenNV;
         this.ngaySinh = ngaySinh;
@@ -30,6 +31,7 @@ public class Employee {
         this.maCV = maCV;
         this.sdt = sdt;
         this.luong = luong;
+        this.tenCV = tenCV;
     }
 
     // Getters and Setters
@@ -87,5 +89,13 @@ public class Employee {
 
     public void setLuong(double luong) {
         this.luong = luong;
+    }
+
+    public String getTenCV() {
+        return tenCV;
+    }
+
+    public void setTenCV(String tenCV) {
+        this.tenCV = tenCV;
     }
 }
