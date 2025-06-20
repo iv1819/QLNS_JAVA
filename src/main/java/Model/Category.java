@@ -11,6 +11,9 @@ package Model;
 public class Category {
     private String maDanhMuc;
     private String tenDanhMuc;
+    // Constructor không tham số
+    public Category() {
+    }
 
     public Category(String maDanhMuc, String tenDanhMuc) {
         this.maDanhMuc = maDanhMuc;
