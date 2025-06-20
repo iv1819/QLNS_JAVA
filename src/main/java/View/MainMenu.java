@@ -14,19 +14,40 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import View.EmployeeM;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author Admin
  */
 public class MainMenu extends javax.swing.JFrame {
 private MainMenuController controller;
+private Book currentSelectedBook;
+private DefaultTableModel tblModelHD;
     /**
      * Creates new form MainMenu
      */
     public MainMenu() {
         initComponents();
+        tblModelHD = (DefaultTableModel) jtblHD.getModel();
+        tblModelHD.setColumnCount(0);
+        tblModelHD.addColumn("Tên sách");
+        tblModelHD.addColumn("Số lượng");
+        tblModelHD.addColumn("Đơn giá");
+        tblModelHD.addColumn("Tổng giá");
+
         controller = new MainMenuController(this);
         controller.loadAndDisplayBooksByCategories();
+        jbtnThemHD.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Giao tiếp với Presenter khi có sự kiện
+                controller.onAddReceiptItemClicked((Integer) jspnSL.getValue());
+            }
+        });
+        clearReceiptTable();
     }
       public void populateCategoryTabs(LinkedHashMap<String, ArrayList<Book>> categorizedBooks) {
         jTabbedPaneBooks.removeAll(); // Clear all existing tabs
@@ -48,8 +69,8 @@ private MainMenuController controller;
             } else {
                 for (Book book : booksInCategory) {
                     // Create an instance of the designed BookItemPanel
-                    BookItemPanel bookItemPanel = new BookItemPanel();
-                    bookItemPanel.setBook(book); // Assign book data to the panel
+                    BookItemPanel bookItemPanel = new BookItemPanel(book, controller);
+                    bookItemPanel.setBookData(book); // Assign book data to the panel
                     categoryPanel.add(bookItemPanel);
                 }
             }
@@ -58,6 +79,64 @@ private MainMenuController controller;
             jTabbedPaneBooks.addTab(categoryName, categoryScrollPane);
         }
     }
+    public void addReceiptItem(Object[] rowData) {
+        tblModelHD.addRow(rowData);
+    }
+     public void updateSelectedBook(Book book) {
+        this.currentSelectedBook = book;
+        if (book != null) {
+            jtxtTenSachHD.setText(book.getTenSach());
+            jspnSL.setValue(1); 
+            jbtnThemHD.setEnabled(true);
+        } else {
+            jtxtTenSachHD.setText("Chọn một cuốn sách...");
+            jspnSL.setValue(1);
+            jbtnThemHD.setEnabled(false); 
+        }
+    }
+      
+    public void updateReceiptTotalAmount(double totalAmount) {
+        // View tự tính toán tổng tiền từ bảng của nó
+        double total = 0;
+        for (int i = 0; i < tblModelHD.getRowCount(); i++) {
+            String tongGiaStr = tblModelHD.getValueAt(i, 3).toString().replace(" VNĐ", "");
+            try {
+                total += Double.parseDouble(tongGiaStr);
+            } catch (NumberFormatException e) {
+                System.err.println("Lỗi khi chuyển đổi tổng giá: " + tongGiaStr);
+                e.printStackTrace();
+            }
+        }
+        jtxtTongTienHD.setText(String.format("%.0f VNĐ", total));
+    }
+
+
+    public void updateReceiptTotalItems(int totalItems) {
+        // View tự tính toán tổng số lượng từ bảng của nó
+        int total = 0;
+        for (int i = 0; i < tblModelHD.getRowCount(); i++) {
+            total += (Integer) tblModelHD.getValueAt(i, 1);
+        }
+        jTotalPd.setText(String.valueOf(total));
+    }
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    public void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Lỗi", JOptionPane.ERROR_MESSAGE);
+    }
+    public void clearReceiptTable() {
+    // Xoá tất cả các dòng
+    tblModelHD.setRowCount(0);
+
+    // Cập nhật lại tổng số lượng & tổng tiền về 0
+    jTotalPd.setText("0");
+    jtxtTongTienHD.setText("0 VNĐ");
+
+    // Nếu muốn vô hiệu hoá nút “Thêm” sau khi xoá
+    updateSelectedBook(null);
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,10 +154,10 @@ private MainMenuController controller;
         jTabbedPaneBooks = new javax.swing.JTabbedPane();
         jMiddle3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jtxtTenSach = new javax.swing.JTextField();
+        jtxtTenSachHD = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jspnSL = new javax.swing.JSpinner();
-        jbtnAddHD = new javax.swing.JButton();
+        jbtnThemHD = new javax.swing.JButton();
         jBottom = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -91,12 +170,12 @@ private MainMenuController controller;
         jLabel1 = new javax.swing.JLabel();
         jList = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtblHD = new javax.swing.JTable();
         jUnder = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jTotalPd = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTotalM = new javax.swing.JLabel();
+        jtxtTongTienHD = new javax.swing.JLabel();
         jbtnTT = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jtxtKHVIP = new javax.swing.JTextField();
@@ -153,7 +232,7 @@ private MainMenuController controller;
 
         jLabel7.setText("Số lượng:");
 
-        jbtnAddHD.setText("Thêm vào hóa đơn");
+        jbtnThemHD.setText("Thêm vào hóa đơn");
 
         javax.swing.GroupLayout jMiddle3Layout = new javax.swing.GroupLayout(jMiddle3);
         jMiddle3.setLayout(jMiddle3Layout);
@@ -163,13 +242,13 @@ private MainMenuController controller;
                 .addContainerGap()
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtxtTenSach, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jtxtTenSachHD, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jspnSL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(jbtnAddHD)
+                .addComponent(jbtnThemHD)
                 .addContainerGap())
         );
         jMiddle3Layout.setVerticalGroup(
@@ -178,10 +257,10 @@ private MainMenuController controller;
                 .addContainerGap()
                 .addGroup(jMiddle3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jtxtTenSach, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtxtTenSachHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(jspnSL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtnAddHD))
+                    .addComponent(jbtnThemHD))
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
@@ -282,7 +361,7 @@ private MainMenuController controller;
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtblHD.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -293,7 +372,7 @@ private MainMenuController controller;
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jtblHD);
 
         javax.swing.GroupLayout jListLayout = new javax.swing.GroupLayout(jList);
         jList.setLayout(jListLayout);
@@ -315,13 +394,18 @@ private MainMenuController controller;
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Tổng tiền:");
 
-        jTotalM.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jTotalM.setText("$1000");
+        jtxtTongTienHD.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jtxtTongTienHD.setText("$1000");
 
         jbtnTT.setBackground(new java.awt.Color(102, 153, 255));
         jbtnTT.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jbtnTT.setForeground(new java.awt.Color(255, 255, 255));
         jbtnTT.setText("Thanh toán");
+        jbtnTT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnTTActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Khách hàng VIP:");
 
@@ -360,7 +444,7 @@ private MainMenuController controller;
                                 .addComponent(jbtnCheckKH))
                             .addGroup(jUnderLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTotalM, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                                .addComponent(jtxtTongTienHD, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jbtnTT, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
@@ -385,7 +469,7 @@ private MainMenuController controller;
                 .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3)
-                        .addComponent(jTotalM))
+                        .addComponent(jtxtTongTienHD))
                     .addComponent(jbtnTT, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -442,6 +526,10 @@ private MainMenuController controller;
         managerFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jbtnQliActionPerformed
+
+    private void jbtnTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnTTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtnTTActionPerformed
 
     /**
      * @param args the command line arguments
@@ -500,20 +588,20 @@ private MainMenuController controller;
     private javax.swing.JPanel jRight;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPaneBooks;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JLabel jTotalM;
     private javax.swing.JLabel jTotalPd;
     private javax.swing.JPanel jUnder;
-    private javax.swing.JButton jbtnAddHD;
     private javax.swing.JButton jbtnCheckKH;
     private javax.swing.JButton jbtnQli;
     private javax.swing.JButton jbtnTT;
+    private javax.swing.JButton jbtnThemHD;
     private javax.swing.JButton jbtnTim;
     private javax.swing.JSpinner jspnSL;
+    private javax.swing.JTable jtblHD;
     private javax.swing.JLabel jtxtGG;
     private javax.swing.JTextField jtxtKHVIP;
-    private javax.swing.JTextField jtxtTenSach;
+    private javax.swing.JTextField jtxtTenSachHD;
     private javax.swing.JTextField jtxtTenSachTK;
     private javax.swing.JTextField jtxtTenTacGiaTK;
+    private javax.swing.JLabel jtxtTongTienHD;
     // End of variables declaration//GEN-END:variables
 }

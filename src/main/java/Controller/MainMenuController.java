@@ -14,14 +14,18 @@ import java.util.Map;
 
 public class MainMenuController {
 
-    private MainMenu mainMenuView; 
+    private MainMenu view; 
     private Book_Connect bookConnect; 
+    private Book currentSelectedBookForReceipt;
 
     public MainMenuController(MainMenu mainMenuView) {
-        this.mainMenuView = mainMenuView;
+        this.view = mainMenuView;
         this.bookConnect = new Book_Connect();
     }
-
+    public void onBookItemSelected(Book book) {
+        this.currentSelectedBookForReceipt = book;
+        view.updateSelectedBook(book);
+    }
     public void loadAndDisplayBooksByCategories() {
         ArrayList<Category> categories = bookConnect.layTatCaDanhMucInfo();
         LinkedHashMap<String, ArrayList<Book>> categorizedBooks = new LinkedHashMap<>();
@@ -35,7 +39,56 @@ public class MainMenuController {
             categorizedBooks.put(dm.getTenDanhMuc(), booksInCategory); // Sử dụng TenDanhMuc làm title
         }
 
-        mainMenuView.populateCategoryTabs(categorizedBooks); // Gọi phương thức trong View để cập nhật UI
+        view.populateCategoryTabs(categorizedBooks); // Gọi phương thức trong View để cập nhật UI
+    }
+      public void onAddReceiptItemClicked(int quantity) {
+        if (currentSelectedBookForReceipt == null) {
+            view.showMessage("Vui lòng chọn một cuốn sách trước.");
+            return;
+        }
+
+        if (quantity <= 0) {
+            view.showMessage("Số lượng phải lớn hơn 0.");
+            return;
+        }
+
+        if (quantity > currentSelectedBookForReceipt.getSoLuong()) {
+            view.showMessage("Số lượng yêu cầu vượt quá số lượng tồn kho (" + currentSelectedBookForReceipt.getSoLuong() + ").");
+            return;
+        }
+
+        String tenSach = currentSelectedBookForReceipt.getTenSach();
+        double donGia = currentSelectedBookForReceipt.getGiaBan();
+        double tongGia = quantity * donGia;
+
+        Object[] rowData = {tenSach, quantity, String.format("%.0f VNĐ", donGia), String.format("%.0f VNĐ", tongGia)};
+        view.addReceiptItem(rowData);
+
+        // Cập nhật tổng tiền và tổng số lượng
+        updateReceiptTotals();
+        
+        // Reset lựa chọn sách sau khi thêm vào hóa đơn
+        currentSelectedBookForReceipt = null;
+        view.updateSelectedBook(null); // Xóa thông tin sách đang chọn trên UI
+    }
+
+
+    private void updateReceiptTotals() {
+        view.updateReceiptTotalAmount(calculateTotalAmountFromView());
+        view.updateReceiptTotalItems(calculateTotalItemsFromView());
+    }
+
+    private double calculateTotalAmountFromView() {
+        return 0;
+    }
+
+    private int calculateTotalItemsFromView() {
+        return 0;
+    }
+
+    public void onBookDataChanged() {
+        System.out.println("DEBUG (MainMenuPresenter): Nhận được thông báo dữ liệu sách đã thay đổi. Đang tải lại tab.");
+        loadAndDisplayBooksByCategories(); // Tải lại dữ liệu khi có thay đổi
     }
 
 }
