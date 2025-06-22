@@ -42,5 +42,23 @@ public class ProviderController {
             view.showMessage("Lỗi khi thêm nhà cung cấp: " + e.getMessage());
         }
     }
+    public void updateProvider(Model.Provider provider) {
+        try {
+            model.updateProvider(provider);
+            loadAllProviders();
+            view.showMessage("Cập nhật nhà cung cấp thành công!");
+        } catch (Exception e) {
+            view.showMessage("Lỗi khi cập nhật nhà cung cấp: " + e.getMessage());
+        }
+    }
+    public void deleteProvider(String maNCC) {
+        try {
+            model.deleteProvider(maNCC);
+            loadAllProviders();
+            view.showMessage("Xóa nhà cung cấp thành công!");
+        } catch (Exception e) {
+            view.showMessage("Lỗi khi xóa nhà cung cấp: " + e.getMessage());
+        }
+    }
     
 }

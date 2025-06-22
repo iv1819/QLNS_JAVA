@@ -27,6 +27,10 @@ public class CategoryM extends javax.swing.JFrame {
         initComponents();
         categoryController = new CategoryController(this); // tạo controller
         categoryController.loadAllCategories(); // controller sẽ load dữ liệu
+        btnBack.addActionListener(e -> {
+            this.dispose(); // Đóng cửa sổ hiện tại
+            new MainMenu_Manager().setVisible(true); // Mở cửa sổ MainMenu
+        });
     }
 
     public void updateCategoryTable(ArrayList<Category> categories) {
@@ -54,7 +58,7 @@ public class CategoryM extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jtxtTenDM = new javax.swing.JTextField();
@@ -73,7 +77,7 @@ public class CategoryM extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Quản Lý Danh Mục");
 
-        jButton4.setText("Quay lại");
+        btnBack.setText("Quay lại");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -83,7 +87,7 @@ public class CategoryM extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4)
+                .addComponent(btnBack)
                 .addGap(27, 27, 27))
         );
         jPanel2Layout.setVerticalGroup(
@@ -91,7 +95,7 @@ public class CategoryM extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4)
+                    .addComponent(btnBack)
                     .addComponent(jLabel1))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
@@ -314,7 +318,7 @@ public class CategoryM extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnBack;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

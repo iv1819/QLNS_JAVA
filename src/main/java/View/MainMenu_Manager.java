@@ -58,6 +58,28 @@ public class MainMenu_Manager extends javax.swing.JFrame {
                 btnPositionMActionPerformed(evt);
             }
         });
+        btnPublisher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PublisherM publisherM = new PublisherM();
+                publisherM.setVisible(true);
+                dispose();
+            }
+        });
+        btnCategoryM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CategoryM categoryM = new CategoryM();
+                categoryM.setVisible(true);
+                dispose();
+            }
+        });
+        btnProviderM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProviderM providerM = new ProviderM();
+                providerM.setVisible(true);
+                dispose();
+            }
+        });
+
     }
 
     /**
@@ -109,6 +131,11 @@ public class MainMenu_Manager extends javax.swing.JFrame {
         });
 
         btnCategoryM.setText("Quản Lý Danh Mục");
+        btnCategoryM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCategoryMActionPerformed(evt);
+            }
+        });
 
         btnProviderM.setText("Quản Lý Nhà Cung Cấp");
         btnProviderM.addActionListener(new java.awt.event.ActionListener() {
@@ -136,19 +163,14 @@ public class MainMenu_Manager extends javax.swing.JFrame {
                                 .addComponent(btnBookM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnCustomerM, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE))
                             .addComponent(btnProviderM, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 219, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnEmployeeM, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
-                            .addComponent(btnPositionM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(160, 160, 160))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnCategoryM, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(168, 168, 168))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnEmployeeM2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(168, 168, 168))))
+                    .addComponent(btnCategoryM, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnEmployeeM, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                        .addComponent(btnPositionM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnEmployeeM2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(160, 160, 160))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,6 +216,10 @@ public class MainMenu_Manager extends javax.swing.JFrame {
     private void btnProviderMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProviderMActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnProviderMActionPerformed
+
+    private void btnCategoryMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoryMActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCategoryMActionPerformed
 
     /**
      * @param args the command line arguments

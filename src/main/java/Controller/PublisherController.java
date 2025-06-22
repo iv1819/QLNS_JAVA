@@ -34,5 +34,26 @@ public class PublisherController {
             javax.swing.JOptionPane.showMessageDialog(view, "Lỗi: " + e.getMessage(), "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+    public void updatePublisher(Model.Publisher publisher) {
+        try {
+            model.updatePublisher(publisher);
+            loadAllPublishers();
+            javax.swing.JOptionPane.showMessageDialog(view, "Cập nhật thành công!");
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(view, "Lỗi: " + e.getMessage(), "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    public void deletePublisher(String maNXB) {
+        try {
+            boolean deleted = model.deletePublisher(maNXB);
+            if (deleted) {
+                loadAllPublishers();
+                javax.swing.JOptionPane.showMessageDialog(view, "Xóa thành công!");
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(view, "Không thể xóa vì có sách đang liên kết với nhà xuất bản này.", "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(view, "Lỗi: " + e.getMessage(), "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }

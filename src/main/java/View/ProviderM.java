@@ -4,6 +4,8 @@
  */
 package View;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author nam11
@@ -18,6 +20,12 @@ public class ProviderM extends javax.swing.JFrame {
         initComponents();
         ProviderController = new Controller.ProviderController(this);
         ProviderController.loadAllProviders();
+        // Set the default close operation to exit on close
+        jbtnBack.addActionListener(evt -> {
+            // Handle back button action
+            this.dispose(); // Close the current window
+            new MainMenu_Manager().setVisible(true); // Open the main menu
+        });
     }
     public void updateProviderTable(java.util.List<Model.Provider> providers) {
         javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTbNCC.getModel();
@@ -32,6 +40,7 @@ public class ProviderM extends javax.swing.JFrame {
         }
     }
 
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,6 +54,7 @@ public class ProviderM extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jbtnBack = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -53,8 +63,8 @@ public class ProviderM extends javax.swing.JFrame {
         jtxtSDT = new javax.swing.JTextField();
         jtxtDiaChi = new javax.swing.JTextField();
         jbtnThem = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jbtnEdit = new javax.swing.JButton();
+        jDelete = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTbNCC = new javax.swing.JTable();
@@ -67,6 +77,8 @@ public class ProviderM extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Quản Lý Nhà Cung Cấp");
 
+        jbtnBack.setText("Quay Lại ");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -74,13 +86,17 @@ public class ProviderM extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jLabel1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jbtnBack)
+                    .addComponent(jLabel1))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
 
@@ -103,9 +119,19 @@ public class ProviderM extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Sửa");
+        jbtnEdit.setText("Sửa");
+        jbtnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnEditActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Xóa");
+        jDelete.setText("Xóa");
+        jDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -123,11 +149,11 @@ public class ProviderM extends javax.swing.JFrame {
                     .addComponent(jtxtSDT)
                     .addComponent(jtxtDiaChi))
                 .addGap(85, 85, 85)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2)
-                    .addComponent(jbtnThem))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jbtnThem, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                    .addComponent(jbtnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(185, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,12 +167,12 @@ public class ProviderM extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jtxtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(jbtnEdit))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jtxtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(jDelete))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
 
@@ -158,6 +184,11 @@ public class ProviderM extends javax.swing.JFrame {
                 "Mã NCC", "Tên NCC", "Số Điện Thoại", "Địa Chỉ"
             }
         ));
+        jTbNCC.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTbNCCMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTbNCC);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -213,7 +244,73 @@ public class ProviderM extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxtDiaChiActionPerformed
 
-    private void jbtnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnThemActionPerformed
+    private void jDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = jTbNCC.getSelectedRow();
+        if (selectedRow != -1) {
+            String maNCC = jTbNCC.getValueAt(selectedRow, 0).toString();
+            ProviderController.deleteProvider(maNCC);
+            javax.swing.JOptionPane.showMessageDialog(this, "Xóa nhà cung cấp thành công!");
+            ProviderController.loadAllProviders();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn nhà cung cấp để xóa!");
+        }
+        jtxtTenNCC.setText("");
+        jtxtSDT.setText("");
+        jtxtDiaChi.setText("");
+        // Clear the text fields after deletion
+        jtxtTenNCC.requestFocus(); // Set focus back to the first text field
+    }//GEN-LAST:event_jDeleteActionPerformed
+
+    private void jTbNCCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTbNCCMouseClicked
+        // TODO add your handling code here:
+        int selectedRow = jTbNCC.getSelectedRow();
+        if (selectedRow != -1) {
+            String maNCC = jTbNCC.getValueAt(selectedRow, 0).toString();
+            String tenNCC = jTbNCC.getValueAt(selectedRow, 1).toString();
+            String sdt = jTbNCC.getValueAt(selectedRow, 2).toString();
+            String diaChi = jTbNCC.getValueAt(selectedRow, 3).toString();
+            jtxtTenNCC.setText(tenNCC);
+            jtxtSDT.setText(sdt);
+            jtxtDiaChi.setText(diaChi);
+        }
+    }//GEN-LAST:event_jTbNCCMouseClicked
+
+    private void jbtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnEditActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = jTbNCC.getSelectedRow();
+        if (selectedRow != -1) {
+            String maNCC = jTbNCC.getValueAt(selectedRow, 0).toString();
+            String tenNCC = jtxtTenNCC.getText();
+            String sdt = jtxtSDT.getText();
+            String diaChi = jtxtDiaChi.getText();
+            if (tenNCC.isEmpty() || sdt.isEmpty() || diaChi.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin!");
+                return;
+            }
+            if (!sdt.matches("0\\d{9}")) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ! Phải có 10 chữ số và bắt đầu bằng số 0.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            Model.Provider provider = new Model.Provider();
+            provider.setMaNCC(maNCC);
+            provider.setTenNCC(tenNCC);
+            provider.setSdt(sdt);
+            provider.setDiaChi(diaChi);
+            ProviderController.updateProvider(provider);
+            javax.swing.JOptionPane.showMessageDialog(this, "Cập nhật nhà cung cấp thành công!");
+            ProviderController.loadAllProviders();
+            // Clear the text fields after editing
+            jtxtTenNCC.setText("");
+            jtxtSDT.setText("");
+            jtxtDiaChi.setText("");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn nhà cung cấp để sửa!");
+        }
+        jtxtTenNCC.requestFocus(); // Set focus back to the first text field
+    }//GEN-LAST:event_jbtnEditActionPerformed
+
+    private void jbtnThemActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
         String tenNCC = jtxtTenNCC.getText();
         String sdt = jtxtSDT.getText();
@@ -222,6 +319,10 @@ public class ProviderM extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ thông tin!");
             return;
         }
+        if (!sdt.matches("0\\d{9}")) {
+        JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ! Phải có 10 chữ số và bắt đầu bằng số 0.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
         ProviderController.addProvider(tenNCC, sdt, diaChi);
         jtxtTenNCC.setText("");
         jtxtSDT.setText("");
@@ -265,8 +366,7 @@ public class ProviderM extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jDelete;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -278,6 +378,8 @@ public class ProviderM extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTbNCC;
+    private javax.swing.JButton jbtnBack;
+    private javax.swing.JButton jbtnEdit;
     private javax.swing.JButton jbtnThem;
     private javax.swing.JTextField jtxtDiaChi;
     private javax.swing.JTextField jtxtSDT;

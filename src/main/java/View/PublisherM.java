@@ -4,6 +4,8 @@
  */
 package View;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author nam11
@@ -17,6 +19,10 @@ public class PublisherM extends javax.swing.JFrame {
         initComponents();
         publisherController = new Controller.PublisherController(this);
         publisherController.loadAllPublishers(); // Load dữ liệu từ cơ sở dữ liệu khi kh
+        btnBack.addActionListener(evt -> {
+            this.dispose(); // Đóng cửa sổ hiện tại
+            new MainMenu_Manager().setVisible(true); // Mở cửa sổ MainMenu
+        });
     }
     public void updatePublisherTable(java.util.List<Model.Publisher> publishers) {
         javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jtbNXB.getModel();
@@ -44,7 +50,7 @@ public class PublisherM extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -67,7 +73,7 @@ public class PublisherM extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Quản Lý Nhà Xuất Bản");
 
-        jButton1.setText("Quay Lại");
+        btnBack.setText("Quay Lại");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -77,7 +83,7 @@ public class PublisherM extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnBack)
                 .addGap(38, 38, 38))
         );
         jPanel2Layout.setVerticalGroup(
@@ -85,7 +91,7 @@ public class PublisherM extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addComponent(btnBack)
                     .addComponent(jLabel1))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
@@ -104,8 +110,18 @@ public class PublisherM extends javax.swing.JFrame {
         });
 
         jbtnSua.setText("Sửa");
+        jbtnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnSuaActionPerformed(evt);
+            }
+        });
 
         jbtnXoa.setText("Xóa");
+        jbtnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnXoaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -124,10 +140,10 @@ public class PublisherM extends javax.swing.JFrame {
                     .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbtnThem, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jbtnSua, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jbtnXoa, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(98, 98, 98))
+                    .addComponent(jbtnThem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnSua, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnXoa, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(90, 90, 90))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,6 +174,11 @@ public class PublisherM extends javax.swing.JFrame {
                 "Mã NXB", "Tên NXB", "SĐT", "Địa Chỉ"
             }
         ));
+        jtbNXB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtbNXBMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jtbNXB);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -207,18 +228,89 @@ public class PublisherM extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnThemActionPerformed
+    // Lấy dữ liệu từ các trường nhập
+    String tenNXB = jTextField1.getText().trim();
+    String sdt = jTextField2.getText().trim();
+    String diaChi = jTextField3.getText().trim();
+
+    // Kiểm tra rỗng
+    if (tenNXB.isEmpty() || sdt.isEmpty() || diaChi.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    if (!sdt.matches("0\\d{9}")) {
+        JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ! Phải có 10 chữ số và bắt đầu bằng số 0.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Tạo mã NXB tự động
+    String maNXB = "nxb_" + (jtbNXB.getRowCount() + 1);
+
+    // Tạo đối tượng Publisher và gọi controller để thêm
+    Model.Publisher publisher = new Model.Publisher(maNXB, tenNXB, sdt, diaChi);
+    publisherController.addPublisher(publisher);
+
+    // Xóa các trường nhập sau khi thêm thành công
+    jTextField1.setText("");
+    jTextField2.setText("");
+    jTextField3.setText("");
+}//GEN-LAST:event_jbtnThemActionPerformed
+//GEN-LAST:event_jbtnThemActionPerformed
+
+    private void jbtnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnXoaActionPerformed
         // TODO add your handling code here:
-        String maNXB = jTextField1.getText();
-        String tenNXB = jTextField2.getText();
-        String sdt = jTextField3.getText();
-        String diaChi = jTextField3.getText();
-        Model.Publisher publisher = new Model.Publisher(maNXB, tenNXB, sdt, diaChi);
-        publisherController.addPublisher(publisher); // Gọi phương thức thêm nhà xuất bản từ controller
-        jTextField1.setText(""); // Xóa trường nhập sau khi thêm
-        jTextField2.setText("");
-        jTextField3.setText("");
-        jTextField3.setText("");
-    }//GEN-LAST:event_jbtnThemActionPerformed
+        int selectedRow = jtbNXB.getSelectedRow();
+        if (selectedRow >= 0) {
+            String maNXB = jtbNXB.getValueAt(selectedRow, 0).toString();
+            publisherController.deletePublisher(maNXB); // Gọi phương thức xóa nhà
+            jTextField1.setText(""); // Xóa trường nhập sau khi xóa
+            jTextField2.setText("");
+            jTextField3.setText("");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn một nhà xuất bản để xóa.", "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jbtnXoaActionPerformed
+
+    private void jtbNXBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbNXBMouseClicked
+        // TODO add your handling code here:
+        int selectedRow = jtbNXB.getSelectedRow();
+        if (selectedRow >= 0) {
+            String tenNXB = jtbNXB.getValueAt(selectedRow, 1).toString();
+            String sdt = jtbNXB.getValueAt(selectedRow, 2).toString();
+            String diaChi = jtbNXB.getValueAt(selectedRow, 3).toString();
+            jTextField1.setText(tenNXB);
+            jTextField2.setText(sdt);
+            jTextField3.setText(diaChi);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "error", "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jtbNXBMouseClicked
+
+    private void jbtnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSuaActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = jtbNXB.getSelectedRow();
+        if (selectedRow >= 0) {
+            String maNXB = jtbNXB.getValueAt(selectedRow, 0).toString();
+            String tenNXB = jTextField1.getText();
+            String sdt = jTextField2.getText();
+            String diaChi = jTextField3.getText();
+            if (tenNXB.isEmpty() || sdt.isEmpty() || diaChi.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!sdt.matches("0\\d{9}")) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ! Phải có 10 chữ số và bắt đầu bằng số 0.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            Model.Publisher publisher = new Model.Publisher(maNXB, tenNXB, sdt, diaChi);
+            publisherController.updatePublisher(publisher); // Gọi phương thức sửa nhà
+            jTextField1.setText(""); // Xóa trường nhập sau khi sửa
+            jTextField2.setText("");
+            jTextField3.setText("");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn một nhà xuất bản để sửa.", "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jbtnSuaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -256,7 +348,7 @@ public class PublisherM extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnBack;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

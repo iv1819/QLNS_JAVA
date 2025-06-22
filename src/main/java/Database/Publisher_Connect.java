@@ -67,4 +67,45 @@ public class Publisher_Connect extends Connect_sqlServer {
             return "NXB_001"; // Mặc định nếu chưa có bản ghi nào
         }
     }
+    public boolean updatePublisher(Publisher publisher) throws SQLException {
+        String sql = "UPDATE NhaXB SET TenNXB = ?, Sdt = ?, DiaChi = ? WHERE MaNXB = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, publisher.getTenNXB());
+            ps.setString(2, publisher.getSdt());
+            ps.setString(3, publisher.getDiaChi());
+            ps.setString(4, publisher.getMaNXB());
+            return ps.executeUpdate() > 0;
+        }
+    }
+    public boolean deletePublisher(String maNXB) {
+        try {
+            // Kiểm tra ràng buộc khóa ngoại trước
+            if (isPublisherInUse(maNXB)) {
+                return false; // Không thể xóa vì có sách đang dùng
+            }
+    
+            // Thực hiện xóa nếu không có ràng buộc
+            try (PreparedStatement ps = conn.prepareStatement("DELETE FROM NhaXB WHERE MaNXB = ?")) {
+                ps.setString(1, maNXB);
+                int rowsAffected = ps.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    private boolean isPublisherInUse(String maNXB) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Sach WHERE MaNXB = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maNXB);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Có sách đang dùng NXB này
+                }
+            }
+        }
+        return false;
+    }
+    
 }

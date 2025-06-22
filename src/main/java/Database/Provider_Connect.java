@@ -67,6 +67,23 @@ public class Provider_Connect extends Connect_sqlServer{
             return "NCC_01"; // Mặc định nếu chưa có bản ghi nào
         }
     }
+    public boolean updateProvider(Provider provider) throws SQLException {
+        String sql = "UPDATE NhaCC SET TenNCC = ?, Sdt = ?, DiaChi = ? WHERE MaNCC = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, provider.getTenNCC());
+            ps.setString(2, provider.getSdt());
+            ps.setString(3, provider.getDiaChi());
+            ps.setString(4, provider.getMaNCC());
+            return ps.executeUpdate() > 0;
+        }
+    }
+    public boolean deleteProvider(String maNCC) throws SQLException {
+        String sql = "DELETE FROM NhaCC WHERE MaNCC = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maNCC);
+            return ps.executeUpdate() > 0;
+        }
+    }
     
     
 }
