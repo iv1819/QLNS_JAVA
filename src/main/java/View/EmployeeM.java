@@ -276,7 +276,7 @@ public class EmployeeM extends javax.swing.JFrame {
     }
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {
-        MainMenu_Manager managerFrame = new MainMenu_Manager();
+        MainMenu_Manager2 managerFrame = new MainMenu_Manager2();
         managerFrame.setVisible(true);
         this.dispose();
     }

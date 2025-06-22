@@ -1,17 +1,10 @@
 
 package Model;
-import java.io.IOException;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 public class Book{
 
     private String maSach;
     private String tenSach;
     private String duongDanAnh;
-    private transient ImageIcon anhSach;
     private String nhaXB;
     private String tacGia;
     private int soLuong;
@@ -32,7 +25,6 @@ public class Book{
         this.duongDanAnh = duongDanAnh;
         this.namXB = namXB;
         this.danhMuc = danhMuc; // Gán danh mục
-        loadImageIcon(); // Gọi phương thức để tải và tạo ImageIcon
     }
 
     public String getDanhMuc() {
@@ -43,26 +35,6 @@ public class Book{
         this.danhMuc = danhMuc;
     }
 
-    // Phương thức để tải và tạo ImageIcon
-    private void loadImageIcon() {
-        if (duongDanAnh != null && !duongDanAnh.isEmpty()) {
-            try {
-                File file = new File(duongDanAnh);
-                if (file.exists()) {
-                    BufferedImage image = ImageIO.read(file);
-                    Image scaledImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH); // Hoặc kích thước khác
-                    this.anhSach = new ImageIcon(scaledImage);
-                } else {
-                    this.anhSach = new ImageIcon(); // Hoặc có thể tải ảnh mặc định
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                this.anhSach = new ImageIcon(); // Hoặc có thể tải ảnh mặc định
-            }
-        } else {
-            this.anhSach = new ImageIcon(); // Nếu không có đường dẫn
-        }
-    }
 
     public String getMaSach() {
         return maSach;
@@ -88,13 +60,6 @@ public class Book{
         this.duongDanAnh = duongDanAnh;
     }
 
-    public ImageIcon getAnhSach() {
-        return anhSach;
-    }
-
-    public void setAnhSach(ImageIcon anhSach) {
-        this.anhSach = anhSach;
-    }
 
     public String getNhaXB() {
         return nhaXB;
@@ -134,11 +99,6 @@ public class Book{
 
     public void setNamXB(int namXB) {
         this.namXB = namXB;
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        loadImageIcon(); // Gọi lại phương thức để tạo ImageIcon sau khi deserialize
     }
 
     @Override

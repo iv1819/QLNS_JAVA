@@ -4,13 +4,9 @@
  */
 package Controller;
 
-/**
- *
- * @author Admin
- */
-import View.BookM; // Import BookM (View)
-import Model.Book; // Import Book (Model)
-import Database.Book_Connect;
+import Database.VPP_Connect;
+import Model.VPP;
+import View.VppM;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -22,16 +18,20 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class BookController { 
-    private BookM view; // Tham chiếu đến View
-    private Book_Connect bookConnect; // Tham chiếu đến lớp kết nối CSDL
+/**
+ *
+ * @author Admin
+ */
+public class VppController {
+    private VppM view; // Tham chiếu đến View
+    private VPP_Connect vppConnect; // Tham chiếu đến lớp kết nối CSDL
     private JLabel imagePreviewLabel; // JLabel để hiển thị ảnh preview
     private String selectedImagePath; // Để lưu đường dẫn ảnh đã chọn từ JFileChooser
  private MainMenuController mainMenuController;
-       public BookController(BookM bookMView, JLabel imagePreviewLabel, MainMenuController mainMenuController) {
+       public VppController(VppM bookMView, JLabel imagePreviewLabel, MainMenuController mainMenuController) {
         this.view = bookMView;
         this.imagePreviewLabel = imagePreviewLabel;
-        this.bookConnect = new Book_Connect();
+        this.vppConnect = new VPP_Connect();
         this.selectedImagePath = "";
         this.mainMenuController = mainMenuController; // Initialize MainMenuController reference
     }
@@ -78,7 +78,7 @@ public class BookController {
                 if (file.exists()) {
                     BufferedImage originalImage = ImageIO.read(file);
                     Image scaledImage = originalImage.getScaledInstance(
-                            imagePreviewLabel.getWidth(), imagePreviewLabel.getHeight(), Image.SCALE_SMOOTH);
+                            78, 100, Image.SCALE_SMOOTH);
                     imagePreviewLabel.setIcon(new ImageIcon(scaledImage));
                     imagePreviewLabel.setText(""); // Xóa text nếu có ảnh
                 } else {
@@ -93,73 +93,67 @@ public class BookController {
             }
         } else {
             imagePreviewLabel.setIcon(null);
-            imagePreviewLabel.setText("Ảnh sách"); // Đặt lại text mặc định
+            imagePreviewLabel.setText("Ảnh VPP"); // Đặt lại text mặc định
         }
     }
 
     // Các phương thức xử lý logic nghiệp vụ
     
-    public void loadAllBooks() {
-        ArrayList<Book> books = bookConnect.layToanBoSach();
-        view.displayBooks(books);
+    public void loadAllVPP() {
+        ArrayList<VPP> vpps = vppConnect.layToanBoVPP();
+        view.displayVPP(vpps);
     }
 
-    public void addBook(Book book) {
-        if (bookConnect.addBook(book)) {
-            view.showMessage("Thêm sách thành công!");
-            loadAllBooks(); // Cập nhật lại JTable
+    public void addVPP(VPP v) {
+        if (vppConnect.themVPP(v)) {
+            view.showMessage("Thêm vpp thành công!");
+            loadAllVPP(); // Cập nhật lại JTable
             refreshMainMenuTabs();
         } else {
-            view.showErrorMessage("Thêm sách thất bại. Vui lòng kiểm tra lại mã sách hoặc thông tin.");
+            view.showErrorMessage("Thêm vpp thất bại. Vui lòng kiểm tra lại mã vpp hoặc thông tin.");
         }
     }
 
-    public void updateBook(Book book) {
-        if (bookConnect.updateBook(book)) {
-            view.showMessage("Cập nhật sách thành công!");
-            loadAllBooks(); // Cập nhật lại JTable
+    public void updateVPP(VPP v) {
+        if (vppConnect.suaVPP(v)) {
+            view.showMessage("Cập nhật vpp thành công!");
+            loadAllVPP(); // Cập nhật lại JTable
             refreshMainMenuTabs();
         } else {
-            view.showErrorMessage("Cập nhật sách thất bại. Vui lòng kiểm tra lại thông tin.");
+            view.showErrorMessage("Cập nhật vpp thất bại. Vui lòng kiểm tra lại thông tin.");
         }
     }
 
-    public void deleteBook(String maSach) {
-        if (bookConnect.deleteBook(maSach)) {
-            view.showMessage("Xóa sách thành công!");
-            loadAllBooks(); // Cập nhật lại JTable
+    public void deleteVPP(String maVPP) {
+        if (vppConnect.xoaVPP(maVPP)) {
+            view.showMessage("Xóa vpp thành công!");
+            loadAllVPP(); // Cập nhật lại JTable
             refreshMainMenuTabs();
         } else {
-            view.showErrorMessage("Xóa sách thất bại. Vui lòng kiểm tra lại mã sách.");
+            view.showErrorMessage("Xóa vpp thất bại. Vui lòng kiểm tra lại mã vpp.");
         }
     }
 
-    public void searchBooks(String tenSach, String tenTacGia) {
-        ArrayList<Book> searchResults;
-        if (!tenSach.isEmpty() && !tenTacGia.isEmpty()) {
+    public void searchVPP(String tenVPP, String tenNCC) {
+        ArrayList<VPP> searchResults;
+        if (!tenVPP.isEmpty() && !tenNCC.isEmpty()) {
             // Giả sử có phương thức tìm kiếm theo cả tên sách và tác giả
-            searchResults = bookConnect.laySachTheoTenSachVaTenTacGia(tenSach, tenTacGia); 
-        } else if (!tenSach.isEmpty()) {
-            searchResults = bookConnect.laySachTheoMaTen(tenSach);
-        } else if (!tenTacGia.isEmpty()) {
-            searchResults = bookConnect.laySachTheoTenTacGia(tenTacGia); // Cần thêm phương thức này vào Book_Connect
+            searchResults = vppConnect.layVppTheoTenVppvaTenNCC(tenVPP, tenNCC); 
+        } else if (!tenVPP.isEmpty()) {
+            searchResults = vppConnect.layVppTheoTen(tenVPP);
+        } else if (!tenNCC.isEmpty()) {
+            searchResults = vppConnect.layVppTheoTenNCC(tenNCC); // Cần thêm phương thức này vào Book_Connect
         } else {
-            loadAllBooks(); // Nếu không nhập gì thì hiển thị toàn bộ
+            loadAllVPP(); // Nếu không nhập gì thì hiển thị toàn bộ
             return;
         }
-        view.displayBooks(searchResults);
+        view.displayVPP(searchResults);
         if (searchResults.isEmpty()) {
-            view.showMessage("Không tìm thấy sách nào phù hợp.");
+            view.showMessage("Không tìm thấy vpp nào phù hợp.");
         }
     }
     
-    public ArrayList<String> getAllNhaXBNames(){
-        return bookConnect.getAllNhaXBNames();
-    }
-     public ArrayList<String> getAllTacGiaNames(){
-        return bookConnect.getAllTacGiaNames();
-    }
-     public ArrayList<String> getAllDanhMuc(){
-        return bookConnect.getAllDanhMuc();
+    public ArrayList<String> getAllNhaCCNames(){
+        return vppConnect.getAllNhaCCNames();
     }
 }

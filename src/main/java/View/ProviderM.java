@@ -24,7 +24,7 @@ public class ProviderM extends javax.swing.JFrame {
         jbtnBack.addActionListener(evt -> {
             // Handle back button action
             this.dispose(); // Close the current window
-            new MainMenu_Manager().setVisible(true); // Open the main menu
+            new MainMenu_Manager2().setVisible(true); // Open the main menu
         });
     }
     public void updateProviderTable(java.util.List<Model.Provider> providers) {

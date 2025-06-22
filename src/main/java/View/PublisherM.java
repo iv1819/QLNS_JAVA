@@ -21,7 +21,7 @@ public class PublisherM extends javax.swing.JFrame {
         publisherController.loadAllPublishers(); // Load dữ liệu từ cơ sở dữ liệu khi kh
         btnBack.addActionListener(evt -> {
             this.dispose(); // Đóng cửa sổ hiện tại
-            new MainMenu_Manager().setVisible(true); // Mở cửa sổ MainMenu
+            new MainMenu_Manager2().setVisible(true); // Mở cửa sổ MainMenu
         });
     }
     public void updatePublisherTable(java.util.List<Model.Publisher> publishers) {
@@ -254,7 +254,7 @@ public class PublisherM extends javax.swing.JFrame {
     jTextField1.setText("");
     jTextField2.setText("");
     jTextField3.setText("");
-}//GEN-LAST:event_jbtnThemActionPerformed
+}                                        
 //GEN-LAST:event_jbtnThemActionPerformed
 
     private void jbtnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnXoaActionPerformed

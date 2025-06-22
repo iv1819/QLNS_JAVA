@@ -7,7 +7,7 @@ package View;
 import Controller.PositionController;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import View.MainMenu_Manager;
+import View.MainMenu_Manager2;
 
 /**
  *
@@ -30,7 +30,7 @@ public class PositionM extends javax.swing.JFrame {
         btnXoa.addActionListener(e -> controller.deletePosition());
         btnTimKiem.addActionListener(e -> controller.searchPosition());
         btnBack.addActionListener(e -> {
-            new MainMenu_Manager().setVisible(true);
+            new MainMenu_Manager2().setVisible(true);
             dispose();
         });
         // Sự kiện chọn dòng bảng

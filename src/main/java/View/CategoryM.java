@@ -29,7 +29,7 @@ public class CategoryM extends javax.swing.JFrame {
         categoryController.loadAllCategories(); // controller sẽ load dữ liệu
         btnBack.addActionListener(e -> {
             this.dispose(); // Đóng cửa sổ hiện tại
-            new MainMenu_Manager().setVisible(true); // Mở cửa sổ MainMenu
+            new MainMenu_Manager2().setVisible(true); // Mở cửa sổ MainMenu
         });
     }
 

@@ -6,6 +6,7 @@ package View;
 
 import Controller.MainMenuController;
 import Model.Book;
+import Model.VPP;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -16,6 +17,9 @@ import javax.swing.JScrollPane;
 import View.EmployeeM;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -25,11 +29,18 @@ import javax.swing.table.DefaultTableModel;
 public class MainMenu extends javax.swing.JFrame {
 private MainMenuController controller;
 private Book currentSelectedBook;
+private VPP currentSelectedVpp;
+private boolean isManager;
 private DefaultTableModel tblModelHD;
+
+    public MainMenu() {
+    }
     /**
      * Creates new form MainMenu
+     * @param isManager
      */
-    public MainMenu() {
+    public MainMenu(boolean isManager) {
+        this.isManager = isManager;
         initComponents();
         tblModelHD = (DefaultTableModel) jtblHD.getModel();
         tblModelHD.setColumnCount(0);
@@ -47,78 +58,152 @@ private DefaultTableModel tblModelHD;
                 controller.onAddReceiptItemClicked((Integer) jspnSL.getValue());
             }
         });
+        jbtnTT.addActionListener(e -> {
+            // 1) Kiểm tra bảng hóa đơn
+            if (tblModelHD.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(
+                    MainMenu.this,
+                    "Hoá đơn đang trống – không thể thanh toán.",
+                    "Thông báo",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+                return;
+            }
+
+            // 2) Lấy tên KH (có thể để trống)
+            Object sel = jcbxTenKH.getSelectedItem();
+            String tenKH = (sel == null ||
+                            sel.toString().trim().isEmpty() ||
+                            sel.toString().equalsIgnoreCase("--Chọn khách hàng--"))
+                          ? null   // <‑‑ truyền null
+                          : sel.toString().trim();
+
+            // 3) Gọi Controller
+            controller.onCheckoutClicked(tenKH);
+        });
+        // Trong MainMenu constructor – sau khi initComponents()
+        jcbxTenKH.addActionListener(e -> {
+            controller.onCustomerSelected(
+                (Object) jcbxTenKH.getSelectedItem()   // có thể null
+            );
+        });
+
+        populateComboBox();
         clearReceiptTable();
     }
-      public void populateCategoryTabs(LinkedHashMap<String, ArrayList<Book>> categorizedBooks) {
-        jTabbedPaneBooks.removeAll(); // Clear all existing tabs
+    public DefaultTableModel getReceiptTableModel() {
+    return tblModelHD;
+}
 
-        if (categorizedBooks.isEmpty()) {
-            jTabbedPaneBooks.addTab("Không có Danh mục", new JLabel("Không tìm thấy danh mục hoặc không có sách."));
-            return;
+ private void populateComboBox() {
+        // Tải dữ liệu cho ComboBox Nhà xuất bản
+        List<String> tenKHs = controller.getAllTenKH();
+        DefaultComboBoxModel<String> khModel = new DefaultComboBoxModel<>();
+        khModel.addElement("--Chọn khách hàng--");
+        for (String name : tenKHs) {
+            
+            khModel.addElement(name);
+        }
+        jcbxTenKH.setModel(khModel);
+
+    }
+    public double LayTongTien(){
+        return Double.parseDouble(jtxtTongTienHD.getText().replace("$", "").replace(",", "").trim());
+    }
+     /** Hiển thị các tab Sách + 1 tab VPP */
+    public void populateCategoryTabs(LinkedHashMap<String, ArrayList<Book>> booksByCat,
+                                 ArrayList<VPP> allVpp) {
+
+            jTabbedPaneBooks.removeAll();
+
+            /* ==== 1. Tab cho sách (như cũ) ==== */
+            for (Map.Entry<String, ArrayList<Book>> e : booksByCat.entrySet()) {
+                addBookTab(e.getKey(), e.getValue());
+            }
+
+            /* ==== 2. Tab cho VPP ==== */
+            addVppTab("Văn phòng phẩm", allVpp);
         }
 
-        for (Map.Entry<String, ArrayList<Book>> entry : categorizedBooks.entrySet()) {
-            String categoryName = entry.getKey();
-            ArrayList<Book> booksInCategory = entry.getValue();
+        /* ------------------ helpers ------------------ */
 
-            JPanel categoryPanel = new JPanel();
-            categoryPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10)); // 10px spacing
+        private void addBookTab(String title, ArrayList<Book> books) {
+            JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
-            if (booksInCategory.isEmpty()) {
-                categoryPanel.add(new JLabel("Không có sách trong danh mục này."));
+            if (books.isEmpty()) {
+                panel.add(new JLabel("Không có sách trong danh mục này."));
             } else {
-                for (Book book : booksInCategory) {
-                    // Create an instance of the designed BookItemPanel
-                    BookItemPanel bookItemPanel = new BookItemPanel(book, controller);
-                    bookItemPanel.setBookData(book); // Assign book data to the panel
-                    categoryPanel.add(bookItemPanel);
+                for (Book b : books) {
+                    BookItemPanel p = new BookItemPanel(b, controller);
+                    p.setBookData(b);
+                    panel.add(p);
                 }
             }
-            // Place the category panel in a JScrollPane for scrolling if many books
-            JScrollPane categoryScrollPane = new JScrollPane(categoryPanel);
-            jTabbedPaneBooks.addTab(categoryName, categoryScrollPane);
+            jTabbedPaneBooks.addTab(title, new JScrollPane(panel));
         }
-    }
+
+        private void addVppTab(String title, ArrayList<VPP> vpps) {
+            JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+
+            if (vpps.isEmpty()) {
+                panel.add(new JLabel("Không có VPP."));
+            } else {
+                for (VPP v : vpps) {
+                    VppItemPanel p = new VppItemPanel(v, controller); // tạo tương tự BookItemPanel
+                    p.setVPPData(v);
+                    panel.add(p);
+                }
+            }
+            jTabbedPaneBooks.addTab(title, new JScrollPane(panel));
+        }
+
     public void addReceiptItem(Object[] rowData) {
         tblModelHD.addRow(rowData);
     }
      public void updateSelectedBook(Book book) {
         this.currentSelectedBook = book;
         if (book != null) {
-            jtxtTenSachHD.setText(book.getTenSach());
+            jtxtTenSpHD.setText(book.getTenSach());
             jspnSL.setValue(1); 
             jbtnThemHD.setEnabled(true);
         } else {
-            jtxtTenSachHD.setText("Chọn một cuốn sách...");
+            jtxtTenSpHD.setText("Chọn một san pham...");
             jspnSL.setValue(1);
             jbtnThemHD.setEnabled(false); 
         }
     }
-      
-    public void updateReceiptTotalAmount(double totalAmount) {
-        // View tự tính toán tổng tiền từ bảng của nó
-        double total = 0;
-        for (int i = 0; i < tblModelHD.getRowCount(); i++) {
-            String tongGiaStr = tblModelHD.getValueAt(i, 3).toString().replace(" VNĐ", "");
-            try {
-                total += Double.parseDouble(tongGiaStr);
-            } catch (NumberFormatException e) {
-                System.err.println("Lỗi khi chuyển đổi tổng giá: " + tongGiaStr);
-                e.printStackTrace();
-            }
+      public void updateSelectedVPP(VPP vpp) {
+        this.currentSelectedVpp = vpp;
+        if (vpp != null) {
+            jtxtTenSpHD.setText(vpp.getTenVPP());
+            jspnSL.setValue(1); 
+            jbtnThemHD.setEnabled(true);
+        } else {
+            jtxtTenSpHD.setText("Chọn một san pham...");
+            jspnSL.setValue(1);
+            jbtnThemHD.setEnabled(false); 
         }
-        jtxtTongTienHD.setText(String.format("%.0f VNĐ", total));
+    }
+    public void updateReceiptTotal(boolean hasDiscount) {
+        double totalAmount = 0;
+        int    totalItems  = 0;
+
+        for (int i = 0; i < tblModelHD.getRowCount(); i++) {
+            String moneyStr = tblModelHD.getValueAt(i, 3).toString()
+                                       .replace("$", "");
+            totalAmount += Double.parseDouble(moneyStr);
+            totalItems  += (Integer) tblModelHD.getValueAt(i, 1);
+        }
+
+        if (hasDiscount) {
+            jtxtGG.setText("10%");
+            totalAmount *= 0.9;                           // ‑10 %
+        }
+
+        jtxtTongTienHD.setText(String.format("%.0f $", totalAmount));
+        jTotalPd.setText(String.valueOf(totalItems));
     }
 
-
-    public void updateReceiptTotalItems(int totalItems) {
-        // View tự tính toán tổng số lượng từ bảng của nó
-        int total = 0;
-        for (int i = 0; i < tblModelHD.getRowCount(); i++) {
-            total += (Integer) tblModelHD.getValueAt(i, 1);
-        }
-        jTotalPd.setText(String.valueOf(total));
-    }
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
@@ -132,7 +217,7 @@ private DefaultTableModel tblModelHD;
 
     // Cập nhật lại tổng số lượng & tổng tiền về 0
     jTotalPd.setText("0");
-    jtxtTongTienHD.setText("0 VNĐ");
+    jtxtTongTienHD.setText("0 $");
 
     // Nếu muốn vô hiệu hoá nút “Thêm” sau khi xoá
     updateSelectedBook(null);
@@ -154,7 +239,7 @@ private DefaultTableModel tblModelHD;
         jTabbedPaneBooks = new javax.swing.JTabbedPane();
         jMiddle3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jtxtTenSachHD = new javax.swing.JTextField();
+        jtxtTenSpHD = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jspnSL = new javax.swing.JSpinner();
         jbtnThemHD = new javax.swing.JButton();
@@ -178,10 +263,9 @@ private DefaultTableModel tblModelHD;
         jtxtTongTienHD = new javax.swing.JLabel();
         jbtnTT = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jtxtKHVIP = new javax.swing.JTextField();
-        jbtnCheckKH = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jtxtGG = new javax.swing.JLabel();
+        jcbxTenKH = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -228,7 +312,7 @@ private DefaultTableModel tblModelHD;
 
         jMiddle3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel6.setText("Tên sách:");
+        jLabel6.setText("Tên sp:");
 
         jLabel7.setText("Số lượng:");
 
@@ -242,7 +326,7 @@ private DefaultTableModel tblModelHD;
                 .addContainerGap()
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtxtTenSachHD, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jtxtTenSpHD, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -257,7 +341,7 @@ private DefaultTableModel tblModelHD;
                 .addContainerGap()
                 .addGroup(jMiddle3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jtxtTenSachHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtxtTenSpHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(jspnSL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnThemHD))
@@ -409,9 +493,6 @@ private DefaultTableModel tblModelHD;
 
         jLabel4.setText("Khách hàng VIP:");
 
-        jbtnCheckKH.setBackground(new java.awt.Color(204, 204, 204));
-        jbtnCheckKH.setText("Check");
-
         jLabel5.setText("Giảm giá:");
 
         jtxtGG.setText("0%");
@@ -427,26 +508,22 @@ private DefaultTableModel tblModelHD;
                         .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTotalPd, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtxtGG, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jUnderLayout.createSequentialGroup()
+                                .addComponent(jTotalPd, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtxtGG, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jcbxTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jUnderLayout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jUnderLayout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(jtxtKHVIP)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jbtnCheckKH))
-                            .addGroup(jUnderLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtxtTongTienHD, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jbtnTT, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtxtTongTienHD, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtnTT, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jUnderLayout.setVerticalGroup(
@@ -455,16 +532,15 @@ private DefaultTableModel tblModelHD;
                 .addContainerGap()
                 .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(jTotalPd))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
-                        .addComponent(jtxtGG)))
+                        .addComponent(jtxtGG))
+                    .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(jTotalPd)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jtxtKHVIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtnCheckKH, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcbxTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -489,7 +565,7 @@ private DefaultTableModel tblModelHD;
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jUnder, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jUnder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout jMainLayout = new javax.swing.GroupLayout(jMain);
@@ -522,9 +598,7 @@ private DefaultTableModel tblModelHD;
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnQliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnQliActionPerformed
-        MainMenu_Manager managerFrame = new MainMenu_Manager();
-        managerFrame.setVisible(true);
-        this.dispose();
+        new MainMenu_Manager2(this, controller, isManager).setVisible(true);
     }//GEN-LAST:event_jbtnQliActionPerformed
 
     private void jbtnTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnTTActionPerformed
@@ -590,17 +664,16 @@ private DefaultTableModel tblModelHD;
     private javax.swing.JTabbedPane jTabbedPaneBooks;
     private javax.swing.JLabel jTotalPd;
     private javax.swing.JPanel jUnder;
-    private javax.swing.JButton jbtnCheckKH;
     private javax.swing.JButton jbtnQli;
     private javax.swing.JButton jbtnTT;
     private javax.swing.JButton jbtnThemHD;
     private javax.swing.JButton jbtnTim;
+    private javax.swing.JComboBox<String> jcbxTenKH;
     private javax.swing.JSpinner jspnSL;
     private javax.swing.JTable jtblHD;
     private javax.swing.JLabel jtxtGG;
-    private javax.swing.JTextField jtxtKHVIP;
-    private javax.swing.JTextField jtxtTenSachHD;
     private javax.swing.JTextField jtxtTenSachTK;
+    private javax.swing.JTextField jtxtTenSpHD;
     private javax.swing.JTextField jtxtTenTacGiaTK;
     private javax.swing.JLabel jtxtTongTienHD;
     // End of variables declaration//GEN-END:variables
