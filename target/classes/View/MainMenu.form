@@ -164,13 +164,13 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jtxtTenSach" min="-2" pref="170" max="-2" attributes="0"/>
+                          <Component id="jtxtTenSachHD" min="-2" pref="170" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jspnSL" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="28" max="32767" attributes="0"/>
-                          <Component id="jbtnAddHD" min="-2" max="-2" attributes="0"/>
+                          <Component id="jbtnThemHD" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -181,10 +181,10 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jtxtTenSach" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtxtTenSachHD" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jspnSL" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jbtnAddHD" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jbtnThemHD" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="7" max="32767" attributes="0"/>
                       </Group>
@@ -197,7 +197,7 @@
                     <Property name="text" type="java.lang.String" value="T&#xea;n s&#xe1;ch:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jtxtTenSach">
+                <Component class="javax.swing.JTextField" name="jtxtTenSachHD">
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel7">
                   <Properties>
@@ -206,7 +206,7 @@
                 </Component>
                 <Component class="javax.swing.JSpinner" name="jspnSL">
                 </Component>
-                <Component class="javax.swing.JButton" name="jbtnAddHD">
+                <Component class="javax.swing.JButton" name="jbtnThemHD">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Th&#xea;m v&#xe0;o h&#xf3;a &#x111;&#x1a1;n"/>
                   </Properties>
@@ -391,7 +391,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="jTable1">
+                    <Component class="javax.swing.JTable" name="jtblHD">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="4" rowCount="4">
@@ -444,7 +444,7 @@
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jTotalM" pref="90" max="32767" attributes="0"/>
+                                          <Component id="jtxtTongTienHD" pref="90" max="32767" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="jbtnTT" min="-2" pref="171" max="-2" attributes="0"/>
                                       </Group>
@@ -479,7 +479,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTotalM" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jtxtTongTienHD" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jbtnTT" alignment="0" min="-2" pref="38" max="-2" attributes="0"/>
                           </Group>
@@ -507,7 +507,7 @@
                     <Property name="text" type="java.lang.String" value="T&#x1ed5;ng ti&#x1ec1;n:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jTotalM">
+                <Component class="javax.swing.JLabel" name="jtxtTongTienHD">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="18" style="1"/>
@@ -528,6 +528,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Thanh to&#xe1;n"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnTTActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel4">
                   <Properties>

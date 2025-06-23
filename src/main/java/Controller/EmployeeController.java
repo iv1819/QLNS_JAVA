@@ -75,8 +75,8 @@ public class EmployeeController {
         }
     }
 
-    public void searchEmployees(String tenNV) {
-        ArrayList<Employee> searchResults = employeeConnect.timNhanVienTheoTen(tenNV);
+    public void searchEmployees(String keyword) {
+        ArrayList<Employee> searchResults = employeeConnect.searchEmployees(keyword);
         view.displayEmployees(searchResults);
         if (searchResults.isEmpty()) {
             view.showMessage("Không tìm thấy nhân viên nào phù hợp.");

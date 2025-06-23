@@ -20,7 +20,7 @@ public class Employee_Connect extends Connect_sqlServer {
     public ArrayList<Employee> layToanBoNhanVien() {
         ArrayList<Employee> dsnv = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM NhanVien";
+            String sql = "SELECT nv.*, cv.TenCV FROM NhanVien nv JOIN ChucVu cv ON nv.MaCV = cv.MaCV";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             ResultSet result = preparedStatement.executeQuery();
             
@@ -31,6 +31,7 @@ public class Employee_Connect extends Connect_sqlServer {
                 nv.setNgaySinh(result.getDate("NgaySinh"));
                 nv.setNgayVaoLam(result.getDate("NgayVaoLam"));
                 nv.setMaCV(result.getString("MaCV"));
+                nv.setTenCV(result.getString("TenCV"));
                 nv.setSdt(result.getString("Sdt"));
                 nv.setLuong(result.getDouble("Luong"));
                 dsnv.add(nv);
@@ -43,12 +44,12 @@ public class Employee_Connect extends Connect_sqlServer {
         return dsnv;
     }
 
-    public ArrayList<Employee> timNhanVienTheoTen(String tenNV) {
+    public ArrayList<Employee> searchEmployees(String keyword) {
         ArrayList<Employee> dsnv = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM NhanVien WHERE TenNV LIKE ?";
+            String sql = "SELECT nv.*, cv.TenCV FROM NhanVien nv JOIN ChucVu cv ON nv.MaCV = cv.MaCV WHERE nv.TenNV LIKE ?";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setString(1, "%" + tenNV + "%");
+            preparedStatement.setString(1, "%" + keyword + "%");
             ResultSet result = preparedStatement.executeQuery();
             
             while (result.next()) {
@@ -58,6 +59,7 @@ public class Employee_Connect extends Connect_sqlServer {
                 nv.setNgaySinh(result.getDate("NgaySinh"));
                 nv.setNgayVaoLam(result.getDate("NgayVaoLam"));
                 nv.setMaCV(result.getString("MaCV"));
+                nv.setTenCV(result.getString("TenCV"));
                 nv.setSdt(result.getString("Sdt"));
                 nv.setLuong(result.getDouble("Luong"));
                 dsnv.add(nv);

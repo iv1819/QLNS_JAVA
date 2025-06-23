@@ -8,7 +8,6 @@ package Controller;
  *
  * @author Admin
  */
-import Model.Category;
 import View.BookM; // Import BookM (View)
 import Model.Book; // Import Book (Model)
 import Database.Book_Connect;
@@ -17,14 +16,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class BookController { 

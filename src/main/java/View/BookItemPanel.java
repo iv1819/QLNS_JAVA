@@ -4,13 +4,18 @@
  */
 package View;
 
+import Controller.MainMenuController;
 import Model.Book;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
 /**
@@ -18,15 +23,46 @@ import javax.swing.ImageIcon;
  * @author Admin
  */
 public class BookItemPanel extends javax.swing.JPanel {
-
+private Book book;
+    private MainMenuController controller;
     /**
      * Creates new form BookItemPanel
+     * @param book
+     * @param controller
      */
-    public BookItemPanel() {
+    public BookItemPanel(Book book, MainMenuController controller) {
+         this.book = book;
+        this.controller = controller;
         initComponents();
-         setPreferredSize(new Dimension(96, 146));
+        setPreferredSize(new Dimension(96, 146));
+        jtxtPriceBI.setPreferredSize(new Dimension(70,25));
+        setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        setBookData(book); // Đổi tên phương thức để tránh nhầm lẫn với setBook trong Model
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (controller != null) {
+                    // Thông báo cho Presenter khi sách được click
+                    controller.onBookItemSelected(BookItemPanel.this.book);
+                    System.out.println("DEBUG (BookItemPanel): Đã click vào sách: " + BookItemPanel.this.book.getTenSach());
+                }
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // Hiệu ứng khi di chuột vào
+                setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Hiệu ứng khi di chuột ra
+                setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY)); // Viền xám nhạt
+            }
+        });
     }
-     public void setBook(Book book) {
+     public void setBookData(Book book) {
 
         if (book.getDuongDanAnh() != null && !book.getDuongDanAnh().isEmpty()) {
             try {
@@ -50,11 +86,16 @@ public class BookItemPanel extends javax.swing.JPanel {
             jtxtAnhBI.setIcon(null);
             jtxtAnhBI.setText("Ảnh sách"); // Đặt lại text mặc định
         }
-        // Update text information
-        jtxtNameBI.setText("" + book.getTenSach());
-        jtxtPriceBI.setText("$" + book.getGiaBan());
+        jtxtNameBI.setText(truncateText(book.getTenSach(), 15)); 
+        jtxtPriceBI.setText(String.format("%.0f $", book.getGiaBan())); 
     }
- 
+ private String truncateText(String text, int maxLength) {
+        if (text == null) return "";
+        if (text.length() > maxLength) {
+            return text.substring(0, maxLength - 3) + "..."; // Cắt và thêm "..."
+        }
+        return text;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -92,12 +133,9 @@ public class BookItemPanel extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 96, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(29, 29, 29)
-                    .addComponent(jtxtPriceBI, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                    .addGap(29, 29, 29)))
+                .addComponent(jtxtPriceBI, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

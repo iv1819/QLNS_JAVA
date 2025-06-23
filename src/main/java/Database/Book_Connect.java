@@ -363,7 +363,47 @@ public boolean addBook(Book book) {
         }
         return dmNames;
     }
-    
+   public String timMaSP(String tenSP) {
+        // Initialize the product ID to null
+        String maSP = null; 
+        PreparedStatement pre = null;
+        ResultSet result = null;
+
+        try {
+            // SQL query to union results from Sach and VPP tables
+            // Alias the columns to have a consistent name for retrieval
+            String sql = "SELECT MaSach AS MaSP FROM Sach WHERE TenSach = ? " +
+                         "UNION " +
+                         "SELECT MaVPP AS MaSP FROM VPP WHERE TenVPP = ?";
+            
+            pre = conn.prepareStatement(sql);
+            // Set both placeholders for the UNION query
+            pre.setString(1, tenSP); 
+            pre.setString(2, tenSP);
+
+            result = pre.executeQuery();
+
+            // If a result is found, retrieve the MaSP
+            if (result.next()) {
+                maSP = result.getString("MaSP");
+            }
+
+        } catch (SQLException e) {
+            // Print stack trace for debugging purposes
+            e.printStackTrace(); 
+            // In a real application, you might log the error or throw a custom exception
+        } finally {
+            // Close resources in a finally block to ensure they are released
+            try {
+                if (result != null) result.close();
+                if (pre != null) pre.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        // Return the found product ID or null
+        return maSP; 
+    }
     public boolean kiemTraTonTai(String maSach)
     {
         

@@ -35,7 +35,6 @@ import javax.swing.JFrame;
 public class BookM extends javax.swing.JFrame {
 private BookController bookController;
     private String currentImagePath = "";
-private MainMenuController mainMenuController;
     // Lưu đường dẫn ảnh hiện tại
     /**
      * Creates new form BookM
@@ -44,7 +43,6 @@ private MainMenuController mainMenuController;
         this(null); // Call the main constructor with a null controller
     }
     public BookM(MainMenuController mainMenuController) {
-        this.mainMenuController = mainMenuController;
         initComponents();
          bookController = new BookController(this, JImage, mainMenuController);
         jTable_Books.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -536,7 +534,7 @@ public void displayBooks(ArrayList<Book> books) {
     }//GEN-LAST:event_jbtnAnhActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        MainMenu_Manager managerFrame = new MainMenu_Manager();
+        MainMenu_Manager2 managerFrame = new MainMenu_Manager2();
         managerFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
