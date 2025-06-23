@@ -63,11 +63,11 @@ public class AuthorController {
     public void searchAuthors(String tenTG) {
         ArrayList<Author> searchResults = authorConnect.timTacGiaTheoTen(tenTG);
         view.displayAuthors(searchResults);
-        if (searchResults.isEmpty()) {
-            view.showMessage("Không tìm thấy tác giả nào phù hợp.");
+            if (searchResults.isEmpty()) {
+                view.showMessage("Không tìm thấy tác giả nào phù hợp.");
+            }
         }
     }
-}
 
     
 
