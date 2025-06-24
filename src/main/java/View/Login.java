@@ -60,6 +60,11 @@ public class Login extends javax.swing.JFrame {
         jbtnDN.setText("Đăng nhập");
 
         jbtnDK.setText("Đăng ký");
+        jbtnDK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnDKActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -109,6 +114,14 @@ public class Login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbtnDKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDKActionPerformed
+        // TODO add your handling code here:
+        RegisterM lg = new RegisterM();
+                lg.setLocationRelativeTo(null); 
+                lg.setVisible(true);
+                this.dispose();
+    }//GEN-LAST:event_jbtnDKActionPerformed
 
     /**
      * @param args the command line arguments

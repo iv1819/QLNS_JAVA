@@ -40,7 +40,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jButton2" max="32767" attributes="0"/>
-                          <Component id="jButton12" max="32767" attributes="0"/>
+                          <Component id="btnAccount" max="32767" attributes="0"/>
                           <Component id="jbtnOrderM" pref="129" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
@@ -69,7 +69,7 @@
               </Group>
               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jButton12" pref="65" max="32767" attributes="0"/>
+                  <Component id="btnAccount" pref="65" max="32767" attributes="0"/>
                   <Component id="btnPositionM" max="32767" attributes="0"/>
                   <Component id="jbtnVPP" max="32767" attributes="0"/>
               </Group>
@@ -147,7 +147,7 @@
         <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xed; t&#xe1;c gi&#x1ea3;"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton12">
+    <Component class="javax.swing.JButton" name="btnAccount">
       <Properties>
         <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xed; t&#xe0;i kho&#x1ea3;n"/>
       </Properties>

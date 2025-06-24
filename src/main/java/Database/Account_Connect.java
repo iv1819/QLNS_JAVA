@@ -29,9 +29,9 @@ public class Account_Connect extends Connect_sqlServer{
             
             while (result.next()) {
                 Account tk = new Account();
-                tk.setTaiKhoan(result.getString("TaiKhoan"));
-                tk.setMatKhau(result.getString("MatKhau"));
-                tk.setMaCV(result.getString("TenCV"));
+                tk.setUsername(result.getString("TaiKhoan"));
+                tk.setPassword(result.getString("MatKhau"));
+                tk.setTenCV(result.getString("TenCV"));
                 tk.setTrangThai(result.getString("TrangThai"));
                 dstk.add(tk);
             }
@@ -47,9 +47,9 @@ public class Account_Connect extends Connect_sqlServer{
         try {
             String sql = "INSERT INTO TaiKhoan (TaiKhoan, MatKhau, MaCV, TrangThai)VALUES (?,?,?,?) ";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, acc.getTaiKhoan());
-            stmt.setString(2, acc.getMatKhau());
-            stmt.setString(3, acc.getMaCV());
+            stmt.setString(1, acc.getUsername());
+            stmt.setString(2, acc.getPassword());
+            stmt.setString(3, acc.getTenCV());
             stmt.setString(4, acc.getTrangThai());
             return stmt.executeUpdate() > 0;
         } catch (Exception e){
@@ -68,9 +68,9 @@ public class Account_Connect extends Connect_sqlServer{
             
             while (result.next()) {
                 Account tk = new Account();
-                tk.setTaiKhoan(result.getString("TaiKhoan"));
-                tk.setMatKhau(result.getString("MatKhau"));                
-                tk.setMaCV(result.getString("TenCV"));
+                tk.setUsername(result.getString("TaiKhoan"));
+                tk.setPassword(result.getString("MatKhau"));                
+                tk.setTenCV(result.getString("TenCV"));
                 tk.setTrangThai(result.getString("TrangThai"));
                 dstk.add(tk);
             }
@@ -86,9 +86,9 @@ public class Account_Connect extends Connect_sqlServer{
         try {
             String sql = "UPDATE TaiKhoan SET MatKhau = ?, MaCV = ?, TrangThai = ? WHERE TaiKhoan = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(4, tk.getTaiKhoan());
-            pstmt.setString(1, tk.getMatKhau());
-            pstmt.setString(2, tk.getMaCV());
+            pstmt.setString(4, tk.getUsername());
+            pstmt.setString(1, tk.getPassword());
+            pstmt.setString(2, tk.getTenCV());
             pstmt.setString(3, tk.getTrangThai());
           
             int rowsAffected = pstmt.executeUpdate();

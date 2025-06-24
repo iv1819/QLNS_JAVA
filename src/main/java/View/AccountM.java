@@ -23,22 +23,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class AccountM extends javax.swing.JFrame {
     private AccountController accountController;
-    private MainMenuController mainMenuController;
 
     /**
      * Creates new form AccountM
      */
-    public AccountM() {
-        this(null);
-    }
     
-    public AccountM(MainMenuController mainMenuController) {
-        this.mainMenuController = mainMenuController;
+    public AccountM() {
         initComponents();
         
         txtTK.setEditable(false);
         txtMK.setEditable(false);
-        accountController = new AccountController(this, mainMenuController);
+        accountController = new AccountController(this);
         populateComboBoxes();
 
         jTable_Account.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -79,9 +74,9 @@ public class AccountM extends javax.swing.JFrame {
         
         for(Account acc : account) {
             Vector<Object> row = new Vector<> ();
-            row.add(acc.getTaiKhoan());
-            row.add(acc.getMatKhau());
-            row.add(acc.getMaCV());
+            row.add(acc.getUsername());
+            row.add(acc.getPassword());
+            row.add(acc.getTenCV());
             row.add(acc.getTrangThai());
             dtm.addRow(row);
         }
@@ -304,7 +299,7 @@ public class AccountM extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        MainMenu_Manager managerFrame = new MainMenu_Manager();
+        MainMenu_Manager2 managerFrame = new MainMenu_Manager2();
         managerFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed

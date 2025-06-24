@@ -36,22 +36,6 @@ public class ChucVu_Connect extends Connect_sqlServer{
         return dscv;
     }
     
-    public boolean themTaiKhoan(Account tk) {
-    try {
-        String sql = "INSERT INTO TaiKhoan (TaiKhoan, MatKhau, MaCV, TrangThai) VALUES (?, ?, ?, ?)";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, tk.getTaiKhoan());
-        pstmt.setString(2, tk.getMatKhau());
-        pstmt.setString(3, tk.getMaCV());
-        pstmt.setString(4, tk.getTrangThai());
-
-        int rowsAffected = pstmt.executeUpdate();
-        pstmt.close();
-        return rowsAffected > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
-    }
-}
+   
 
 }

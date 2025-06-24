@@ -96,6 +96,13 @@ public class MainMenu_Manager2 extends javax.swing.JFrame {
                 dispose();
             }
         });
+        btnAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AccountM accountM = new AccountM();
+                accountM.setVisible(true);
+                dispose();
+            }
+        });
     }
     else{
         btnEmployeeM.setEnabled(false);
@@ -179,7 +186,7 @@ public class MainMenu_Manager2 extends javax.swing.JFrame {
         btnEmployeeM = new javax.swing.JButton();
         btnCustomerM = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
+        btnAccount = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -205,7 +212,7 @@ public class MainMenu_Manager2 extends javax.swing.JFrame {
 
         jButton2.setText("Quản lí tác giả");
 
-        jButton12.setText("Quản lí tài khoản");
+        btnAccount.setText("Quản lí tài khoản");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -226,7 +233,7 @@ public class MainMenu_Manager2 extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jbtnOrderM, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -248,7 +255,7 @@ public class MainMenu_Manager2 extends javax.swing.JFrame {
                     .addComponent(btnBookM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton12, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                    .addComponent(btnAccount, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
                     .addComponent(btnPositionM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jbtnVPP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
@@ -303,6 +310,7 @@ public class MainMenu_Manager2 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAccount;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnBookM;
     private javax.swing.JButton btnCategoryM;
@@ -311,7 +319,6 @@ public class MainMenu_Manager2 extends javax.swing.JFrame {
     private javax.swing.JButton btnPositionM;
     private javax.swing.JButton btnProviderM;
     private javax.swing.JButton btnPublisher;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jbtnOrderM;
     private javax.swing.JButton jbtnVPP;

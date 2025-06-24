@@ -18,12 +18,10 @@ import java.util.List;
 public class AccountController {
     private AccountM view;
     private Account_Connect accountConnect;
-    private MainMenuController mainMenuController;
 
-    public AccountController(AccountM view, MainMenuController mainMenuController) {
+    public AccountController(AccountM view) {
         this.view = view;
         this.accountConnect = new Account_Connect();
-        this.mainMenuController = mainMenuController;
     }
     
     public void loadAllAccount(){

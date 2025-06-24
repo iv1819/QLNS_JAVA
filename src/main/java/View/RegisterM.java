@@ -21,7 +21,6 @@ import javax.swing.JOptionPane;
  * @author trang
  */
 public class RegisterM extends javax.swing.JFrame {
-    private AccountController accountController;
     private RegisterController registerController;
     private Account_Connect accountConnect;
     /**
@@ -29,6 +28,7 @@ public class RegisterM extends javax.swing.JFrame {
      */
     public RegisterM() {
         initComponents();
+        accountConnect = new Account_Connect();
         loadChucVuComboBox();
     }
     
@@ -68,16 +68,18 @@ public class RegisterM extends javax.swing.JFrame {
         }
         
         Account acc = new Account();
-        acc.setTaiKhoan(taiKhoan);
-        acc.setMatKhau(matKhau);
-        acc.setMaCV(maCV);
+        acc.setUsername(taiKhoan);
+        acc.setPassword(matKhau);
+        acc.setTenCV(maCV);
         acc.setTrangThai("No");
         
-        boolean success = accountController.themTaiKhoan(acc);
+        boolean success = accountConnect.themTaiKhoan(acc);
         if (success){
             JOptionPane.showMessageDialog(this, "Đăng ký thành công");
-            new LoginForm().setVisible(true);
-            this.dispose();
+Login lg = new Login();
+                lg.setLocationRelativeTo(null); 
+                lg.setVisible(true);
+                this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Đăng ký thất bại");
         }
@@ -156,6 +158,11 @@ public class RegisterM extends javax.swing.JFrame {
         });
 
         btnDangKy.setText("Đăng ký");
+        btnDangKy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDangKyActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Xác nhận mật khẩu");
 
@@ -232,11 +239,19 @@ public class RegisterM extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
+        Login lg = new Login();
+                lg.setLocationRelativeTo(null); 
+                lg.setVisible(true);
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void txtTKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTKActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTKActionPerformed
+
+    private void btnDangKyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangKyActionPerformed
+        // TODO add your handling code here:
+        dangKyTaiKhoan();
+    }//GEN-LAST:event_btnDangKyActionPerformed
 
     /**
      * @param args the command line arguments
