@@ -30,7 +30,7 @@ public class AccountM extends javax.swing.JFrame {
     
     public AccountM() {
         initComponents();
-        
+        setLocationRelativeTo(null); 
         txtTK.setEditable(false);
         txtMK.setEditable(false);
         accountController = new AccountController(this);

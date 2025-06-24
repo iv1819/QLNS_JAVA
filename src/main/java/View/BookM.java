@@ -44,6 +44,7 @@ private BookController bookController;
     }
     public BookM(MainMenuController mainMenuController) {
         initComponents();
+        setLocationRelativeTo(null); 
          bookController = new BookController(this, JImage, mainMenuController);
         jTable_Books.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -62,6 +63,7 @@ private BookController bookController;
         // Tải dữ liệu cho ComboBox Nhà xuất bản
         List<String> nhaXBNames = bookController.getAllNhaXBNames();
         DefaultComboBoxModel<String> nxbModel = new DefaultComboBoxModel<>();
+        nxbModel.addElement("--Chọn nhà xuất bản--");
         for (String name : nhaXBNames) {
             nxbModel.addElement(name);
         }
@@ -70,12 +72,14 @@ private BookController bookController;
         // Tải dữ liệu cho ComboBox Tác giả
         List<String> tacGiaNames = bookController.getAllTacGiaNames();
         DefaultComboBoxModel<String> tgModel = new DefaultComboBoxModel<>();
+        tgModel.addElement("--Chọn tác giả--");
         for (String name : tacGiaNames) {
             tgModel.addElement(name);
         }
         jcbxTacGia.setModel(tgModel);
         List<String> danhmuc = bookController.getAllDanhMuc();
         DefaultComboBoxModel<String> dmModel = new DefaultComboBoxModel<>();
+        dmModel.addElement("--Chọn danh mục--");
         for (String name : danhmuc) {
             dmModel.addElement(name);
         }
@@ -166,6 +170,8 @@ public void displayBooks(ArrayList<Book> books) {
         jbtnSua = new javax.swing.JButton();
         jbtnXoa = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
+        jbtnNE = new javax.swing.JButton();
+        jbtnXE = new javax.swing.JButton();
         JMiddle = new javax.swing.JPanel();
         JMaSach = new javax.swing.JLabel();
         JTenSach = new javax.swing.JLabel();
@@ -242,6 +248,20 @@ public void displayBooks(ArrayList<Book> books) {
             }
         });
 
+        jbtnNE.setText("Nhập Excel");
+        jbtnNE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnNEActionPerformed(evt);
+            }
+        });
+
+        jbtnXE.setText("Xuất Excel");
+        jbtnXE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnXEActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JUpperLayout = new javax.swing.GroupLayout(JUpper);
         JUpper.setLayout(JUpperLayout);
         JUpperLayout.setHorizontalGroup(
@@ -251,6 +271,10 @@ public void displayBooks(ArrayList<Book> books) {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnBack)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jbtnNE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jbtnXE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbtnThem)
                 .addGap(18, 18, 18)
@@ -270,7 +294,9 @@ public void displayBooks(ArrayList<Book> books) {
                         .addComponent(jbtnXoa))
                     .addGroup(JUpperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(btnBack)))
+                        .addComponent(btnBack)
+                        .addComponent(jbtnNE)
+                        .addComponent(jbtnXE)))
                 .addContainerGap(48, Short.MAX_VALUE))
         );
 
@@ -329,30 +355,29 @@ public void displayBooks(ArrayList<Book> books) {
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(JMiddleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(JMiddleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(JMiddleLayout.createSequentialGroup()
-                            .addComponent(jtxtAnh)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jbtnAnh))
-                        .addComponent(jcbxTacGia, 0, 209, Short.MAX_VALUE)
+                    .addComponent(JImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(JMiddleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jcbxTacGia, 0, 237, Short.MAX_VALUE)
                         .addComponent(jtxtMaSach)
-                        .addComponent(jtxtTenSach))
-                    .addComponent(JImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(104, 104, 104)
+                        .addComponent(jtxtTenSach)
+                        .addComponent(jtxtAnh)))
+                .addGap(18, 18, 18)
+                .addComponent(jbtnAnh)
+                .addGap(68, 68, 68)
                 .addGroup(JMiddleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(JMiddleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jtxtGia)
-                    .addComponent(jtxtNamXB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                    .addComponent(jtxtSoLuong, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                    .addComponent(jcbxNhaXB, 0, 227, Short.MAX_VALUE)
-                    .addComponent(jcmbDM, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(134, Short.MAX_VALUE))
+                    .addComponent(jtxtNamXB, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jtxtSoLuong)
+                    .addComponent(jcbxNhaXB, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jcmbDM, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44))
         );
         JMiddleLayout.setVerticalGroup(
             JMiddleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -468,7 +493,7 @@ public void displayBooks(ArrayList<Book> books) {
                 .addComponent(JBottom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        getContentPane().add(JPanel_Top, java.awt.BorderLayout.PAGE_START);
+        getContentPane().add(JPanel_Top, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -477,32 +502,39 @@ public void displayBooks(ArrayList<Book> books) {
         // TODO add your handling code here:
         String maSach = jtxtMaSach.getText();
         String tenSach = jtxtTenSach.getText();
-        int soLuong = Integer.parseInt(jtxtSoLuong.getText());
-        double giaBan = Double.parseDouble(jtxtGia.getText());
+        String soLuongStr = jtxtSoLuong.getText();
+        String giaBanStr = jtxtGia.getText();
         String tacGia = jcbxTacGia.getSelectedItem().toString();
         String nhaXB = jcbxNhaXB.getSelectedItem().toString();
-        int namXB = Integer.parseInt(jtxtNamXB.getText());
+        String namXBStr = jtxtNamXB.getText();
         String danhmuc = jcmbDM.getSelectedItem().toString();
         String anh = jtxtAnh.getText();
+        
+        int soLuong = soLuongStr.isEmpty() ? 0 : Integer.parseInt(soLuongStr);
+        double giaBan = giaBanStr.isEmpty() ? 0 : Double.parseDouble(giaBanStr);
+        int namXB = namXBStr.isEmpty() ? 0 : Integer.parseInt(namXBStr);
         Book newBook = new Book(maSach, tenSach, soLuong, giaBan, tacGia, nhaXB, anh, namXB, danhmuc);
         bookController.addBook(newBook);
-        clearInputFields();
     }//GEN-LAST:event_jbtnThemActionPerformed
 
     private void jbtnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSuaActionPerformed
         // TODO add your handling code here:
         String maSach = jtxtMaSach.getText();
         String tenSach = jtxtTenSach.getText();
-        int soLuong = Integer.parseInt(jtxtSoLuong.getText());
-        double giaBan = Double.parseDouble(jtxtGia.getText());
+        String soLuongStr = jtxtSoLuong.getText();
+        String giaBanStr = jtxtGia.getText();
         String tacGia = jcbxTacGia.getSelectedItem().toString();
         String nhaXB = jcbxNhaXB.getSelectedItem().toString();
-        int namXB = Integer.parseInt(jtxtNamXB.getText());
+        String namXBStr = jtxtNamXB.getText();
         String danhmuc = jcmbDM.getSelectedItem().toString();
         String anh = jtxtAnh.getText();
+        
+        int soLuong = soLuongStr.isEmpty() ? 0 : Integer.parseInt(soLuongStr);
+        double giaBan = giaBanStr.isEmpty() ? 0 : Double.parseDouble(giaBanStr);
+        int namXB = namXBStr.isEmpty() ? 0 : Integer.parseInt(namXBStr);
+        
         Book updatedBook = new Book(maSach, tenSach, soLuong, giaBan, tacGia, nhaXB, anh, namXB, danhmuc);
         bookController.updateBook(updatedBook);
-        clearInputFields();
     }//GEN-LAST:event_jbtnSuaActionPerformed
 
     private void jbtnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnXoaActionPerformed
@@ -515,7 +547,6 @@ public void displayBooks(ArrayList<Book> books) {
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa sách này?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             bookController.deleteBook(maSach);
-            clearInputFields();
         }
     }//GEN-LAST:event_jbtnXoaActionPerformed
 
@@ -539,7 +570,22 @@ public void displayBooks(ArrayList<Book> books) {
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
 
-        private void clearInputFields() {
+    private void jbtnNEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnNEActionPerformed
+        // TODO add your handling code here:
+           JFileChooser chooser = new JFileChooser();
+    int result = chooser.showOpenDialog(null);
+    if (result == JFileChooser.APPROVE_OPTION) {
+        File file = chooser.getSelectedFile();
+        bookController.importBookFromExcel(file);
+    }
+    }//GEN-LAST:event_jbtnNEActionPerformed
+
+    private void jbtnXEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnXEActionPerformed
+        // TODO add your handling code here:
+        bookController.exportBookToExcel();
+    }//GEN-LAST:event_jbtnXEActionPerformed
+
+        public void clearInputFields() {
         jtxtMaSach.setText("");
         jtxtTenSach.setText("");
         jtxtSoLuong.setText("");
@@ -621,9 +667,11 @@ public void displayBooks(ArrayList<Book> books) {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable_Books;
     private javax.swing.JButton jbtnAnh;
+    private javax.swing.JButton jbtnNE;
     private javax.swing.JButton jbtnSua;
     private javax.swing.JButton jbtnThem;
     private javax.swing.JButton jbtnTim;
+    private javax.swing.JButton jbtnXE;
     private javax.swing.JButton jbtnXoa;
     private javax.swing.JComboBox<String> jcbxNhaXB;
     private javax.swing.JComboBox<String> jcbxTacGia;

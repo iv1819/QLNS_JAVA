@@ -6,8 +6,19 @@ package Controller;
 
 import Database.Author_Connect;
 import Model.Author;
+import Model.VPP;
 import View.AuthorM;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -67,7 +78,80 @@ public class AuthorController {
                 view.showMessage("Không tìm thấy tác giả nào phù hợp.");
             }
         }
+    public void importAuthorFromExcel(File file) {
+        try (FileInputStream fis = new FileInputStream(file);
+             XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
+
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            int rowCount = sheet.getPhysicalNumberOfRows();
+
+            for (int i = 1; i < rowCount; i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) continue;
+
+                // Kiểm tra từng ô
+                for (int col = 0; col <= 1; col++) {
+                    Cell cell = row.getCell(col);
+                    if (cell == null || (cell.getCellType() == CellType.STRING && cell.getStringCellValue().trim().isEmpty())) {
+                        view.showErrorMessage("❌ Dữ liệu bị thiếu tại dòng " + (i + 1) + ", cột " + (col + 1));
+                        return;
+                    }
+                }
+
+                // Nếu không có cột nào null thì đọc dữ liệu
+                String matg = row.getCell(0).getStringCellValue().trim();
+                if (authorConnect.tonTaiMaTG(matg)) {
+                    view.showErrorMessage("⚠ Mã tác giả đã tồn tại ở dòng " + (i + 1) + ": " + matg);
+                    continue; // bỏ qua dòng này, hoặc return nếu muốn dừng toàn bộ
+                }
+                String tentg = row.getCell(1).getStringCellValue().trim();
+
+                Author a = new Author(matg, tentg);
+                authorConnect.themTacGia(a);
+            }
+            loadAllAuthors(); 
+            view.showMessage("✅ Nhập tác giả từ Excel thành công!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            view.showErrorMessage("❌ Lỗi khi nhập tác giả từ Excel: " + e.getMessage());
+        }
     }
+
+    
+    public void exportAuthorToExcel() {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Tác giả");
+        int rowNum = 0;
+        List<Author> tgs = authorConnect.layToanBoTacGia();
+        // Heade
+        Row headerRow = sheet.createRow(rowNum++);
+        headerRow.createCell(0).setCellValue("Mã tác giả");
+        headerRow.createCell(1).setCellValue("Tên tác giả");
+
+        for (Author tg : tgs) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(tg.getMaTG());
+            row.createCell(1).setCellValue(tg.getTenTG());
+        }
+
+        // Lưu vào C:\aadmin
+        try {
+            File dir = new File("C:/Users/Admin");
+            if (!dir.exists()) dir.mkdirs();
+
+            FileOutputStream out = new FileOutputStream(new File(dir, "author.xlsx"));
+            workbook.write(out);
+            out.close();
+            workbook.close();
+
+            System.out.println("✅ Xuất file thành công tại: C:\\aadmin\\donhang.xlsx");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("❌ Lỗi khi xuất file Excel.");
+        }
+    }
+}
 
     
 

@@ -9,10 +9,12 @@ import Controller.MainMenuController;
 import Controller.VppController;
 import Model.Book;
 import Model.VPP;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -111,7 +113,7 @@ public void displayVPP(ArrayList<VPP> vpps) {
             vppController.updateImagePreview(currentImagePath); // Gọi controller để cập nhật ảnh
         }
     }
-  private void clearInputFields() {
+  public void clearInputFields() {
         jtxtMaVpp.setText("");
         jtxtTenVpp.setText("");
         jtxtSoLuong.setText("");
@@ -138,6 +140,8 @@ public void displayVPP(ArrayList<VPP> vpps) {
         jbtnSua = new javax.swing.JButton();
         jbtnXoa = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
+        btnNE = new javax.swing.JButton();
+        jbtnXE = new javax.swing.JButton();
         JMiddle = new javax.swing.JPanel();
         JMaSach = new javax.swing.JLabel();
         JTenSach = new javax.swing.JLabel();
@@ -205,6 +209,20 @@ public void displayVPP(ArrayList<VPP> vpps) {
             }
         });
 
+        btnNE.setText("Nhập Excel");
+        btnNE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNEActionPerformed(evt);
+            }
+        });
+
+        jbtnXE.setText("Xuất Excel");
+        jbtnXE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnXEActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JUpperLayout = new javax.swing.GroupLayout(JUpper);
         JUpper.setLayout(JUpperLayout);
         JUpperLayout.setHorizontalGroup(
@@ -214,6 +232,10 @@ public void displayVPP(ArrayList<VPP> vpps) {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnBack)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnNE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jbtnXE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbtnThem)
                 .addGap(18, 18, 18)
@@ -233,7 +255,9 @@ public void displayVPP(ArrayList<VPP> vpps) {
                         .addComponent(jbtnXoa))
                     .addGroup(JUpperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(btnBack)))
+                        .addComponent(btnBack)
+                        .addComponent(btnNE)
+                        .addComponent(jbtnXE)))
                 .addContainerGap(48, Short.MAX_VALUE))
         );
 
@@ -441,26 +465,32 @@ public void displayVPP(ArrayList<VPP> vpps) {
         // TODO add your handling code here:
         String maVPP = jtxtMaVpp.getText();
         String tenVPP = jtxtTenVpp.getText();
-        int soLuong = Integer.parseInt(jtxtSoLuong.getText());
-        double giaBan = Double.parseDouble(jtxtGia.getText());
+        String soLuongStr = jtxtSoLuong.getText();
+        String giaBanStr = jtxtGia.getText();
         String nhacc = jcbxNhaCC.getSelectedItem().toString();
         String anh = jtxtAnh.getText();
+        
+        int soLuong = soLuongStr.isEmpty() ? 0 : Integer.parseInt(soLuongStr);
+        double giaBan = giaBanStr.isEmpty() ? 0 : Double.parseDouble(giaBanStr);
         VPP newVPP = new VPP(maVPP, tenVPP, soLuong, giaBan, nhacc, anh);
         vppController.addVPP(newVPP);
-        clearInputFields();
+        
     }//GEN-LAST:event_jbtnThemActionPerformed
 
     private void jbtnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSuaActionPerformed
         // TODO add your handling code here:
        String maVPP = jtxtMaVpp.getText();
         String tenVPP = jtxtTenVpp.getText();
-        int soLuong = Integer.parseInt(jtxtSoLuong.getText());
-        double giaBan = Double.parseDouble(jtxtGia.getText());
+        String soLuongStr = jtxtSoLuong.getText();
+        String giaBanStr = jtxtGia.getText();
         String nhacc = jcbxNhaCC.getSelectedItem().toString();
         String anh = jtxtAnh.getText();
+        
+        int soLuong = soLuongStr.isEmpty() ? 0 : Integer.parseInt(soLuongStr);
+        double giaBan = giaBanStr.isEmpty() ? 0 : Double.parseDouble(giaBanStr);
         VPP updatedVpp = new VPP(maVPP, tenVPP, soLuong, giaBan, nhacc, anh);
         vppController.updateVPP(updatedVpp);
-        clearInputFields();
+        
     }//GEN-LAST:event_jbtnSuaActionPerformed
 
     private void jbtnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnXoaActionPerformed
@@ -473,7 +503,7 @@ public void displayVPP(ArrayList<VPP> vpps) {
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa vpp này?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             vppController.deleteVPP(maVPP);
-            clearInputFields();
+
         }
     }//GEN-LAST:event_jbtnXoaActionPerformed
 
@@ -496,6 +526,21 @@ public void displayVPP(ArrayList<VPP> vpps) {
         String tenNcc = jtxtTimTenNcc.getText();
         vppController.searchVPP(tenVpp, tenNcc);
     }//GEN-LAST:event_jbtnTimActionPerformed
+
+    private void btnNEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNEActionPerformed
+        // TODO add your handling code here:
+       JFileChooser chooser = new JFileChooser();
+    int result = chooser.showOpenDialog(null);
+    if (result == JFileChooser.APPROVE_OPTION) {
+        File file = chooser.getSelectedFile();
+        vppController.importVPPFromExcel(file);
+    }
+    }//GEN-LAST:event_btnNEActionPerformed
+
+    private void jbtnXEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnXEActionPerformed
+        // TODO add your handling code here:
+        vppController.exportVPPToExcel();
+    }//GEN-LAST:event_jbtnXEActionPerformed
 
     /**
      * @param args the command line arguments
@@ -541,6 +586,7 @@ public void displayVPP(ArrayList<VPP> vpps) {
     private javax.swing.JLabel JTenSach;
     private javax.swing.JPanel JUpper;
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnNE;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -554,6 +600,7 @@ public void displayVPP(ArrayList<VPP> vpps) {
     private javax.swing.JButton jbtnSua;
     private javax.swing.JButton jbtnThem;
     private javax.swing.JButton jbtnTim;
+    private javax.swing.JButton jbtnXE;
     private javax.swing.JButton jbtnXoa;
     private javax.swing.JComboBox<String> jcbxNhaCC;
     private javax.swing.JTable jtblVPP;

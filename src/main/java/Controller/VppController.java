@@ -5,18 +5,29 @@
 package Controller;
 
 import Database.VPP_Connect;
+import Model.OD;
+import Model.Order;
 import Model.VPP;
 import View.VppM;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -105,30 +116,64 @@ public class VppController {
     }
 
     public void addVPP(VPP v) {
+        String error = validateVPP(v);
+        if (error != null) {
+            view.showErrorMessage(error);
+            return;
+        }
+
         if (vppConnect.themVPP(v)) {
-            view.showMessage("Thêm vpp thành công!");
-            loadAllVPP(); // Cập nhật lại JTable
+            view.showMessage("Thêm VPP thành công!");
+            loadAllVPP();
             refreshMainMenuTabs();
+            view.clearInputFields();
         } else {
-            view.showErrorMessage("Thêm vpp thất bại. Vui lòng kiểm tra lại mã vpp hoặc thông tin.");
+            view.showErrorMessage("Thêm VPP thất bại. Vui lòng kiểm tra lại mã VPP hoặc thông tin.");
         }
     }
 
     public void updateVPP(VPP v) {
+        String error = validateVPP(v);
+        if (error != null) {
+            view.showErrorMessage(error);
+            return;
+        }
+
         if (vppConnect.suaVPP(v)) {
-            view.showMessage("Cập nhật vpp thành công!");
-            loadAllVPP(); // Cập nhật lại JTable
+            view.showMessage("Cập nhật VPP thành công!");
+            loadAllVPP();
             refreshMainMenuTabs();
+            view.clearInputFields();
         } else {
-            view.showErrorMessage("Cập nhật vpp thất bại. Vui lòng kiểm tra lại thông tin.");
+            view.showErrorMessage("Cập nhật VPP thất bại. Vui lòng kiểm tra lại thông tin.");
         }
     }
+        private String validateVPP(VPP vpp) {
+            if (vpp.getMaVPP() == null || vpp.getMaVPP().trim().isEmpty()) {
+                return "Mã VPP không được để trống.";
+            }
+            if (vpp.getTenVPP() == null || vpp.getTenVPP().trim().isEmpty()) {
+                return "Tên VPP không được để trống.";
+            }
+            if (vpp.getSoLuong() < 0) {
+                return "Số lượng không được âm.";
+            }
+            if (vpp.getGiaBan()< 0) {
+                return "Giá không được âm.";
+            }
+            if ("--Chọn nhà cung cấp--".equals(vpp.getNhaCC())) {
+                return "Tên nhà cung cấp không được để trống.";
+            }
+            return null; // hợp lệ
+        }
+
 
     public void deleteVPP(String maVPP) {
         if (vppConnect.xoaVPP(maVPP)) {
             view.showMessage("Xóa vpp thành công!");
             loadAllVPP(); // Cập nhật lại JTable
             refreshMainMenuTabs();
+            view.clearInputFields();
         } else {
             view.showErrorMessage("Xóa vpp thất bại. Vui lòng kiểm tra lại mã vpp.");
         }
@@ -153,6 +198,91 @@ public class VppController {
         }
     }
     
+    public void importVPPFromExcel(File file) {
+        try (FileInputStream fis = new FileInputStream(file);
+             XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
+
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            int rowCount = sheet.getPhysicalNumberOfRows();
+
+            for (int i = 1; i < rowCount; i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) continue;
+
+                // Kiểm tra từng ô
+                for (int col = 0; col <= 5; col++) {
+                    Cell cell = row.getCell(col);
+                    if (cell == null || (cell.getCellType() == CellType.STRING && cell.getStringCellValue().trim().isEmpty())) {
+                        view.showErrorMessage("❌ Dữ liệu bị thiếu tại dòng " + (i + 1) + ", cột " + (col + 1));
+                        return;
+                    }
+                }
+
+                // Nếu không có cột nào null thì đọc dữ liệu
+                String maVPP = row.getCell(0).getStringCellValue().trim();
+                if (vppConnect.kiemTraTonTai(maVPP)) {
+                    view.showErrorMessage("⚠ Mã VPP đã tồn tại ở dòng " + (i + 1) + ": " + maVPP);
+                    continue; // bỏ qua dòng này, hoặc return nếu muốn dừng toàn bộ
+                }
+                String tenVPP = row.getCell(1).getStringCellValue().trim();
+                int soLuong = (int) row.getCell(2).getNumericCellValue();
+                double giaBan = row.getCell(3).getNumericCellValue();
+                String nhacc = row.getCell(4).getStringCellValue().trim();
+                String anh = row.getCell(5).getStringCellValue().trim();
+
+                VPP v = new VPP(maVPP, tenVPP, soLuong, giaBan, nhacc, anh);
+                vppConnect.themVPP(v);
+            }
+            loadAllVPP(); 
+            view.showMessage("✅ Nhập VPP từ Excel thành công!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            view.showErrorMessage("❌ Lỗi khi nhập VPP từ Excel: " + e.getMessage());
+        }
+    }
+
+    
+    public void exportVPPToExcel() {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("VPP");
+        int rowNum = 0;
+        List<VPP> vpps = vppConnect.layToanBoVPP();
+        // Heade
+        Row headerRow = sheet.createRow(rowNum++);
+        headerRow.createCell(0).setCellValue("Mã VPP");
+        headerRow.createCell(1).setCellValue("Tên VPP");
+        headerRow.createCell(2).setCellValue("Số lượng");
+        headerRow.createCell(3).setCellValue("Giá");
+        headerRow.createCell(4).setCellValue("Tên nhà cung cấp");
+        headerRow.createCell(5).setCellValue("Ảnh");
+
+        for (VPP v : vpps) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(v.getMaVPP());
+            row.createCell(1).setCellValue(v.getTenVPP());
+            row.createCell(2).setCellValue(v.getSoLuong());
+            row.createCell(3).setCellValue(v.getGiaBan());
+            row.createCell(4).setCellValue(v.getNhaCC());
+            row.createCell(5).setCellValue(v.getDuongDanAnh());
+        }
+
+        // Lưu vào C:\aadmin
+        try {
+            File dir = new File("C:/Users/Admin");
+            if (!dir.exists()) dir.mkdirs();
+
+            FileOutputStream out = new FileOutputStream(new File(dir, "vpp.xlsx"));
+            workbook.write(out);
+            out.close();
+            workbook.close();
+
+            System.out.println("✅ Xuất file thành công tại: C:\\aadmin\\donhang.xlsx");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("❌ Lỗi khi xuất file Excel.");
+        }
+    }
     public ArrayList<String> getAllNhaCCNames(){
         return vppConnect.getAllNhaCCNames();
     }

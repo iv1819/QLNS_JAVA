@@ -228,9 +228,24 @@ java.sql.Date ngayBanOnlyDate = java.sql.Date.valueOf(ngayBan.toLocalDate());
                 detail.setTenSP(model.getValueAt(row, 0).toString());
                 detail.setSoLuong((Integer) model.getValueAt(row, 1));
                 detail.setDonGia(parseMoney(model.getValueAt(row, 2).toString()));
-
+                
                 if (!odConnect.themCTDH(detail)) {
                     view.showErrorMessage("Them CTDH that bai");
+                }
+                else{
+                    String tenSP = detail.getTenSP();
+                    int soLuongMua = detail.getSoLuong();
+
+                    int soLuongHienTaiSach = bookConnect.laySoLuongSach(tenSP);
+                    int soLuongConLai = soLuongHienTaiSach - soLuongMua;
+
+                    if (soLuongHienTaiSach == 0) {
+                        int soLuongHienTaiVPP = vppConnect.laySoLuongVPP(tenSP);
+                        soLuongConLai = soLuongHienTaiVPP - soLuongMua;
+                        vppConnect.capNhatSoLuongVPP(tenSP, soLuongConLai);
+                    } else {
+                        bookConnect.capNhatSoLuongSach(tenSP, soLuongConLai);
+                    }
                 }
             }
             view.clearReceiptTable(); 

@@ -225,47 +225,32 @@ public class VPP_Connect extends Connect_sqlServer{
         }
         return nccNames;
     }
-   public String timMaSP(String tenSP) {
-        // Initialize the product ID to null
-        String maSP = null; 
-        PreparedStatement pre = null;
-        ResultSet result = null;
-
-        try {
-            // SQL query to union results from Sach and VPP tables
-            // Alias the columns to have a consistent name for retrieval
-            String sql = "SELECT MaSach AS MaSP FROM Sach WHERE TenSach = ? " +
-                         "UNION " +
-                         "SELECT MaVPP AS MaSP FROM VPP WHERE TenVPP = ?";
-            
-            pre = conn.prepareStatement(sql);
-            // Set both placeholders for the UNION query
-            pre.setString(1, tenSP); 
-            pre.setString(2, tenSP);
-
-            result = pre.executeQuery();
-
-            // If a result is found, retrieve the MaSP
-            if (result.next()) {
-                maSP = result.getString("MaSP");
-            }
-
-        } catch (SQLException e) {
-            // Print stack trace for debugging purposes
-            e.printStackTrace(); 
-            // In a real application, you might log the error or throw a custom exception
-        } finally {
-            // Close resources in a finally block to ensure they are released
-            try {
-                if (result != null) result.close();
-                if (pre != null) pre.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+public int laySoLuongVPP(String tenVPP) {
+    try  {
+        String sql = "SELECT SoLuong FROM VPP WHERE TenVPP = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, tenVPP);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("SoLuong");
         }
-        // Return the found product ID or null
-        return maSP; 
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return 0;
+}
+
+public void capNhatSoLuongVPP(String tenSach, int soLuongMoi) {
+    try {
+        String sql = "UPDATE VPP SET SoLuong = ? WHERE TenVPP = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, soLuongMoi);
+        stmt.setString(2, tenSach);
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
     public boolean kiemTraTonTai(String maVPP)
     {
         

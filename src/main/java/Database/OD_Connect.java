@@ -132,6 +132,43 @@ public class OD_Connect extends Connect_sqlServer {
         }
         return maSP; // Trả về mã sản phẩm hoặc null
     }
+     public Integer laySoLuongSP(String tenSP) {
+    Integer soLuong = null;
+    PreparedStatement pre = null;
+    ResultSet result = null;
+
+    try {
+        // Tìm số lượng từ cả hai bảng Sach và VPP
+        String sql = "SELECT SoLuong FROM Sach WHERE TenSach = ? " +
+                     "UNION " +
+                     "SELECT SoLuong FROM VPP WHERE TenVPP = ?";
+        
+        pre = conn.prepareStatement(sql);
+        pre.setString(1, tenSP); // Cho bảng Sach
+        pre.setString(2, tenSP); // Cho bảng VPP
+
+        result = pre.executeQuery();
+
+        if (result.next()) {
+            soLuong = result.getInt("SoLuong");
+        }
+
+    } catch (SQLException e) {
+        System.err.println("Lỗi khi lấy số lượng sản phẩm: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (result != null) result.close();
+            if (pre != null) pre.close();
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi đóng tài nguyên: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    return soLuong; // Có thể null nếu không tìm thấy
+}
+
     public boolean xoaCTDH(String maDH) {
         // Câu lệnh SQL để xóa dữ liệu từ bảng CTDH dựa trên ID
         String sql = "DELETE FROM CTDH WHERE MaDH = ?";

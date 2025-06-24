@@ -7,8 +7,10 @@ package View;
 import Controller.AuthorController;
 import Controller.MainMenuController;
 import Model.Author;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -31,6 +33,7 @@ public class AuthorM extends javax.swing.JFrame {
     public AuthorM(MainMenuController mainMenuController) {
         this.mainMenuController = mainMenuController;
         initComponents();
+        setLocationRelativeTo(null); 
         authorController = new AuthorController(this, mainMenuController);
         
         jTable_Authors.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -102,6 +105,8 @@ public class AuthorM extends javax.swing.JFrame {
         jbtnSua = new javax.swing.JButton();
         jbtnXoa = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
+        jbtnNE = new javax.swing.JButton();
+        jbtnXE = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -205,6 +210,20 @@ public class AuthorM extends javax.swing.JFrame {
             }
         });
 
+        jbtnNE.setText("Nhập Excel");
+        jbtnNE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnNEActionPerformed(evt);
+            }
+        });
+
+        jbtnXE.setText("Xuất Excel");
+        jbtnXE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnXEActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -226,19 +245,31 @@ public class AuthorM extends javax.swing.JFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(20, 20, 20)
                         .addComponent(txtTenTG, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(56, Short.MAX_VALUE))))
+                        .addContainerGap(97, Short.MAX_VALUE))))
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnNE)
+                .addGap(18, 18, 18)
+                .addComponent(jbtnXE)
+                .addGap(13, 13, 13))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnBack)
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                        .addComponent(btnBack)
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jbtnNE)
+                            .addComponent(jbtnXE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtMaTG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -327,6 +358,21 @@ public class AuthorM extends javax.swing.JFrame {
         managerFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void jbtnNEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnNEActionPerformed
+        // TODO add your handling code here:
+           JFileChooser chooser = new JFileChooser();
+    int result = chooser.showOpenDialog(null);
+    if (result == JFileChooser.APPROVE_OPTION) {
+        File file = chooser.getSelectedFile();
+        authorController.importAuthorFromExcel(file);
+    }
+    }//GEN-LAST:event_jbtnNEActionPerformed
+
+    private void jbtnXEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnXEActionPerformed
+        // TODO add your handling code here:
+        authorController.exportAuthorToExcel();
+    }//GEN-LAST:event_jbtnXEActionPerformed
     
     private boolean validateInput() {
         String maTG = txtMaTG.getText();
@@ -393,9 +439,11 @@ public class AuthorM extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable_Authors;
+    private javax.swing.JButton jbtnNE;
     private javax.swing.JButton jbtnSua;
     private javax.swing.JButton jbtnThem;
     private javax.swing.JButton jbtnTim;
+    private javax.swing.JButton jbtnXE;
     private javax.swing.JButton jbtnXoa;
     private javax.swing.JTextField jtxtTim;
     private javax.swing.JTextField txtMaTG;

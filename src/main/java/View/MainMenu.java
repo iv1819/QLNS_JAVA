@@ -42,6 +42,7 @@ private DefaultTableModel tblModelHD;
     public MainMenu(boolean isManager) {
         this.isManager = isManager;
         initComponents();
+        setLocationRelativeTo(null); 
         tblModelHD = (DefaultTableModel) jtblHD.getModel();
         tblModelHD.setColumnCount(0);
         tblModelHD.addColumn("Tên sách");
@@ -134,6 +135,9 @@ private DefaultTableModel tblModelHD;
                 panel.add(new JLabel("Không có sách trong danh mục này."));
             } else {
                 for (Book b : books) {
+                    if(b.getSoLuong()<=0){
+                        continue;
+                    }
                     BookItemPanel p = new BookItemPanel(b, controller);
                     p.setBookData(b);
                     panel.add(p);
@@ -149,6 +153,9 @@ private DefaultTableModel tblModelHD;
                 panel.add(new JLabel("Không có VPP."));
             } else {
                 for (VPP v : vpps) {
+                    if(v.getSoLuong()<=0){
+                        continue;
+                    }
                     VppItemPanel p = new VppItemPanel(v, controller); // tạo tương tự BookItemPanel
                     p.setVPPData(v);
                     panel.add(p);

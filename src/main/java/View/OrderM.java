@@ -9,13 +9,22 @@ import Controller.OrderController;
 import Model.Book;
 import Model.OD;
 import Model.Order;
+import java.io.File;
+import java.io.FileInputStream;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -31,15 +40,15 @@ public class OrderM extends javax.swing.JFrame {
      */
     public OrderM() {
         initComponents();
+        setLocationRelativeTo(null); 
         orderController = new OrderController(this, mainmenu);
-        odController = new ODController(this);
 
         jtblOrder.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting() && jtblOrder.getSelectedRow() != -1) {
                     displaySelectedDH();
-                    odController.loadAllOD(jtxtMaDH.getText());
+                    orderController.loadAllOD(jtxtMaDH.getText());
                 }
             }
         });
@@ -104,6 +113,7 @@ private void displaySelectedDH() {
     }
 }
 
+
   public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
@@ -111,7 +121,7 @@ private void displaySelectedDH() {
     public void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Lỗi", JOptionPane.ERROR_MESSAGE);
     }
-    private void clearInputFields() {
+    public void clearInputFields() {
         jtxtMaDH.setText("");
         jtxtTenKH.setText("");
         jtxtNgayBan.setText("");
@@ -130,6 +140,8 @@ private void displaySelectedDH() {
         jLabel1 = new javax.swing.JLabel();
         jbtnXoa = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
+        jbtnNE = new javax.swing.JButton();
+        jbtnXE = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtblOrder = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -166,6 +178,20 @@ private void displaySelectedDH() {
             }
         });
 
+        jbtnNE.setText("Nhập Excel");
+        jbtnNE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnNEActionPerformed(evt);
+            }
+        });
+
+        jbtnXE.setText("Xuất Excel");
+        jbtnXE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnXEActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JUpperLayout = new javax.swing.GroupLayout(JUpper);
         JUpper.setLayout(JUpperLayout);
         JUpperLayout.setHorizontalGroup(
@@ -176,6 +202,10 @@ private void displaySelectedDH() {
                 .addGap(34, 34, 34)
                 .addComponent(btnBack)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnNE)
+                .addGap(42, 42, 42)
+                .addComponent(jbtnXE)
+                .addGap(31, 31, 31)
                 .addComponent(jbtnXoa)
                 .addGap(10, 10, 10))
         );
@@ -184,7 +214,10 @@ private void displaySelectedDH() {
             .addGroup(JUpperLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(JUpperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbtnXoa)
+                    .addGroup(JUpperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jbtnXoa)
+                        .addComponent(jbtnNE)
+                        .addComponent(jbtnXE))
                     .addGroup(JUpperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
                         .addComponent(btnBack)))
@@ -307,7 +340,6 @@ private void displaySelectedDH() {
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa đơn hàng này?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             orderController.deleteOrder(maDH);
-            clearInputFields();
         }
     }//GEN-LAST:event_jbtnXoaActionPerformed
 
@@ -316,6 +348,21 @@ private void displaySelectedDH() {
         managerFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void jbtnNEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnNEActionPerformed
+        // TODO add your handling code here:
+        JFileChooser chooser = new JFileChooser();
+    int result = chooser.showOpenDialog(null);
+    if (result == JFileChooser.APPROVE_OPTION) {
+        File file = chooser.getSelectedFile();
+        orderController.nhapExcel(file);
+    }
+    }//GEN-LAST:event_jbtnNEActionPerformed
+
+    private void jbtnXEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnXEActionPerformed
+        // TODO add your handling code here:
+        orderController.exportDonHangToExcel();
+    }//GEN-LAST:event_jbtnXEActionPerformed
 
     /**
      * @param args the command line arguments
@@ -362,6 +409,8 @@ private void displaySelectedDH() {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton jbtnNE;
+    private javax.swing.JButton jbtnXE;
     private javax.swing.JButton jbtnXoa;
     private javax.swing.JTable jtblOD;
     private javax.swing.JTable jtblOrder;
