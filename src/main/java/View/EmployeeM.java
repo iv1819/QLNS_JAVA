@@ -313,6 +313,7 @@ public class EmployeeM extends javax.swing.JFrame {
         txtSdt = new javax.swing.JTextField();
         cboMaCV = new javax.swing.JComboBox<>();
         txtTenCV = new javax.swing.JTextField();
+        btnExport = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -369,13 +370,15 @@ public class EmployeeM extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable_Employees);
 
         btnSearch.setText("Tìm kiếm theo tên");
-        btnSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchActionPerformed(evt);
-            }
-        });
 
         jLabel7.setText("Số điện thoại");
+
+        btnExport.setText("Export");
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -383,8 +386,11 @@ public class EmployeeM extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnBack)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnBack)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnExport))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -438,7 +444,8 @@ public class EmployeeM extends javax.swing.JFrame {
                             .addComponent(btnBack)
                             .addComponent(btnThem)
                             .addComponent(btnSua)
-                            .addComponent(btnXoa))
+                            .addComponent(btnXoa)
+                            .addComponent(btnExport))
                         .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -481,6 +488,21 @@ public class EmployeeM extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        // TODO add your handling code here:
+          JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Lưu file CSV");
+        int userChoice = chooser.showSaveDialog(this);
+
+        if (userChoice == JFileChooser.APPROVE_OPTION) {
+            String path = chooser.getSelectedFile().getAbsolutePath();
+            if (!path.endsWith(".csv")) {
+                path += ".csv";
+            }
+            Controller.CSVExporterController.exportToCSV(jTable_Employees, path); // tblNhanVien là tên JTable
+        }
+    }//GEN-LAST:event_btnExportActionPerformed
+
     private void txtMaNVActionPerformed(java.awt.event.ActionEvent evt) {
         
     }
@@ -522,6 +544,7 @@ public class EmployeeM extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnExport;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
