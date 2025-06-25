@@ -528,7 +528,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Kh&#xe1;ch h&#xe0;ng VIP:"/>
+                    <Property name="text" type="java.lang.String" value="Kh&#xe1;ch h&#xe0;ng:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel5">

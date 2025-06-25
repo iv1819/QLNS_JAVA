@@ -234,11 +234,11 @@ public class VppController {
                 vppConnect.themVPP(v);
             }
             loadAllVPP(); 
-            view.showMessage("✅ Nhập VPP từ Excel thành công!");
+            view.showMessage("Nhập VPP từ Excel thành công!");
 
         } catch (Exception e) {
             e.printStackTrace();
-            view.showErrorMessage("❌ Lỗi khi nhập VPP từ Excel: " + e.getMessage());
+            view.showErrorMessage("Lỗi khi nhập VPP từ Excel: " + e.getMessage());
         }
     }
 
@@ -277,10 +277,10 @@ public class VppController {
             out.close();
             workbook.close();
 
-            System.out.println("✅ Xuất file thành công tại: C:\\aadmin\\donhang.xlsx");
+            System.out.println("Xuất file thành công tại: C:\\aadmin\\donhang.xlsx");
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("❌ Lỗi khi xuất file Excel.");
+            System.err.println("Lỗi khi xuất file Excel.");
         }
     }
     public ArrayList<String> getAllNhaCCNames(){

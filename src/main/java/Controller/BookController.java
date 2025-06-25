@@ -117,42 +117,45 @@ public class BookController {
     public void addBook(Book book) {
          String validationMsg = validateBook(book);
         if (validationMsg != null) {
-            view.showErrorMessage("❌ Lỗi: " + validationMsg);
+            view.showErrorMessage("Lỗi: " + validationMsg);
             return;
         }
 
         if (bookConnect.addBook(book)) {
-            view.showMessage("✅ Thêm sách thành công!");
-            loadAllBooks(); // Cập nhật lại JTable
+            loadAllBooks();
             refreshMainMenuTabs();
+            view.showMessage("Thêm sách thành công!");
+            
             view.clearInputFields();
         } else {
-            view.showErrorMessage("❌ Thêm sách thất bại. Có thể do mã sách bị trùng hoặc lỗi hệ thống.");
+            view.showErrorMessage("Thêm sách thất bại. Có thể do mã sách bị trùng hoặc lỗi hệ thống.");
         }
     }
 
     public void updateBook(Book book) {
           String validationMsg = validateBook(book);
             if (validationMsg != null) {
-                view.showErrorMessage("❌ Lỗi: " + validationMsg);
+                view.showErrorMessage("Lỗi: " + validationMsg);
                 return;
             }
 
             if (bookConnect.updateBook(book)) {
-                view.showMessage("✅ Cập nhật sách thành công!");
-                loadAllBooks(); // Cập nhật lại JTable
+                loadAllBooks();
                 refreshMainMenuTabs();
+                view.showMessage("Cập nhật sách thành công!");
+                
+                
                 view.clearInputFields();
             } else {
-                view.showErrorMessage("❌ Cập nhật sách thất bại. Vui lòng kiểm tra lại thông tin.");
+                view.showErrorMessage("Cập nhật sách thất bại. Vui lòng kiểm tra lại thông tin.");
             }
     }
 
     public void deleteBook(String maSach) {
         if (bookConnect.deleteBook(maSach)) {
-            view.showMessage("Xóa sách thành công!");
-            loadAllBooks(); // Cập nhật lại JTable
+            loadAllBooks();
             refreshMainMenuTabs();
+            view.showMessage("Xóa sách thành công!");
             view.clearInputFields();
         } else {
             view.showErrorMessage("Xóa sách thất bại. Vui lòng kiểm tra lại mã sách.");
@@ -254,11 +257,11 @@ public class BookController {
                 bookConnect.addBook(b);
             }
             loadAllBooks(); 
-            view.showMessage("✅ Nhập Sach từ Excel thành công!");
+            view.showMessage("Nhập Sach từ Excel thành công!");
 
         } catch (Exception e) {
             e.printStackTrace();
-            view.showErrorMessage("❌ Lỗi khi nhập Sach từ Excel: " + e.getMessage());
+            view.showErrorMessage("Lỗi khi nhập Sach từ Excel: " + e.getMessage());
         }
     }
 
@@ -303,10 +306,10 @@ public class BookController {
             out.close();
             workbook.close();
 
-            System.out.println("✅ Xuất file thành công tại: C:\\aadmin\\donhang.xlsx");
+            System.out.println("Xuất file thành công tại: C:\\aadmin\\donhang.xlsx");
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("❌ Lỗi khi xuất file Excel.");
+            System.err.println("Lỗi khi xuất file Excel.");
         }
     }
     public ArrayList<String> getAllNhaXBNames(){

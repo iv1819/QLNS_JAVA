@@ -14,15 +14,21 @@ import Model.OD;
 import Model.Order;
 import Model.VPP;
 import View.MainMenu; // Import MainMenu (View)
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
+
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.table.DefaultTableModel;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
+import java.awt.Desktop;
+import java.io.File;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
 public class MainMenuController {
 
     private MainMenu view; 
@@ -220,6 +226,7 @@ java.sql.Date ngayBanOnlyDate = java.sql.Date.valueOf(ngayBan.toLocalDate());
 
             Order newOrder = new Order(maDH, tenkh, ngayBanOnlyDate, tongTien);
             orderConnect.themDH(newOrder);
+            List<OD> ctdhs = new ArrayList<>();
             /* 2) Thêm từng chi tiết qua hàm themCTDH() */
             for (int row = 0; row < model.getRowCount(); row++) {
 
@@ -247,7 +254,10 @@ java.sql.Date ngayBanOnlyDate = java.sql.Date.valueOf(ngayBan.toLocalDate());
                         bookConnect.capNhatSoLuongSach(tenSP, soLuongConLai);
                     }
                 }
+                ctdhs.add(detail);
             }
+            String filePath = "C:/Users/Admin/hoadon.pdf";
+            exportInvoiceToPDF(filePath, newOrder, ctdhs);
             view.clearReceiptTable(); 
         }
 
@@ -260,8 +270,86 @@ private double parseMoney(String str) {
         str.replace("$", "").replace(",", "").trim()
     );
 }
+    public static void exportInvoiceToPDF(String filePath, Order dh, List<OD> ctdhs) {
+        Rectangle pageSize = new Rectangle(298, 420); // A6 in points (1 point = 1/72 inch)
+        Document document = new Document(pageSize, 20, 20, 20, 20); // A6 paper
 
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
 
+            // ============ CHÈN LOGO =============
+            try {
+                Image logo = Image.getInstance("images/logo.jpg");
+                logo.scaleAbsolute(50f, 50f);
+                logo.setAlignment(Image.ALIGN_CENTER);
+                document.add(logo);
+            } catch (Exception e) {
+                System.out.println("Không tìm thấy hoặc không thể chèn logo: " + e.getMessage());
+            }
+
+            // ============ TIÊU ĐỀ ============
+            BaseFont bf = BaseFont.createFont("C:/Windows/Fonts/arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font font = new Font(bf, 14, Font.BOLD);
+
+            Paragraph title = new Paragraph("HÓA ĐƠN BÁN HÀNG", font);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+            Font fonthg = new Font(bf, 12);
+            document.add(new Paragraph(" "));
+            document.add(new Paragraph("Mã ĐH: " + dh.getMaDH(),fonthg));
+            document.add(new Paragraph("Ngày: " + dh.getNgayBan(),fonthg));
+            document.add(new Paragraph("Khách: " + (dh.getTenKH() != null ? dh.getTenKH() : "Khách lẻ"),fonthg));
+            document.add(new Paragraph(" "));
+
+            // ============ BẢNG SẢN PHẨM ============
+            PdfPTable table = new PdfPTable(4);
+            table.setWidths(new float[]{3, 1, 2, 2});
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(5f);
+            table.setSpacingAfter(5f);
+
+            table.addCell("SP");
+            table.addCell("SL");
+            table.addCell(new Phrase("Đ. Giá", fonthg));
+            table.addCell(new Phrase("Th. Tiền", fonthg));
+            for (OD ct : ctdhs) {
+                table.addCell(new Phrase(ct.getTenSP(), fonthg));
+                table.addCell(String.valueOf(ct.getSoLuong()));
+                table.addCell(String.format("%,.0f", ct.getDonGia()));
+                table.addCell(String.format("%,.0f", ct.getSoLuong() * ct.getDonGia()));
+            }
+
+            document.add(table);
+
+            // ============ TỔNG TIỀN ============
+            Paragraph total = new Paragraph("Tổng: " + String.format("%,.0f", dh.getTongTien()) + " $",
+                    new Font(bf, 12, Font.BOLD));
+            total.setAlignment(Element.ALIGN_RIGHT);
+            document.add(total);
+
+            // ============ CẢM ƠN ============
+            document.add(new Paragraph(" "));
+            Paragraph thanks = new Paragraph("Cảm ơn quý khách!", new Font(bf, 12));
+            thanks.setAlignment(Element.ALIGN_CENTER);
+            document.add(thanks);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            document.close();
+            try {
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(new File(filePath)); // Mở file bằng phần mềm mặc định trên máy
+                } else {
+                    System.out.println("Desktop không được hỗ trợ trên hệ điều hành này.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Không thể mở hóa đơn: " + e.getMessage());
+            }
+        }
+    }
     public void onBookDataChanged() {
         System.out.println("DEBUG (MainMenuPresenter): Nhận được thông báo dữ liệu sách đã thay đổi. Đang tải lại tab.");
         loadAndDisplayBooksByCategories(); // Tải lại dữ liệu khi có thay đổi

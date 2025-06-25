@@ -498,7 +498,7 @@ private DefaultTableModel tblModelHD;
             }
         });
 
-        jLabel4.setText("Khách hàng VIP:");
+        jLabel4.setText("Khách hàng:");
 
         jLabel5.setText("Giảm giá:");
 

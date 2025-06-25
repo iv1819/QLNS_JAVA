@@ -77,7 +77,7 @@ public class AuthorM extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, message, "Lỗi", JOptionPane.ERROR_MESSAGE);
     }   
     
-    private void clearInputFields() {
+    public void clearInputFields() {
         txtMaTG.setText("");
         txtTenTG.setText("");
     }
@@ -292,36 +292,23 @@ public class AuthorM extends javax.swing.JFrame {
 
     private void jbtnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnThemActionPerformed
         // TODO add your handling code here:
-        try {
-            if (validateInput()) {
+     
                 String maTG = txtMaTG.getText().trim();
                 String tenTG = txtTenTG.getText().trim();
 
                 Author newAuthor = new Author(maTG, tenTG);
                 authorController.addAuthor(newAuthor);
 
-                clearInputFields(); // Xoá dữ liệu sau khi thêm thành công
-            }
-        } catch (Exception e) {
-            showErrorMessage("Có lỗi xảy ra: " + e.getMessage());
-        }
     }//GEN-LAST:event_jbtnThemActionPerformed
 
     private void jbtnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSuaActionPerformed
         // TODO add your handling code here:
-        try {
-            if (validateInput()) {
                 String maTG = txtMaTG.getText();
                 String tenTG = txtTenTG.getText();
 
                 Author updatedAuthor = new Author(maTG, tenTG);
                 authorController.updateAuthor(updatedAuthor);
 
-                clearInputFields();
-            }
-        } catch (Exception e) {
-            showErrorMessage("Có lỗi xảy ra: " + e.getMessage());
-    }
 
     }//GEN-LAST:event_jbtnSuaActionPerformed
 
@@ -338,7 +325,6 @@ public class AuthorM extends javax.swing.JFrame {
             JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             authorController.deleteAuthor(maTG);
-            clearInputFields();
         }
     }//GEN-LAST:event_jbtnXoaActionPerformed
 
@@ -374,26 +360,6 @@ public class AuthorM extends javax.swing.JFrame {
         authorController.exportAuthorToExcel();
     }//GEN-LAST:event_jbtnXEActionPerformed
     
-    private boolean validateInput() {
-        String maTG = txtMaTG.getText();
-        String tenTG = txtTenTG.getText();
-
-        if (maTG.isEmpty() || tenTG.isEmpty()) {
-            showErrorMessage("Vui lòng nhập đầy đủ thông tin mã và tên tác giả.");
-            return false;
-        }
-        
-        if (maTG.matches("^tg_$")){
-            showErrorMessage("Mã tác giả phải bắt đầu bằng tg_");
-            return false;
-        }
-
-        if (!tenTG.matches("^[\\p{L}\\s]+$")) {
-            showErrorMessage("Tên tác giả không được chứa số hoặc ký tự đặc biệt.");
-            return false;
-        }
-        return true;
-    }
     
     
     /**

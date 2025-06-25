@@ -34,13 +34,33 @@ public class AuthorController {
         this.authorConnect = new Author_Connect();
         this.mainMenuController = mainMenuController;
     }
+    private boolean validateInput(Author a) {
 
+            if (a.getMaTG().isEmpty() || a.getTenTG().isEmpty()) {
+                view.showErrorMessage("Vui lòng nhập đầy đủ thông tin mã và tên tác giả.");
+                return false;
+            }
+
+            if (!a.getMaTG().startsWith("tg_")){
+                view.showErrorMessage("Mã tác giả phải bắt đầu bằng tg_");
+                return false;
+            }
+
+            if (!a.getTenTG().matches("^[\\p{L}\\s]+$")) {
+                view.showErrorMessage("Tên tác giả không được chứa số hoặc ký tự đặc biệt.");
+                return false;
+            }
+            return true;
+        }
     public void loadAllAuthors() {
         ArrayList<Author> authors = authorConnect.layToanBoTacGia();
         view.displayAuthors(authors);
     }
 
     public void addAuthor(Author newAuthor) {
+        if(!validateInput(newAuthor)){
+            return;
+        }
         if (authorConnect.tonTaiMaTG(newAuthor.getMaTG())) {
             view.showErrorMessage("Mã tác giả đã tồn tại!");
             return;
@@ -48,15 +68,20 @@ public class AuthorController {
         if (authorConnect.themTacGia(newAuthor)) {
             view.showMessage("Thêm tác giả thành công!");
             loadAllAuthors();
+            view.clearInputFields();
         } else {
             view.showErrorMessage("Thêm tác giả thất bại. Vui lòng kiểm tra lại thông tin.");
         }
     }
 
     public void updateAuthor(Author updatedAuthor) {
+        if(!validateInput(updatedAuthor)){
+            return;
+        }
         if (authorConnect.capNhatTacGia(updatedAuthor)) {
             view.showMessage("Cập nhật tác giả thành công!");
             loadAllAuthors();
+            view.clearInputFields();
         } else {
             view.showErrorMessage("Cập nhật tác giả thất bại. Vui lòng kiểm tra lại thông tin.");
         }
@@ -66,6 +91,7 @@ public class AuthorController {
         if (authorConnect.xoaTacGia(maTG)) {
             view.showMessage("Xóa tác giả thành công!");
             loadAllAuthors();
+            view.clearInputFields();
         } else {
             view.showErrorMessage("Xóa tác giả thất bại. Vui lòng kiểm tra lại mã tác giả.");
         }
@@ -93,7 +119,7 @@ public class AuthorController {
                 for (int col = 0; col <= 1; col++) {
                     Cell cell = row.getCell(col);
                     if (cell == null || (cell.getCellType() == CellType.STRING && cell.getStringCellValue().trim().isEmpty())) {
-                        view.showErrorMessage("❌ Dữ liệu bị thiếu tại dòng " + (i + 1) + ", cột " + (col + 1));
+                        view.showErrorMessage("Dữ liệu bị thiếu tại dòng " + (i + 1) + ", cột " + (col + 1));
                         return;
                     }
                 }
@@ -101,7 +127,7 @@ public class AuthorController {
                 // Nếu không có cột nào null thì đọc dữ liệu
                 String matg = row.getCell(0).getStringCellValue().trim();
                 if (authorConnect.tonTaiMaTG(matg)) {
-                    view.showErrorMessage("⚠ Mã tác giả đã tồn tại ở dòng " + (i + 1) + ": " + matg);
+                    view.showErrorMessage("Mã tác giả đã tồn tại ở dòng " + (i + 1) + ": " + matg);
                     continue; // bỏ qua dòng này, hoặc return nếu muốn dừng toàn bộ
                 }
                 String tentg = row.getCell(1).getStringCellValue().trim();
@@ -110,7 +136,7 @@ public class AuthorController {
                 authorConnect.themTacGia(a);
             }
             loadAllAuthors(); 
-            view.showMessage("✅ Nhập tác giả từ Excel thành công!");
+            view.showMessage("Nhập tác giả từ Excel thành công!");
 
         } catch (Exception e) {
             e.printStackTrace();

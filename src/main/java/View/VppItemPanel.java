@@ -107,6 +107,7 @@ public class VppItemPanel extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         jtxtPriceBI = new javax.swing.JLabel();
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMaximumSize(new java.awt.Dimension(100, 150));
 
         jtxtAnhBI.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

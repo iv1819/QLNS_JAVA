@@ -230,7 +230,7 @@ public class OrderController {
                     } else {
                         bookConnect.capNhatSoLuongSach(tenSP, soLuongConLai);
                     }
-                System.out.println("✅ Đã thêm CTDH cho " + maDH + ": " + tenSp);
+                System.out.println("Đã thêm CTDH cho " + maDH + ": " + tenSp);
             }else{
                 System.out.println("that bai " + maDH + ": " + tenSp);
             }
@@ -238,11 +238,11 @@ public class OrderController {
         }
 
         loadAllOrders(); // Load lại lên bảng
-        view.showMessage("✅ Nhập dữ liệu từ Excel thành công!");
+        view.showMessage("Nhập dữ liệu từ Excel thành công!");
 
     } catch (Exception e) {
         e.printStackTrace();
-        view.showErrorMessage("❌ Lỗi khi nhập Excel: " + e.getMessage());
+        view.showErrorMessage("Lỗi khi nhập Excel: " + e.getMessage());
     }
 }
 
@@ -307,10 +307,10 @@ public class OrderController {
             out.close();
             workbook.close();
 
-            System.out.println("✅ Xuất file thành công tại: C:\\aadmin\\donhang.xlsx");
+            System.out.println("Xuất file thành công tại: C:\\aadmin\\donhang.xlsx");
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("❌ Lỗi khi xuất file Excel.");
+            System.err.println("Lỗi khi xuất file Excel.");
         }
     }
 

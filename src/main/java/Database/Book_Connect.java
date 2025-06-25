@@ -38,7 +38,6 @@ public class Book_Connect extends Connect_sqlServer {
                 s.setNamXB(result.getInt("NamXuatBan"));
                 s.setDanhMuc(result.getString("TenDM"));
                 dss.add(s);
-                            System.err.println("fetching");
 
             }
             result.close();

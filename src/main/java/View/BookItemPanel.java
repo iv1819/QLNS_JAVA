@@ -110,6 +110,7 @@ private Book book;
         jPanel1 = new javax.swing.JPanel();
         jtxtPriceBI = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(100, 150));
 
         jtxtAnhBI.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

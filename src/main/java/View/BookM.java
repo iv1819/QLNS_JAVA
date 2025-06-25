@@ -219,7 +219,6 @@ public void displayBooks(ArrayList<Book> books) {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Quản lí Sách");
 
-        jbtnThem.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 12)); // NOI18N
         jbtnThem.setText("Thêm");
         jbtnThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -242,6 +241,7 @@ public void displayBooks(ArrayList<Book> books) {
         });
 
         btnBack.setText("Quay lại");
+        btnBack.setOpaque(true);
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBackActionPerformed(evt);
