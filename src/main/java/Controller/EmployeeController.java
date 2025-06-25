@@ -7,9 +7,11 @@ package Controller;
 import Model.Employee;
 import View.EmployeeM;
 import Database.Employee_Connect;
+import Model.Book;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
@@ -19,6 +21,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.Date;
+import java.util.List;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -80,6 +86,50 @@ public class EmployeeController {
         view.displayEmployees(searchResults);
         if (searchResults.isEmpty()) {
             view.showMessage("Không tìm thấy nhân viên nào phù hợp.");
+        }
+    }
+    public void exportEmployeeToExcel() {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Book");
+        int rowNum = 0;
+        List<Employee> Employee = employeeConnect.layToanBoNhanVien();
+        // Header
+        Row headerRow = sheet.createRow(rowNum++);
+        headerRow.createCell(0).setCellValue("Mã Nhân viên");
+        headerRow.createCell(1).setCellValue("Tên Nhân viên");
+        headerRow.createCell(2).setCellValue("Ngày sinh");
+        headerRow.createCell(3).setCellValue("Ngày vào làm");
+        headerRow.createCell(4).setCellValue("Tên công việc");
+        headerRow.createCell(5).setCellValue("Số điện thoại");
+        headerRow.createCell(6).setCellValue("Lương");
+        
+
+        for (Employee e : Employee) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(e.getMaNV());
+            row.createCell(1).setCellValue(e.getTenNV());
+            row.createCell(2).setCellValue(e.getNgaySinh());
+            row.createCell(3).setCellValue(e.getNgayVaoLam());
+            row.createCell(4).setCellValue(e.getTenCV());
+            row.createCell(5).setCellValue(e.getSdt());
+            row.createCell(6).setCellValue(e.getLuong());
+            
+        }
+
+        // Lưu vào C:\aadmin
+        try {
+            File dir = new File("C:\\Users\\LAPTOP\\Documents\\exportJAVA");
+            if (!dir.exists()) dir.mkdirs();
+
+            FileOutputStream out = new FileOutputStream(new File(dir, "nhanvien.xlsx"));
+            workbook.write(out);
+            out.close();
+            workbook.close();
+
+            System.out.println("✅ Xuất file thành công tại: C:\\Users\\LAPTOP\\Documents\\exportJAVA\\donhang.xlsx");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("❌ Lỗi khi xuất file Excel.");
         }
     }
 }

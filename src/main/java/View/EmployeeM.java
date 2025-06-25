@@ -281,6 +281,11 @@ public class EmployeeM extends javax.swing.JFrame {
         this.dispose();
     }
 
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        // TODO add your handling code here:
+        employeeController.exportEmployeeToExcel();
+    }//GEN-LAST:event_btnExportActionPerformed
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -487,21 +492,6 @@ public class EmployeeM extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
-        // TODO add your handling code here:
-          JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle("Lưu file CSV");
-        int userChoice = chooser.showSaveDialog(this);
-
-        if (userChoice == JFileChooser.APPROVE_OPTION) {
-            String path = chooser.getSelectedFile().getAbsolutePath();
-            if (!path.endsWith(".csv")) {
-                path += ".csv";
-            }
-            Controller.CSVExporterController.exportToCSV(jTable_Employees, path); // tblNhanVien là tên JTable
-        }
-    }//GEN-LAST:event_btnExportActionPerformed
 
     private void txtMaNVActionPerformed(java.awt.event.ActionEvent evt) {
         
