@@ -4,12 +4,9 @@
  */
 package Model;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+
+
+
 
 /**
  *
@@ -19,9 +16,8 @@ public class Customer {
     private String maKH;
     private String tenKH;
     private String sdt;
-    private String email;
-    private String duongDanAnh;
-    private transient ImageIcon anhKH;
+   
+    
 
     public Customer() {
         // Constructor mặc định
@@ -33,20 +29,7 @@ public class Customer {
         this.sdt = sdt;
     }
 
-    private void loadImageIcon() {
-        if (duongDanAnh != null && !duongDanAnh.isEmpty()) {
-            try {
-                File file = new File(duongDanAnh);
-                if (file.exists()) {
-                    BufferedImage originalImage = ImageIO.read(file);
-                    Image scaledImage = originalImage.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-                    anhKH = new ImageIcon(scaledImage);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+    
 
     // Getters and Setters
     public String getMaKH() {
@@ -73,24 +56,13 @@ public class Customer {
         this.sdt = sdt;
     }
 
-    public String getEmail() {
-        return email;
-    }
+    
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+   
 
-    public String getDuongDanAnh() {
-        return duongDanAnh;
-    }
+    
 
-    public void setDuongDanAnh(String duongDanAnh) {
-        this.duongDanAnh = duongDanAnh;
-        loadImageIcon();
-    }
+    
 
-    public ImageIcon getAnhKH() {
-        return anhKH;
-    }
+    
 }

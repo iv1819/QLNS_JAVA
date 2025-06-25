@@ -132,7 +132,8 @@ public class CustomerM extends javax.swing.JFrame {
         jbtnTim = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
+        jtxtTimKH.setPreferredSize(new java.awt.Dimension(250, 30));
+        jbtnTim.setPreferredSize(new java.awt.Dimension(80, 30));
         JPanel_Top.setBackground(new java.awt.Color(255, 255, 255));
         JPanel_Top.setForeground(new java.awt.Color(242, 242, 242));
         JPanel_Top.setFocusTraversalPolicyProvider(true);
