@@ -169,7 +169,6 @@ public void displayBooks(ArrayList<Book> books) {
         jbtnThem = new javax.swing.JButton();
         jbtnSua = new javax.swing.JButton();
         jbtnXoa = new javax.swing.JButton();
-        btnBack = new javax.swing.JButton();
         jbtnNE = new javax.swing.JButton();
         jbtnXE = new javax.swing.JButton();
         JMiddle = new javax.swing.JPanel();
@@ -205,6 +204,7 @@ public void displayBooks(ArrayList<Book> books) {
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 12)); // NOI18N
         setMaximumSize(new java.awt.Dimension(150, 40));
 
@@ -240,14 +240,6 @@ public void displayBooks(ArrayList<Book> books) {
             }
         });
 
-        btnBack.setText("Quay lại");
-        btnBack.setOpaque(true);
-        btnBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBackActionPerformed(evt);
-            }
-        });
-
         jbtnNE.setText("Nhập Excel");
         jbtnNE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -269,13 +261,11 @@ public void displayBooks(ArrayList<Book> books) {
             .addGroup(JUpperLayout.createSequentialGroup()
                 .addGap(9, 9, 9)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnBack)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(103, 103, 103)
                 .addComponent(jbtnNE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jbtnXE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
                 .addComponent(jbtnThem)
                 .addGap(18, 18, 18)
                 .addComponent(jbtnSua)
@@ -294,7 +284,6 @@ public void displayBooks(ArrayList<Book> books) {
                         .addComponent(jbtnXoa))
                     .addGroup(JUpperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(btnBack)
                         .addComponent(jbtnNE)
                         .addComponent(jbtnXE)))
                 .addContainerGap(48, Short.MAX_VALUE))
@@ -428,6 +417,7 @@ public void displayBooks(ArrayList<Book> books) {
         jLabel9.setText("Tên tác giả");
 
         jbtnTim.setText("Tìm kiếm");
+        jbtnTim.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbtnTim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnTimActionPerformed(evt);
@@ -564,12 +554,6 @@ public void displayBooks(ArrayList<Book> books) {
         jtxtAnh.setText(currentImagePath);
     }//GEN-LAST:event_jbtnAnhActionPerformed
 
-    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        MainMenu_Manager2 managerFrame = new MainMenu_Manager2();
-        managerFrame.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnBackActionPerformed
-
     private void jbtnNEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnNEActionPerformed
         // TODO add your handling code here:
            JFileChooser chooser = new JFileChooser();
@@ -652,7 +636,6 @@ public void displayBooks(ArrayList<Book> books) {
     private javax.swing.JLabel JTacGia;
     private javax.swing.JLabel JTenSach;
     private javax.swing.JPanel JUpper;
-    private javax.swing.JButton btnBack;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

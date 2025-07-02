@@ -139,7 +139,6 @@ public void displayVPP(ArrayList<VPP> vpps) {
         jbtnThem = new javax.swing.JButton();
         jbtnSua = new javax.swing.JButton();
         jbtnXoa = new javax.swing.JButton();
-        btnBack = new javax.swing.JButton();
         btnNE = new javax.swing.JButton();
         jbtnXE = new javax.swing.JButton();
         JMiddle = new javax.swing.JPanel();
@@ -167,7 +166,7 @@ public void displayVPP(ArrayList<VPP> vpps) {
         jtxtTimTenNcc = new javax.swing.JTextField();
         jbtnTim = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         JPanel_Top.setBackground(new java.awt.Color(255, 255, 255));
         JPanel_Top.setForeground(new java.awt.Color(242, 242, 242));
@@ -202,13 +201,6 @@ public void displayVPP(ArrayList<VPP> vpps) {
             }
         });
 
-        btnBack.setText("Quay lại");
-        btnBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBackActionPerformed(evt);
-            }
-        });
-
         btnNE.setText("Nhập Excel");
         btnNE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -230,13 +222,11 @@ public void displayVPP(ArrayList<VPP> vpps) {
             .addGroup(JUpperLayout.createSequentialGroup()
                 .addGap(9, 9, 9)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnBack)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(103, 103, 103)
                 .addComponent(btnNE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jbtnXE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
                 .addComponent(jbtnThem)
                 .addGap(18, 18, 18)
                 .addComponent(jbtnSua)
@@ -255,7 +245,6 @@ public void displayVPP(ArrayList<VPP> vpps) {
                         .addComponent(jbtnXoa))
                     .addGroup(JUpperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(btnBack)
                         .addComponent(btnNE)
                         .addComponent(jbtnXE)))
                 .addContainerGap(48, Short.MAX_VALUE))
@@ -507,12 +496,6 @@ public void displayVPP(ArrayList<VPP> vpps) {
         }
     }//GEN-LAST:event_jbtnXoaActionPerformed
 
-    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        MainMenu_Manager2 managerFrame = new MainMenu_Manager2();
-        managerFrame.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnBackActionPerformed
-
     private void jbtnAnhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAnhActionPerformed
         // TODO add your handling code here:
         vppController.handleImageSelection();
@@ -585,7 +568,6 @@ public void displayVPP(ArrayList<VPP> vpps) {
     private javax.swing.JPanel JPanel_Top;
     private javax.swing.JLabel JTenSach;
     private javax.swing.JPanel JUpper;
-    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnNE;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -1,8 +1,6 @@
 View\MainMenu_Manager2$13.class
-View\AuthorM$11.class
 View\AuthorM$2.class
 View\MainMenu_Manager2$4.class
-View\VppM$10.class
 View\RegisterM$3.class
 Model\Category.class
 View\PublisherM$4.class
@@ -37,6 +35,7 @@ View\EmployeeM$4.class
 View\MainMenu_Manager2$18.class
 Database\Provider_Connect.class
 View\AccountM$3.class
+View\MainMenu_Manager2$20.class
 View\BookM$3.class
 Model\ChucVu.class
 View\MainMenu$2.class
@@ -57,10 +56,8 @@ View\CategoryM$5.class
 View\MainMenu_Manager2$11.class
 Database\Login_Connect.class
 View\VppM$5.class
-View\BookM$10.class
 View\OrderM$5.class
 View\ProviderM$4.class
-Controller\CSVExporterController.class
 Database\Order_Connect.class
 View\BookItemPanel$1.class
 View\AuthorM$10.class

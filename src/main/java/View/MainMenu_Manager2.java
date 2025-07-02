@@ -24,7 +24,7 @@ setLocationRelativeTo(null);
         btnBookM.addActionListener(evt -> {
             BookM bookM = new BookM(this.controller);
             bookM.setVisible(true);
-            dispose();
+            this.dispose();
         });
         jbtnVPP.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -213,6 +213,11 @@ setLocationRelativeTo(null);
         btnBookM.setForeground(new java.awt.Color(255, 255, 255));
         btnBookM.setText("Quản lí sách");
         btnBookM.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnBookM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBookMActionPerformed(evt);
+            }
+        });
 
         jbtnVPP.setBackground(new java.awt.Color(0, 51, 102));
         jbtnVPP.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -357,6 +362,10 @@ setLocationRelativeTo(null);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBookMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookMActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBookMActionPerformed
 
     /**
      * @param args the command line arguments
