@@ -15,7 +15,7 @@ public class Order {
     private String tenKH;
     private Date ngayBan;
     private double tongTien;
-
+    private String tenNV;
     public String getMaDH() {
         return maDH;
     }
@@ -51,13 +51,24 @@ public class Order {
         this.tongTien = tongTien;
     }
 
-    public Order(String maDH, String tenKH, Date ngayBan, double tongTien) {
+    public Order(String maDH, String tenKH, Date ngayBan, double tongTien, String tenNV) {
         this.maDH = maDH;
         this.tenKH = tenKH;
         this.ngayBan = ngayBan;
         this.tongTien = tongTien;
+        this.tenNV = tenNV;
     }
 
     public Order() {
     }
+
+    public String getTenNV() {
+        return tenNV;
+    }
+
+    public void setTenNV(String tenNV) {
+        this.tenNV = tenNV;
+    }
+
+   
 }

@@ -194,11 +194,13 @@ public class OrderController {
             // 5. Số lượng, đơn giá, tổng tiền
             int soLuong = (int) row.getCell(4).getNumericCellValue();
             double donGia = row.getCell(5).getNumericCellValue();
-            double tongtien = row.getCell(6).getNumericCellValue();
+            double tongtiensp = row.getCell(6).getNumericCellValue();
+            double tongtien = row.getCell(7).getNumericCellValue();
+            String tenNV = row.getCell(8).getStringCellValue().trim();
             // 6. Tạo đơn hàng (nếu chưa có)
             if (sqlDate != null) {
                 maDH = generateOrderId();
-                Order dh = new Order(maDH, tenKH, sqlDate, tongtien);
+                Order dh = new Order(maDH, tenKH, sqlDate, tongtien, tenNV);
                 orderConnect.themDH(dh);
                 existingOrders.put(maDH, dh);
                 System.out.println("✅ Đã thêm đơn hàng: " + maDH + ", KH: " + maKH);
@@ -211,6 +213,7 @@ public class OrderController {
             ctdh.setTenSP(tenSp);
             ctdh.setSoLuong(soLuong);
             ctdh.setDonGia(donGia);
+            ctdh.setTongTien(tongtiensp);
             if(odConnect.laySoLuongSP(tenSp) < soLuong){
                 System.out.println("san pham ko du de ban " + maDH + ": " + tenSp);
                 continue;
@@ -257,11 +260,13 @@ public class OrderController {
         headerRow.createCell(0).setCellValue("Mã Đơn Hàng");
         headerRow.createCell(1).setCellValue("Ngày Lập");
         headerRow.createCell(2).setCellValue("Tên KH");
-        headerRow.createCell(3).setCellValue("Tên Sách");
+        headerRow.createCell(3).setCellValue("Tên sản phẩm");
         headerRow.createCell(4).setCellValue("Số lượng");
         headerRow.createCell(5).setCellValue("Đơn giá");
-        headerRow.createCell(6).setCellValue("Tổng tiền");
+                headerRow.createCell(6).setCellValue("Tổng tiền sản phẩm");
 
+        headerRow.createCell(7).setCellValue("Tổng tiền");
+        headerRow.createCell(8).setCellValue("Tên nhân viên");
         for (Order dh : donHangList) {
             List<OD> ctdhs = odConnect.layCTDHtheoMaDH(dh.getMaDH());
             maDH = dh.getMaDH();
@@ -282,7 +287,11 @@ public class OrderController {
                     row.createCell(3).setCellValue(ct.getTenSP());
                     row.createCell(4).setCellValue(ct.getSoLuong());
                     row.createCell(5).setCellValue(ct.getDonGia());
-                    row.createCell(6).setCellValue(dh.getTongTien());
+                    row.createCell(6).setCellValue(ct.getTongTien());
+
+                    row.createCell(7).setCellValue(dh.getTongTien());
+                    row.createCell(8).setCellValue(dh.getTenNV());
+
                 }
             } else {
                 // Không có chi tiết đơn hàng
@@ -294,6 +303,8 @@ public class OrderController {
                 row.createCell(4).setCellValue("");
                 row.createCell(5).setCellValue("");
                 row.createCell(6).setCellValue("");
+                row.createCell(7).setCellValue("");
+                row.createCell(8).setCellValue(dh.getTenNV());
             }
         }
 

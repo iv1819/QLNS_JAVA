@@ -122,6 +122,33 @@ public class Book_Connect extends Connect_sqlServer {
         }
         return dss3;
     }
+     public ArrayList<Book> laySachtheoSoLuong(int soluong) {
+        ArrayList<Book> dss3 = new ArrayList<Book>();
+        try {
+            String sql = "select MaSach, TenSach, SoLuong, Gia, TenTG, TenNXB, Anh, NamXuatBan, TenDM from Sach,NhaXB,TacGia,DanhMuc where Sach.MaNXB = NhaXB.MaNXB AND Sach.MaTG = TacGia.MaTG and Sach.MaDM = DanhMuc.MaDM and SoLuong <= ? ";
+            PreparedStatement pre1 = conn.prepareStatement(sql);
+            pre1.setInt(1, soluong);
+            ResultSet result = pre1.executeQuery();
+            while (result.next()) {
+                Book s = new Book();
+                s.setMaSach(result.getString("MaSach"));
+                s.setTenSach(result.getString("TenSach"));
+                s.setSoLuong(result.getInt("SoLuong"));
+                s.setGiaBan(result.getDouble("Gia"));
+                s.setTacGia(result.getString("TenTG"));
+                s.setNhaXB(result.getString("TenNXB"));
+                s.setDuongDanAnh(result.getString("Anh"));
+                s.setNamXB(result.getInt("NamXuatBan"));
+                s.setDanhMuc(result.getString("TenDM"));
+                dss3.add(s);
+            }
+            result.close();
+            pre1.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dss3;
+    }
     
      public ArrayList<Book> laySachTheoTenTacGia(String tenTacGia)
     {
@@ -233,7 +260,6 @@ public boolean addBook(Book book) {
             pstmt.setInt(7, book.getNamXB());
             pstmt.setString(8, maDM);
             pstmt.setString(9, book.getMaSach());
-
             int rowsAffected = pstmt.executeUpdate();
             pstmt.close();
             return rowsAffected > 0;

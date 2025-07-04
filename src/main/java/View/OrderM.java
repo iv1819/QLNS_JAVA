@@ -65,13 +65,15 @@ public void displayOrder(ArrayList<Order> orders) {
         dtm.addColumn("Tên khách hàng");
         dtm.addColumn("Ngày bán");
         dtm.addColumn("Tổng tiền");
-
+        dtm.addColumn("Nhân viên");
         for (Order order : orders) {
             Vector<Object> row = new Vector<>();
             row.add(order.getMaDH());
             row.add(order.getTenKH());
             row.add(order.getNgayBan());
             row.add(order.getTongTien());
+            row.add(order.getTenNV());
+
             dtm.addRow(row);
         }
     }
@@ -85,6 +87,8 @@ public void displayOD(ArrayList<OD> ods) {
         dtm.addColumn("Tên sản phẩm");
         dtm.addColumn("Số lượng");
         dtm.addColumn("Đơn giá");
+        dtm.addColumn("Tổng tiền sản phẩm");
+
         dtm.addColumn("Mã đơn hàng");
 
         for (OD od : ods) {
@@ -93,6 +97,7 @@ public void displayOD(ArrayList<OD> ods) {
             row.add(od.getTenSP());
             row.add(od.getSoLuong());
             row.add(od.getDonGia());
+            row.add(od.getTongTien());
             row.add(od.getMaDH());
 
             dtm.addRow(row);
@@ -139,7 +144,6 @@ private void displaySelectedDH() {
         JUpper = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jbtnXoa = new javax.swing.JButton();
-        btnBack = new javax.swing.JButton();
         jbtnNE = new javax.swing.JButton();
         jbtnXE = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -154,8 +158,10 @@ private void displaySelectedDH() {
         jtxtNgayBan = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jtxtTongTien = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         JUpper.setBackground(new java.awt.Color(0, 0, 102));
         JUpper.setForeground(new java.awt.Color(242, 242, 242));
@@ -164,6 +170,7 @@ private void displaySelectedDH() {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Quản lí đơn hàng");
 
+        jbtnXoa.setBackground(new java.awt.Color(254, 255, 255));
         jbtnXoa.setText("Xóa");
         jbtnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -171,13 +178,7 @@ private void displaySelectedDH() {
             }
         });
 
-        btnBack.setText("Quay lại");
-        btnBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBackActionPerformed(evt);
-            }
-        });
-
+        jbtnNE.setBackground(new java.awt.Color(254, 255, 255));
         jbtnNE.setText("Nhập Excel");
         jbtnNE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,6 +186,7 @@ private void displaySelectedDH() {
             }
         });
 
+        jbtnXE.setBackground(new java.awt.Color(254, 255, 255));
         jbtnXE.setText("Xuất Excel");
         jbtnXE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,8 +201,6 @@ private void displaySelectedDH() {
             .addGroup(JUpperLayout.createSequentialGroup()
                 .addGap(9, 9, 9)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(btnBack)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbtnNE)
                 .addGap(42, 42, 42)
@@ -218,10 +218,8 @@ private void displaySelectedDH() {
                         .addComponent(jbtnXoa)
                         .addComponent(jbtnNE)
                         .addComponent(jbtnXE))
-                    .addGroup(JUpperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(btnBack)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                    .addComponent(jLabel1))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         jtblOrder.setModel(new javax.swing.table.DefaultTableModel(
@@ -270,6 +268,11 @@ private void displaySelectedDH() {
         jtxtTongTien.setEditable(false);
         jtxtTongTien.setText("jTextField4");
 
+        jLabel6.setText("Tên nhân viên");
+
+        jTextField1.setEditable(false);
+        jTextField1.setText("jTextField1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -285,12 +288,14 @@ private void displaySelectedDH() {
                         .addGap(18, 18, 18))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jtxtTenKH, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
-                            .addComponent(jtxtMaDH))
+                            .addComponent(jtxtMaDH)
+                            .addComponent(jTextField1))
                         .addGap(114, 114, 114)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -320,7 +325,11 @@ private void displaySelectedDH() {
                     .addComponent(jtxtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(jtxtTongTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -342,12 +351,6 @@ private void displaySelectedDH() {
             orderController.deleteOrder(maDH);
         }
     }//GEN-LAST:event_jbtnXoaActionPerformed
-
-    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        MainMenu_Manager2 managerFrame = new MainMenu_Manager2();
-        managerFrame.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnBackActionPerformed
 
     private void jbtnNEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnNEActionPerformed
         // TODO add your handling code here:
@@ -401,14 +404,15 @@ private void displaySelectedDH() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JUpper;
-    private javax.swing.JButton btnBack;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton jbtnNE;
     private javax.swing.JButton jbtnXE;
     private javax.swing.JButton jbtnXoa;

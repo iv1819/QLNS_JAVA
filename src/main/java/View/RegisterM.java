@@ -28,8 +28,10 @@ public class RegisterM extends javax.swing.JFrame {
      */
     public RegisterM() {
         initComponents();
+        registerController = new RegisterController(this);
+        setLocationRelativeTo(null); 
         accountConnect = new Account_Connect();
-        loadChucVuComboBox();
+        populateComboBoxes();
     }
     
     
@@ -60,7 +62,6 @@ public class RegisterM extends javax.swing.JFrame {
             return;
         }
         
-        String maCV = tenChucVu.equalsIgnoreCase("Quản lí") ? "cv_01" : "cv_02";
         
         if (accountConnect.tonTaiTaiKhoan(taiKhoan)) {
             JOptionPane.showMessageDialog(this, "Tài khoản đã tồn tại");
@@ -70,14 +71,13 @@ public class RegisterM extends javax.swing.JFrame {
         Account acc = new Account();
         acc.setUsername(taiKhoan);
         acc.setPassword(matKhau);
-        acc.setTenCV(maCV);
+        acc.setTenCV(tenChucVu);
         acc.setTrangThai("No");
         
         boolean success = accountConnect.themTaiKhoan(acc);
         if (success){
             JOptionPane.showMessageDialog(this, "Đăng ký thành công");
 Login lg = new Login();
-                lg.setLocationRelativeTo(null); 
                 lg.setVisible(true);
                 this.dispose();
         } else {
@@ -244,7 +244,6 @@ Login lg = new Login();
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
         Login lg = new Login();
-                lg.setLocationRelativeTo(null); 
                 lg.setVisible(true);
                 this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
@@ -309,15 +308,7 @@ Login lg = new Login();
     private javax.swing.JTextField txtTK;
     // End of variables declaration//GEN-END:variables
 
-    public void displayDangKy(ArrayList<ChucVu> chucvu) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
-    private void loadChucVuComboBox() {
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<> ();
-        model.addElement("Quản lí");
-        model.addElement("Nhân viên");
-        jcbxChucVu.setModel(model);
-    }
+ 
     
 }

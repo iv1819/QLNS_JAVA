@@ -43,7 +43,10 @@ public class VppM extends javax.swing.JFrame {
    
     public VppM(MainMenuController mainMenuController) {
         initComponents();
-         vppController = new VppController(this, JImage, mainMenuController);
+        setLocationRelativeTo(null); 
+
+         vppController = new VppController(this, JImage);
+         vppController.addDataChangeListener(mainMenuController);
         jtblVPP.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -179,6 +182,7 @@ public void displayVPP(ArrayList<VPP> vpps) {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Quản lí VPP");
 
+        jbtnThem.setBackground(new java.awt.Color(254, 255, 255));
         jbtnThem.setFont(new java.awt.Font("Leelawadee UI Semilight", 0, 12)); // NOI18N
         jbtnThem.setText("Thêm");
         jbtnThem.addActionListener(new java.awt.event.ActionListener() {
@@ -187,6 +191,7 @@ public void displayVPP(ArrayList<VPP> vpps) {
             }
         });
 
+        jbtnSua.setBackground(new java.awt.Color(254, 255, 255));
         jbtnSua.setText("Sửa");
         jbtnSua.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,6 +199,7 @@ public void displayVPP(ArrayList<VPP> vpps) {
             }
         });
 
+        jbtnXoa.setBackground(new java.awt.Color(254, 255, 255));
         jbtnXoa.setText("Xóa");
         jbtnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,6 +207,7 @@ public void displayVPP(ArrayList<VPP> vpps) {
             }
         });
 
+        btnNE.setBackground(new java.awt.Color(254, 255, 255));
         btnNE.setText("Nhập Excel");
         btnNE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -208,6 +215,7 @@ public void displayVPP(ArrayList<VPP> vpps) {
             }
         });
 
+        jbtnXE.setBackground(new java.awt.Color(254, 255, 255));
         jbtnXE.setText("Xuất Excel");
         jbtnXE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,11 +230,11 @@ public void displayVPP(ArrayList<VPP> vpps) {
             .addGroup(JUpperLayout.createSequentialGroup()
                 .addGap(9, 9, 9)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(103, 103, 103)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnNE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jbtnXE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbtnThem)
                 .addGap(18, 18, 18)
                 .addComponent(jbtnSua)
@@ -287,8 +295,7 @@ public void displayVPP(ArrayList<VPP> vpps) {
             JMiddleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JMiddleLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(JMiddleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(JImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(JMiddleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JMiddleLayout.createSequentialGroup()
                         .addGroup(JMiddleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(JMiddleLayout.createSequentialGroup()
@@ -314,10 +321,11 @@ public void displayVPP(ArrayList<VPP> vpps) {
                                     .addComponent(jtxtSoLuong)
                                     .addComponent(jcbxNhaCC, 0, 227, Short.MAX_VALUE)
                                     .addComponent(jtxtAnh)))
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(JImage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jbtnAnh)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         JMiddleLayout.setVerticalGroup(
             JMiddleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,8 +355,8 @@ public void displayVPP(ArrayList<VPP> vpps) {
                             .addComponent(jbtnAnh)
                             .addComponent(jtxtAnh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addComponent(JImage, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addComponent(JImage, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(jtblVPP);

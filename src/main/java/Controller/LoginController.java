@@ -46,9 +46,9 @@ public class LoginController {
             view.dispose();   // đóng form login
 
             if ("Quản lí".equalsIgnoreCase(acc.getTenCV())) {
-                new MainMenu(true).setVisible(true);      // isManager = true
+                new MainMenu(true, user).setVisible(true);      // isManager = true
             } else {                                      // Nhân viên
-                new MainMenu(false).setVisible(true);     // isManager = false
+                new MainMenu(false, user).setVisible(true);     // isManager = false
             }
 
         } catch (SQLException ex) {

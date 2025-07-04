@@ -45,7 +45,8 @@ private BookController bookController;
     public BookM(MainMenuController mainMenuController) {
         initComponents();
         setLocationRelativeTo(null); 
-         bookController = new BookController(this, JImage, mainMenuController);
+         bookController = new BookController(this, JImage);
+         bookController.addDataChangeListener(mainMenuController);
         jTable_Books.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -219,6 +220,7 @@ public void displayBooks(ArrayList<Book> books) {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Quản lí Sách");
 
+        jbtnThem.setBackground(new java.awt.Color(254, 255, 255));
         jbtnThem.setText("Thêm");
         jbtnThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,6 +228,7 @@ public void displayBooks(ArrayList<Book> books) {
             }
         });
 
+        jbtnSua.setBackground(new java.awt.Color(254, 255, 255));
         jbtnSua.setText("Sửa");
         jbtnSua.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -233,6 +236,7 @@ public void displayBooks(ArrayList<Book> books) {
             }
         });
 
+        jbtnXoa.setBackground(new java.awt.Color(254, 255, 255));
         jbtnXoa.setText("Xóa");
         jbtnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -240,6 +244,7 @@ public void displayBooks(ArrayList<Book> books) {
             }
         });
 
+        jbtnNE.setBackground(new java.awt.Color(254, 255, 255));
         jbtnNE.setText("Nhập Excel");
         jbtnNE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -247,6 +252,7 @@ public void displayBooks(ArrayList<Book> books) {
             }
         });
 
+        jbtnXE.setBackground(new java.awt.Color(254, 255, 255));
         jbtnXE.setText("Xuất Excel");
         jbtnXE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -261,11 +267,11 @@ public void displayBooks(ArrayList<Book> books) {
             .addGroup(JUpperLayout.createSequentialGroup()
                 .addGap(9, 9, 9)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(103, 103, 103)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbtnNE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jbtnXE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbtnThem)
                 .addGap(18, 18, 18)
                 .addComponent(jbtnSua)

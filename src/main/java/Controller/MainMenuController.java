@@ -13,6 +13,8 @@ import Model.Category;
 import Model.OD;
 import Model.Order;
 import Model.VPP;
+import View.DataChangeListener;
+import View.DataChangeType;
 import View.MainMenu; // Import MainMenu (View)
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,8 +31,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-public class MainMenuController {
-
+import javax.swing.SwingWorker;
+public class MainMenuController implements DataChangeListener {
+    @Override
+    public void onDataChanged(DataChangeType type) {
+        switch (type) {
+            case BOOK:
+                loadAndDisplayBooksByCategories();
+                break;
+            case VPP:
+                loadAndDisplayBooksByCategories();
+                break;
+        }
+    }
     private MainMenu view; 
     private Book_Connect bookConnect;
     private OD_Connect odConnect; 
@@ -210,7 +223,7 @@ public class MainMenuController {
             int rand = ThreadLocalRandom.current().nextInt(100000, 999999);
             return "dh_" + rand;
         }
-      public void onCheckoutClicked(String tenkh) {
+      public void onCheckoutClicked(String tenkh, String tenNV) {
 
             DefaultTableModel model = view.getReceiptTableModel();
 
@@ -224,7 +237,7 @@ public class MainMenuController {
 java.sql.Date ngayBanOnlyDate = java.sql.Date.valueOf(ngayBan.toLocalDate());
             double tongTien = view.LayTongTien();
 
-            Order newOrder = new Order(maDH, tenkh, ngayBanOnlyDate, tongTien);
+            Order newOrder = new Order(maDH, tenkh, ngayBanOnlyDate, tongTien, tenNV);
             orderConnect.themDH(newOrder);
             List<OD> ctdhs = new ArrayList<>();
             /* 2) Thêm từng chi tiết qua hàm themCTDH() */
@@ -235,6 +248,8 @@ java.sql.Date ngayBanOnlyDate = java.sql.Date.valueOf(ngayBan.toLocalDate());
                 detail.setTenSP(model.getValueAt(row, 0).toString());
                 detail.setSoLuong((Integer) model.getValueAt(row, 1));
                 detail.setDonGia(parseMoney(model.getValueAt(row, 2).toString()));
+                detail.setTongTien(parseMoney(model.getValueAt(row, 3).toString()));
+
                 
                 if (!odConnect.themCTDH(detail)) {
                     view.showErrorMessage("Them CTDH that bai");
@@ -300,6 +315,8 @@ private double parseMoney(String str) {
             document.add(new Paragraph("Mã ĐH: " + dh.getMaDH(),fonthg));
             document.add(new Paragraph("Ngày: " + dh.getNgayBan(),fonthg));
             document.add(new Paragraph("Khách: " + (dh.getTenKH() != null ? dh.getTenKH() : "Khách lẻ"),fonthg));
+            document.add(new Paragraph("Nhân viên: " + dh.getTenNV(),fonthg));
+
             document.add(new Paragraph(" "));
 
             // ============ BẢNG SẢN PHẨM ============
@@ -356,4 +373,3 @@ private double parseMoney(String str) {
     }
 
 }
-

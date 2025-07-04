@@ -11,18 +11,17 @@ import Controller.MainMenuController;
  * @author Admin
  */
 public class MainMenu_Manager2 extends javax.swing.JFrame {
-    private MainMenuController controller;
+
 
     /**
      * Creates new form MainMenu_Manager
      */
     public MainMenu_Manager2(MainMenu parent, MainMenuController controller, boolean IsManager) {
-    this.controller = controller;  // <-- KHÔNG còn null
     initComponents();
 setLocationRelativeTo(null); 
     if(IsManager){
         btnBookM.addActionListener(evt -> {
-            BookM bookM = new BookM(this.controller);
+            BookM bookM = new BookM(controller);
             bookM.setVisible(true);
             this.dispose();
         });
@@ -110,13 +109,20 @@ setLocationRelativeTo(null);
                 dispose();
             }
         });
+        jbtnTK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ThongKeM tk = new ThongKeM();
+                tk.setVisible(true);
+                dispose();
+            }
+        });
     }
     else{
         btnEmployeeM.setEnabled(false);
         btnPositionM.setEnabled(false);
 
         btnBookM.addActionListener(evt -> {
-        BookM bookM = new BookM(this.controller);
+        BookM bookM = new BookM(controller);
         bookM.setVisible(true);
         dispose();
         });
@@ -174,6 +180,13 @@ setLocationRelativeTo(null);
                 dispose();
             }
         });
+        jbtnTK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ThongKeM tk = new ThongKeM();
+                tk.setVisible(true);
+                dispose();
+            }
+        });
     }
 }
     public MainMenu_Manager2() {
@@ -196,6 +209,7 @@ setLocationRelativeTo(null);
         jbtnAuthor = new javax.swing.JButton();
         btnAccount = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jbtnTK = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -283,6 +297,11 @@ setLocationRelativeTo(null);
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Các mục quản lí");
 
+        jbtnTK.setBackground(new java.awt.Color(0, 51, 102));
+        jbtnTK.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jbtnTK.setForeground(new java.awt.Color(255, 255, 255));
+        jbtnTK.setText("Thống kê");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -291,6 +310,10 @@ setLocationRelativeTo(null);
                 .addGap(197, 197, 197)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(163, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnTK, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(245, 245, 245))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addContainerGap()
@@ -321,7 +344,9 @@ setLocationRelativeTo(null);
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(441, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 301, Short.MAX_VALUE)
+                .addComponent(jbtnTK, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(67, 67, 67))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addContainerGap()
@@ -416,6 +441,7 @@ setLocationRelativeTo(null);
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jbtnAuthor;
     private javax.swing.JButton jbtnOrderM;
+    private javax.swing.JButton jbtnTK;
     private javax.swing.JButton jbtnVPP;
     // End of variables declaration//GEN-END:variables
 }

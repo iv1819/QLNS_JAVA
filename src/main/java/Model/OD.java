@@ -14,14 +14,25 @@ public class OD {
     private int soLuong;
     private double donGia;
     private String maDH;
+    private double tongTien;
 
-    public OD(int id, String maSP, int soLuong, double donGia, String maDH) {
+    public OD(int id, String tenSP, int soLuong, double donGia, String maDH, double tongTien) {
         this.id = id;
-        this.tenSP = maSP;
+        this.tenSP = tenSP;
         this.soLuong = soLuong;
         this.donGia = donGia;
         this.maDH = maDH;
+        this.tongTien = tongTien;
     }
+
+    public double getTongTien() {
+        return tongTien;
+    }
+
+    public void setTongTien(double tongTien) {
+        this.tongTien = tongTien;
+    }
+   
 
     public OD() {
     }

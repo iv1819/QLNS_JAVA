@@ -12,6 +12,8 @@ import View.BookM; // Import BookM (View)
 import Model.Book; // Import Book (Model)
 import Database.Book_Connect;
 import Model.VPP;
+import View.DataChangeListener;
+import View.DataChangeType;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -36,22 +38,25 @@ public class BookController {
     private Book_Connect bookConnect; // Tham chiếu đến lớp kết nối CSDL
     private JLabel imagePreviewLabel; // JLabel để hiển thị ảnh preview
     private String selectedImagePath; // Để lưu đường dẫn ảnh đã chọn từ JFileChooser
- private MainMenuController mainMenuController;
-       public BookController(BookM bookMView, JLabel imagePreviewLabel, MainMenuController mainMenuController) {
+    private List<DataChangeListener> listeners = new ArrayList<>();
+
+   public void addDataChangeListener(DataChangeListener listener) {
+       listeners.add(listener);
+   }
+
+   private void notifyListeners(DataChangeType type) {
+       for (DataChangeListener listener : listeners) {
+           listener.onDataChanged(type);
+       }
+   }
+
+       public BookController(BookM bookMView, JLabel imagePreviewLabel) {
         this.view = bookMView;
         this.imagePreviewLabel = imagePreviewLabel;
         this.bookConnect = new Book_Connect();
         this.selectedImagePath = "";
-        this.mainMenuController = mainMenuController; // Initialize MainMenuController reference
     }
-    private void refreshMainMenuTabs() {
-        if (mainMenuController != null) {
-            System.out.println("DEBUG (BookController): Đang gọi refresh các tab trên MainMenu.");
-            mainMenuController.loadAndDisplayBooksByCategories();
-        } else {
-            System.out.println("DEBUG (BookController): MainMenuController là null, không thể refresh tab.");
-        }
-    }
+
     public String getSelectedImagePath() {
         return selectedImagePath;
     }
@@ -87,7 +92,7 @@ public class BookController {
                 if (file.exists()) {
                     BufferedImage originalImage = ImageIO.read(file);
                     Image scaledImage = originalImage.getScaledInstance(
-                            imagePreviewLabel.getWidth(), imagePreviewLabel.getHeight(), Image.SCALE_SMOOTH);
+                            70, 80, Image.SCALE_SMOOTH);
                     imagePreviewLabel.setIcon(new ImageIcon(scaledImage));
                     imagePreviewLabel.setText(""); // Xóa text nếu có ảnh
                 } else {
@@ -123,9 +128,8 @@ public class BookController {
 
         if (bookConnect.addBook(book)) {
             loadAllBooks();
-            refreshMainMenuTabs();
+            notifyListeners(DataChangeType.BOOK);
             view.showMessage("Thêm sách thành công!");
-            
             view.clearInputFields();
         } else {
             view.showErrorMessage("Thêm sách thất bại. Có thể do mã sách bị trùng hoặc lỗi hệ thống.");
@@ -141,9 +145,10 @@ public class BookController {
 
             if (bookConnect.updateBook(book)) {
                 loadAllBooks();
-                refreshMainMenuTabs();
+                notifyListeners(DataChangeType.BOOK);
                 view.showMessage("Cập nhật sách thành công!");
                 
+
                 
                 view.clearInputFields();
             } else {
@@ -154,8 +159,9 @@ public class BookController {
     public void deleteBook(String maSach) {
         if (bookConnect.deleteBook(maSach)) {
             loadAllBooks();
-            refreshMainMenuTabs();
+            notifyListeners(DataChangeType.BOOK);
             view.showMessage("Xóa sách thành công!");
+
             view.clearInputFields();
         } else {
             view.showErrorMessage("Xóa sách thất bại. Vui lòng kiểm tra lại mã sách.");

@@ -18,6 +18,8 @@ public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();     
+        setLocationRelativeTo(null);
+
         controller = new LoginController(this);
 
         jbtnDN.addActionListener(e ->
@@ -170,7 +172,6 @@ public class Login extends javax.swing.JFrame {
     private void jbtnDKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDKActionPerformed
         // TODO add your handling code here:
         RegisterM lg = new RegisterM();
-        lg.setLocationRelativeTo(null);
         lg.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jbtnDKActionPerformed

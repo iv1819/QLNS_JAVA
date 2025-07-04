@@ -8,6 +8,8 @@ import Database.VPP_Connect;
 import Model.OD;
 import Model.Order;
 import Model.VPP;
+import View.DataChangeListener;
+import View.DataChangeType;
 import View.VppM;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -35,24 +37,25 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class VppController {
     private VppM view; // Tham chiếu đến View
-    private VPP_Connect vppConnect; // Tham chiếu đến lớp kết nối CSDL
-    private JLabel imagePreviewLabel; // JLabel để hiển thị ảnh preview
-    private String selectedImagePath; // Để lưu đường dẫn ảnh đã chọn từ JFileChooser
- private MainMenuController mainMenuController;
-       public VppController(VppM bookMView, JLabel imagePreviewLabel, MainMenuController mainMenuController) {
+    private VPP_Connect vppConnect; 
+    private JLabel imagePreviewLabel; 
+    private String selectedImagePath; 
+ private List<DataChangeListener> listeners = new ArrayList<>();
+
+   public void addDataChangeListener(DataChangeListener listener) {
+       listeners.add(listener);
+   }
+
+   private void notifyListeners(DataChangeType type) {
+       for (DataChangeListener listener : listeners) {
+           listener.onDataChanged(type);
+       }
+   }
+       public VppController(VppM bookMView, JLabel imagePreviewLabel) {
         this.view = bookMView;
         this.imagePreviewLabel = imagePreviewLabel;
         this.vppConnect = new VPP_Connect();
         this.selectedImagePath = "";
-        this.mainMenuController = mainMenuController; // Initialize MainMenuController reference
-    }
-    private void refreshMainMenuTabs() {
-        if (mainMenuController != null) {
-            System.out.println("DEBUG (BookController): Đang gọi refresh các tab trên MainMenu.");
-            mainMenuController.loadAndDisplayBooksByCategories();
-        } else {
-            System.out.println("DEBUG (BookController): MainMenuController là null, không thể refresh tab.");
-        }
     }
     public String getSelectedImagePath() {
         return selectedImagePath;
@@ -89,7 +92,7 @@ public class VppController {
                 if (file.exists()) {
                     BufferedImage originalImage = ImageIO.read(file);
                     Image scaledImage = originalImage.getScaledInstance(
-                            78, 100, Image.SCALE_SMOOTH);
+                            70, 80, Image.SCALE_SMOOTH);
                     imagePreviewLabel.setIcon(new ImageIcon(scaledImage));
                     imagePreviewLabel.setText(""); // Xóa text nếu có ảnh
                 } else {
@@ -123,9 +126,10 @@ public class VppController {
         }
 
         if (vppConnect.themVPP(v)) {
+            notifyListeners(DataChangeType.VPP);
+
             view.showMessage("Thêm VPP thành công!");
             loadAllVPP();
-            refreshMainMenuTabs();
             view.clearInputFields();
         } else {
             view.showErrorMessage("Thêm VPP thất bại. Vui lòng kiểm tra lại mã VPP hoặc thông tin.");
@@ -140,9 +144,10 @@ public class VppController {
         }
 
         if (vppConnect.suaVPP(v)) {
+                        notifyListeners(DataChangeType.VPP);
+
             view.showMessage("Cập nhật VPP thành công!");
             loadAllVPP();
-            refreshMainMenuTabs();
             view.clearInputFields();
         } else {
             view.showErrorMessage("Cập nhật VPP thất bại. Vui lòng kiểm tra lại thông tin.");
@@ -170,9 +175,10 @@ public class VppController {
 
     public void deleteVPP(String maVPP) {
         if (vppConnect.xoaVPP(maVPP)) {
+                        notifyListeners(DataChangeType.VPP);
+
             view.showMessage("Xóa vpp thành công!");
             loadAllVPP(); // Cập nhật lại JTable
-            refreshMainMenuTabs();
             view.clearInputFields();
         } else {
             view.showErrorMessage("Xóa vpp thất bại. Vui lòng kiểm tra lại mã vpp.");

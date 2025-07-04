@@ -4,7 +4,9 @@
  */
 package View;
 
+import Controller.BookController;
 import Controller.MainMenuController;
+import Controller.VppController;
 import Model.Book;
 import Model.VPP;
 import java.awt.FlowLayout;
@@ -15,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import View.EmployeeM;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -38,8 +42,9 @@ private DefaultTableModel tblModelHD;
     /**
      * Creates new form MainMenu
      * @param isManager
+     * @param tenNV
      */
-    public MainMenu(boolean isManager) {
+    public MainMenu(boolean isManager, String tenNV) {
         this.isManager = isManager;
         initComponents();
         setLocationRelativeTo(null); 
@@ -49,8 +54,11 @@ private DefaultTableModel tblModelHD;
         tblModelHD.addColumn("Số lượng");
         tblModelHD.addColumn("Đơn giá");
         tblModelHD.addColumn("Tổng giá");
+       
 
         controller = new MainMenuController(this);
+        jtxtTenNV.setText(tenNV);
+        jtxtTenNV.setEditable(false);
         controller.loadAndDisplayBooksByCategories();
         jbtnThemHD.addActionListener(new ActionListener() {
             @Override
@@ -80,7 +88,12 @@ private DefaultTableModel tblModelHD;
                           : sel.toString().trim();
 
             // 3) Gọi Controller
-            controller.onCheckoutClicked(tenKH);
+            controller.onCheckoutClicked(tenKH, tenNV);
+        });
+        jbtnDX.addActionListener(e -> {
+            Login lg = new Login();
+                lg.setVisible(true);
+                this.dispose();
         });
         // Trong MainMenu constructor – sau khi initComponents()
         jcbxTenKH.addActionListener(e -> {
@@ -115,7 +128,7 @@ private DefaultTableModel tblModelHD;
     public void populateCategoryTabs(LinkedHashMap<String, ArrayList<Book>> booksByCat,
                                  ArrayList<VPP> allVpp) {
 
-            jTabbedPaneBooks.removeAll();
+            jMTab.removeAll();
 
             /* ==== 1. Tab cho sách (như cũ) ==== */
             for (Map.Entry<String, ArrayList<Book>> e : booksByCat.entrySet()) {
@@ -128,41 +141,55 @@ private DefaultTableModel tblModelHD;
 
         /* ------------------ helpers ------------------ */
 
-        private void addBookTab(String title, ArrayList<Book> books) {
-            JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+       // Inside addBookTab
+private void addBookTab(String title, ArrayList<Book> books) {
+    // This panel will hold the BookItemPanels in a grid
+    JPanel gridPanel = new JPanel(new GridLayout(0, 4, 20, 20));
 
-            if (books.isEmpty()) {
-                panel.add(new JLabel("Không có sách trong danh mục này."));
-            } else {
-                for (Book b : books) {
-                    if(b.getSoLuong()<=0){
-                        continue;
-                    }
-                    BookItemPanel p = new BookItemPanel(b, controller);
-                    p.setBookData(b);
-                    panel.add(p);
-                }
+    if (books.isEmpty()) {
+        gridPanel.add(new JLabel("Không có sách trong danh mục này."));
+    } else {
+        for (Book b : books) {
+            if(b.getSoLuong()<=0){
+                continue;
             }
-            jTabbedPaneBooks.addTab(title, new JScrollPane(panel));
+            BookItemPanel p = new BookItemPanel(b, controller);
+            p.setBookData(b);
+            gridPanel.add(p);
         }
+    }
 
-        private void addVppTab(String title, ArrayList<VPP> vpps) {
-            JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+    // Create a wrapper panel to contain the gridPanel.
+    // This helps the JScrollPane understand the preferred width.
+    JPanel wrapperPanel = new JPanel(new BorderLayout());
+    wrapperPanel.add(gridPanel, BorderLayout.NORTH); // Add to NORTH to prevent stretching vertically
 
-            if (vpps.isEmpty()) {
-                panel.add(new JLabel("Không có VPP."));
-            } else {
-                for (VPP v : vpps) {
-                    if(v.getSoLuong()<=0){
-                        continue;
-                    }
-                    VppItemPanel p = new VppItemPanel(v, controller); // tạo tương tự BookItemPanel
-                    p.setVPPData(v);
-                    panel.add(p);
-                }
+    // Use the wrapperPanel in the JScrollPane
+    jMTab.addTab(title, new JScrollPane(wrapperPanel));
+}
+
+// Inside addVppTab (apply the same logic)
+private void addVppTab(String title, ArrayList<VPP> vpps) {
+    JPanel gridPanel = new JPanel(new GridLayout(0, 4, 20, 20));
+
+    if (vpps.isEmpty()) {
+        gridPanel.add(new JLabel("Không có VPP."));
+    } else {
+        for (VPP v : vpps) {
+            if(v.getSoLuong()<=0){
+                continue;
             }
-            jTabbedPaneBooks.addTab(title, new JScrollPane(panel));
+            VppItemPanel p = new VppItemPanel(v, controller);
+            p.setVPPData(v);
+            gridPanel.add(p);
         }
+    }
+
+    JPanel wrapperPanel = new JPanel(new BorderLayout());
+    wrapperPanel.add(gridPanel, BorderLayout.NORTH);
+
+    jMTab.addTab(title, new JScrollPane(wrapperPanel));
+}
 
     public void addReceiptItem(Object[] rowData) {
         tblModelHD.addRow(rowData);
@@ -242,8 +269,9 @@ private DefaultTableModel tblModelHD;
         jLeft = new javax.swing.JPanel();
         jBanner = new javax.swing.JPanel();
         jbtnQli = new javax.swing.JButton();
+        jbtnDX = new javax.swing.JButton();
         jMiddle = new javax.swing.JPanel();
-        jTabbedPaneBooks = new javax.swing.JTabbedPane();
+        jMTab = new View.MaterialTabbed();
         jMiddle3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jtxtTenSpHD = new javax.swing.JTextField();
@@ -273,6 +301,8 @@ private DefaultTableModel tblModelHD;
         jLabel5 = new javax.swing.JLabel();
         jtxtGG = new javax.swing.JLabel();
         jcbxTenKH = new javax.swing.JComboBox<>();
+        jLabel11 = new javax.swing.JLabel();
+        jtxtTenNV = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -289,6 +319,14 @@ private DefaultTableModel tblModelHD;
             }
         });
 
+        jbtnDX.setBackground(new java.awt.Color(254, 255, 255));
+        jbtnDX.setText("Đăng xuất");
+        jbtnDX.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnDXActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jBannerLayout = new javax.swing.GroupLayout(jBanner);
         jBanner.setLayout(jBannerLayout);
         jBannerLayout.setHorizontalGroup(
@@ -296,13 +334,17 @@ private DefaultTableModel tblModelHD;
             .addGroup(jBannerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jbtnQli)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnDX)
+                .addContainerGap())
         );
         jBannerLayout.setVerticalGroup(
             jBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jBannerLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jbtnQli)
+                .addGroup(jBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jbtnDX)
+                    .addComponent(jbtnQli))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
@@ -310,11 +352,11 @@ private DefaultTableModel tblModelHD;
         jMiddle.setLayout(jMiddleLayout);
         jMiddleLayout.setHorizontalGroup(
             jMiddleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPaneBooks)
+            .addComponent(jMTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jMiddleLayout.setVerticalGroup(
             jMiddleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPaneBooks, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
+            .addComponent(jMTab, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
         );
 
         jMiddle3.setBackground(new java.awt.Color(255, 255, 255));
@@ -395,13 +437,13 @@ private DefaultTableModel tblModelHD;
                 .addGroup(jBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jbtnTim))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(jtxtTenSachTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addComponent(jtxtTenTacGiaTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jLeftLayout = new javax.swing.GroupLayout(jLeft);
@@ -421,8 +463,8 @@ private DefaultTableModel tblModelHD;
                 .addComponent(jMiddle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jMiddle3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addComponent(jBottom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jBanner2.setBackground(new java.awt.Color(0, 0, 102));
@@ -473,7 +515,7 @@ private DefaultTableModel tblModelHD;
         );
         jListLayout.setVerticalGroup(
             jListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         jUnder.setBackground(new java.awt.Color(255, 255, 255));
@@ -504,6 +546,8 @@ private DefaultTableModel tblModelHD;
 
         jtxtGG.setText("0%");
 
+        jLabel11.setText("Nhân viên:");
+
         javax.swing.GroupLayout jUnderLayout = new javax.swing.GroupLayout(jUnder);
         jUnder.setLayout(jUnderLayout);
         jUnderLayout.setHorizontalGroup(
@@ -512,25 +556,27 @@ private DefaultTableModel tblModelHD;
                 .addContainerGap()
                 .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jUnderLayout.createSequentialGroup()
-                        .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtxtTongTienHD, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtnTT, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jUnderLayout.createSequentialGroup()
+                        .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jUnderLayout.createSequentialGroup()
                                 .addComponent(jTotalPd, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(28, 28, 28)
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jtxtGG, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jcbxTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jUnderLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtxtTongTienHD, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jbtnTT, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jcbxTenKH, 0, 228, Short.MAX_VALUE)
+                            .addComponent(jtxtTenNV))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jUnderLayout.setVerticalGroup(
@@ -548,13 +594,16 @@ private DefaultTableModel tblModelHD;
                 .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jcbxTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(jtxtTongTienHD))
-                    .addComponent(jbtnTT, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(jtxtTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnTT, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jtxtTongTienHD))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jRightLayout = new javax.swing.GroupLayout(jRight);
@@ -570,9 +619,9 @@ private DefaultTableModel tblModelHD;
             .addGroup(jRightLayout.createSequentialGroup()
                 .addComponent(jBanner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jUnder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jUnder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jMainLayout = new javax.swing.GroupLayout(jMain);
@@ -605,12 +654,16 @@ private DefaultTableModel tblModelHD;
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnQliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnQliActionPerformed
-        new MainMenu_Manager2(this, controller, isManager).setVisible(true);
+        new MainMenu_Manager2(this,controller, isManager).setVisible(true);
     }//GEN-LAST:event_jbtnQliActionPerformed
 
     private void jbtnTTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnTTActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jbtnTTActionPerformed
+
+    private void jbtnDXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDXActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtnDXActionPerformed
 
     /**
      * @param args the command line arguments
@@ -653,6 +706,7 @@ private DefaultTableModel tblModelHD;
     private javax.swing.JPanel jBottom;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -663,14 +717,15 @@ private DefaultTableModel tblModelHD;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jLeft;
     private javax.swing.JPanel jList;
+    private View.MaterialTabbed jMTab;
     private javax.swing.JPanel jMain;
     private javax.swing.JPanel jMiddle;
     private javax.swing.JPanel jMiddle3;
     private javax.swing.JPanel jRight;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPaneBooks;
     private javax.swing.JLabel jTotalPd;
     private javax.swing.JPanel jUnder;
+    private javax.swing.JButton jbtnDX;
     private javax.swing.JButton jbtnQli;
     private javax.swing.JButton jbtnTT;
     private javax.swing.JButton jbtnThemHD;
@@ -679,6 +734,7 @@ private DefaultTableModel tblModelHD;
     private javax.swing.JSpinner jspnSL;
     private javax.swing.JTable jtblHD;
     private javax.swing.JLabel jtxtGG;
+    private javax.swing.JTextField jtxtTenNV;
     private javax.swing.JTextField jtxtTenSachTK;
     private javax.swing.JTextField jtxtTenSpHD;
     private javax.swing.JTextField jtxtTenTacGiaTK;

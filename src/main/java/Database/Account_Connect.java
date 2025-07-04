@@ -42,14 +42,35 @@ public class Account_Connect extends Connect_sqlServer{
         }
         return dstk;
     }
-    
+      public String getMaCV(String tenCV) {
+        try {
+            String sql = "SELECT MaCV FROM ChucVu WHERE TenCV = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, tenCV);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String maCV = rs.getString("MaCV");
+                rs.close();
+                pstmt.close();
+                return maCV;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Trả về null nếu không tìm thấy
+    }
     public boolean themTaiKhoan(Account acc) {
         try {
+            String macv = getMaCV(acc.getTenCV());
+            if (macv == null) {
+                System.err.println("Mã chuc vu không hợp lệ.");
+                return false;
+            }
             String sql = "INSERT INTO TaiKhoan (TaiKhoan, MatKhau, MaCV, TrangThai)VALUES (?,?,?,?) ";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, acc.getUsername());
             stmt.setString(2, acc.getPassword());
-            stmt.setString(3, acc.getTenCV());
+            stmt.setString(3, macv);
             stmt.setString(4, acc.getTrangThai());
             return stmt.executeUpdate() > 0;
         } catch (Exception e){
@@ -84,11 +105,16 @@ public class Account_Connect extends Connect_sqlServer{
     
     public boolean capNhatTaiKhoan(Account tk) {
         try {
+             String macv = getMaCV(tk.getTenCV());
+            if (macv == null) {
+                System.err.println("Mã chuc vu không hợp lệ.");
+                return false;
+            }
             String sql = "UPDATE TaiKhoan SET MatKhau = ?, MaCV = ?, TrangThai = ? WHERE TaiKhoan = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(4, tk.getUsername());
             pstmt.setString(1, tk.getPassword());
-            pstmt.setString(2, tk.getTenCV());
+            pstmt.setString(2, macv);
             pstmt.setString(3, tk.getTrangThai());
           
             int rowsAffected = pstmt.executeUpdate();

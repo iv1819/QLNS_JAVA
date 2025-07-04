@@ -21,19 +21,14 @@ public class RegisterController {
     private Account_Connect accountConnect;
     private ChucVu_Connect chucvuConnect;
 
-    public RegisterController(RegisterM view, Account_Connect accountConnect, ChucVu_Connect chucvuConnect) {
+    public RegisterController(RegisterM view) {
         this.view = view;
-        this.accountConnect = accountConnect;
-        this.chucvuConnect = chucvuConnect;
+        this.accountConnect = new Account_Connect();
+        this.chucvuConnect = new ChucVu_Connect();
     }
 
-    public void loadAllChucVu() throws SQLException {
-        ArrayList<ChucVu> chucvu = chucvuConnect.layToanBoDanhSachChucVu();
-        view.displayDangKy(chucvu);
-    }
-
-    public List<String> getAllChucVu() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+   public ArrayList<String> getAllChucVu(){
+        return chucvuConnect.getAllCVName();
     }
     
     

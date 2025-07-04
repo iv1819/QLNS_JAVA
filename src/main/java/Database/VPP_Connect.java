@@ -69,6 +69,30 @@ public class VPP_Connect extends Connect_sqlServer{
         }
         return dss3;
     }
+      public ArrayList<VPP> layVppTheoSL(int sl)
+    {
+        ArrayList<VPP> dss2 = new ArrayList<VPP>();
+
+        try {
+            String sql = "SELECT MaVPP, TenVPP, SoLuong, Gia, TenNCC, Anh FROM VPP, NhaCC WHERE VPP.MaNCC = NhaCC.MaNCC and SoLuong <= ?  " ;
+            PreparedStatement pre1 = conn.prepareStatement(sql);
+            pre1.setInt(1, sl);
+            ResultSet result = pre1.executeQuery();
+            while (result.next()) {
+                VPP v = new VPP();
+                v.setMaVPP(result.getString("MaVPP"));
+                v.setTenVPP(result.getString("TenVPP"));
+                v.setSoLuong(result.getInt("SoLuong"));
+                v.setGiaBan(result.getDouble("Gia"));
+                v.setNhaCC(result.getString("TenNCC"));
+                v.setDuongDanAnh(result.getString("Anh")); // Lấy đường dẫn ảnh từ cột "Anh"
+                dss2.add(v);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return dss2;
+    }
     
      public ArrayList<VPP> layVppTheoTenNCC(String tenNCC)
     {

@@ -30,6 +30,8 @@ public class OD_Connect extends Connect_sqlServer {
                          "CTDH.SoLuong, " +
                          "CTDH.DonGia, " +
                          "CTDH.MaDH, " +
+                                             "CTDH.TongTien, " +
+
                          "CASE WHEN Sach.MaSach IS NOT NULL THEN 'Sach' ELSE 'VPP' END AS LoaiSP " + // Determine product type
                          "FROM CTDH " +
                          "LEFT JOIN Sach ON CTDH.MaSP = Sach.MaSach " +
@@ -49,7 +51,7 @@ public class OD_Connect extends Connect_sqlServer {
                 od.setSoLuong(result.getInt("SoLuong"));
                 od.setDonGia(result.getDouble("DonGia"));
                 od.setMaDH(result.getString("MaDH"));
-                
+                od.setTongTien(result.getDouble("TongTien"));
                 // You can also retrieve the product type if needed in your OD object
                 // String loaiSP = result.getString("LoaiSP"); 
                 // od.setLoaiSP(loaiSP); // Assuming OD has a setLoaiSP method
@@ -77,12 +79,13 @@ public class OD_Connect extends Connect_sqlServer {
                 return false;
             }
         // Câu lệnh SQL để chèn dữ liệu vào bảng CTDH
-        String sql = "INSERT INTO CTDH (MaDH, MaSP, SoLuong, DonGia) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO CTDH (MaDH, MaSP, SoLuong, DonGia, TongTien) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pre = conn.prepareStatement(sql)) {
             pre.setString(1, ctdh.getMaDH());
             pre.setString(2, maSP);
             pre.setInt(3, ctdh.getSoLuong());
             pre.setDouble(4, ctdh.getDonGia());
+            pre.setDouble(5, ctdh.getTongTien());
 
             int rowsAffected = pre.executeUpdate(); // Thực thi lệnh INSERT
             return rowsAffected > 0; // Trả về true nếu có ít nhất một hàng được thêm

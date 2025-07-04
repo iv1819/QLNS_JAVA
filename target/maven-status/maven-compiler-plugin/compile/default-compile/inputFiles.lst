@@ -13,6 +13,7 @@ C:\Users\Admin\QLNS_JAVA\src\main\java\Controller\PositionController.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\Controller\ProviderController.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\Controller\PublisherController.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\Controller\RegisterController.java
+C:\Users\Admin\QLNS_JAVA\src\main\java\Controller\ThongKeController.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\Controller\VppController.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\Database\Account_Connect.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\Database\Author_Connect.java
@@ -48,14 +49,18 @@ C:\Users\Admin\QLNS_JAVA\src\main\java\View\BookItemPanel.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\BookM.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\CategoryM.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\CustomerM.java
+C:\Users\Admin\QLNS_JAVA\src\main\java\View\DataChangeListener.java
+C:\Users\Admin\QLNS_JAVA\src\main\java\View\DataChangeType.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\EmployeeM.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\Login.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\MainMenu.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\MainMenu_Manager2.java
+C:\Users\Admin\QLNS_JAVA\src\main\java\View\MaterialTabbed.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\OrderM.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\PositionM.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\ProviderM.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\PublisherM.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\RegisterM.java
+C:\Users\Admin\QLNS_JAVA\src\main\java\View\ThongKeM.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\VppItemPanel.java
 C:\Users\Admin\QLNS_JAVA\src\main\java\View\VppM.java

@@ -122,7 +122,6 @@ public class AccountM extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        btnBack = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -138,7 +137,7 @@ public class AccountM extends javax.swing.JFrame {
         jcbxTT = new javax.swing.JComboBox<>();
         jcbxMCV = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 102));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -146,13 +145,6 @@ public class AccountM extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("QUẢN LÍ TÀI KHOẢN");
-
-        btnBack.setText("Quay lại");
-        btnBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBackActionPerformed(evt);
-            }
-        });
 
         btnSua.setText("Sửa");
         btnSua.addActionListener(new java.awt.event.ActionListener() {
@@ -175,9 +167,7 @@ public class AccountM extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jLabel1)
-                .addGap(108, 108, 108)
-                .addComponent(btnBack)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(193, 193, 193)
                 .addComponent(btnSua)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnXoa)
@@ -189,7 +179,6 @@ public class AccountM extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBack)
                     .addComponent(btnSua)
                     .addComponent(btnXoa))
                 .addContainerGap(24, Short.MAX_VALUE))
@@ -297,13 +286,6 @@ public class AccountM extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
-        // TODO add your handling code here:
-        MainMenu_Manager2 managerFrame = new MainMenu_Manager2();
-        managerFrame.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnBackActionPerformed
-
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
         try {
@@ -312,11 +294,10 @@ public class AccountM extends javax.swing.JFrame {
             String matKhau = txtMK.getText();
 
             String tenCV = jcbxMCV.getSelectedItem().toString();
-            String maCV = accountController.getMaCVByTenCV(tenCV); // ✅ ánh xạ TenCV → MaCV
 
             String trangThai = jcbxTT.getSelectedItem().toString();                
 
-            Account updateAccount = new Account(taiKhoan, matKhau, maCV, trangThai);
+            Account updateAccount = new Account(taiKhoan, matKhau, tenCV, trangThai);
             accountController.updateAccount(updateAccount);
             
             clearInputFields();
@@ -409,7 +390,6 @@ public class AccountM extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnTim;
     private javax.swing.JButton btnXoa;
