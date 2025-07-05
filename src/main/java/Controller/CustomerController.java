@@ -18,6 +18,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.util.List;
+// import org.apache.poi.ss.usermodel.Row;
+// import org.apache.poi.xssf.usermodel.XSSFSheet;
+// import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+// import java.io.FileOutputStream;
 
 /**
  *
@@ -28,6 +33,11 @@ public class CustomerController {
     private Customer_Connect customerConnect;
     private MainMenuController mainMenuController;
 
+    public CustomerController(CustomerM customerMView) {
+        this.view = customerMView;
+        this.customerConnect = new Customer_Connect();
+    }
+    
     public CustomerController(CustomerM customerMView, MainMenuController mainMenuController) {
         this.view = customerMView;
         this.customerConnect = new Customer_Connect();
@@ -40,37 +50,113 @@ public class CustomerController {
     }
 
     public void addCustomer(Customer customer) {
+        // Kiểm tra mã khách hàng
+        if (customer.getMaKH() == null || customer.getMaKH().trim().isEmpty()) {
+            view.showErrorMessage("Mã khách hàng không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra tên khách hàng
+        if (customer.getTenKH() == null || customer.getTenKH().trim().isEmpty()) {
+            view.showErrorMessage("Tên khách hàng không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra số điện thoại
+        if (customer.getSdt() == null || customer.getSdt().trim().isEmpty()) {
+            view.showErrorMessage("Số điện thoại không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra định dạng số điện thoại (10-11 số)
+        if (!customer.getSdt().matches("\\d{10,11}")) {
+            view.showErrorMessage("Số điện thoại phải có 10-11 chữ số!");
+            return;
+        }
+        
+        // Kiểm tra số điện thoại trùng lặp
+        if (customerConnect.tonTaiSdt(customer.getSdt())) {
+            view.showErrorMessage("Số điện thoại đã tồn tại! Vui lòng nhập số khác.");
+            return;
+        }
+        
         if (customerConnect.themKhachHang(customer)) {
             view.showMessage("Thêm khách hàng thành công!");
             loadAllCustomers();
+            view.clearInputFields();
         } else {
             view.showErrorMessage("Thêm khách hàng thất bại. Vui lòng kiểm tra lại thông tin.");
         }
     }
 
     public void updateCustomer(Customer customer) {
+        // Kiểm tra tên khách hàng
+        if (customer.getTenKH() == null || customer.getTenKH().trim().isEmpty()) {
+            view.showErrorMessage("Tên khách hàng không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra số điện thoại
+        if (customer.getSdt() == null || customer.getSdt().trim().isEmpty()) {
+            view.showErrorMessage("Số điện thoại không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra định dạng số điện thoại
+        if (!customer.getSdt().matches("\\d{10,11}")) {
+            view.showErrorMessage("Số điện thoại phải có 10-11 chữ số!");
+            return;
+        }
+        
+        // Kiểm tra số điện thoại trùng lặp (trừ chính khách hàng đang sửa)
+        if (customerConnect.tonTaiSdtKhac(customer.getSdt(), customer.getMaKH())) {
+            view.showErrorMessage("Số điện thoại đã tồn tại! Vui lòng nhập số khác.");
+            return;
+        }
+        
         if (customerConnect.capNhatKhachHang(customer)) {
             view.showMessage("Cập nhật khách hàng thành công!");
             loadAllCustomers();
+            view.clearInputFields();
         } else {
             view.showErrorMessage("Cập nhật khách hàng thất bại. Vui lòng kiểm tra lại thông tin.");
         }
     }
 
     public void deleteCustomer(String maKH) {
-        if (customerConnect.xoaKhachHang(maKH)) {
-            view.showMessage("Xóa khách hàng thành công!");
-            loadAllCustomers();
-        } else {
-            view.showErrorMessage("Xóa khách hàng thất bại. Vui lòng kiểm tra lại mã khách hàng.");
+        if (maKH == null || maKH.trim().isEmpty()) {
+            view.showErrorMessage("Vui lòng chọn khách hàng cần xóa!");
+            return;
+        }
+        
+        int confirm = view.showConfirmDialog("Bạn có chắc chắn muốn xóa khách hàng này?");
+        if (confirm == 0) { // 0 = YES
+            if (customerConnect.xoaKhachHang(maKH)) {
+                view.showMessage("Xóa khách hàng thành công!");
+                loadAllCustomers();
+                view.clearInputFields();
+            } else {
+                view.showErrorMessage("Xóa khách hàng thất bại. Vui lòng kiểm tra lại.");
+            }
         }
     }
 
-    public void searchCustomers(String tenKH) {
-        ArrayList<Customer> searchResults = customerConnect.timKhachHang(tenKH);
+    public void searchCustomers(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            loadAllCustomers();
+            return;
+        }
+        
+        ArrayList<Customer> searchResults = customerConnect.timKhachHang(keyword.trim());
         view.displayCustomers(searchResults);
         if (searchResults.isEmpty()) {
             view.showMessage("Không tìm thấy khách hàng nào phù hợp.");
         }
+    }
+    
+
+    
+    public String generateCustomerCode() {
+        return customerConnect.taoMaKhachHangTuDong();
     }
 }

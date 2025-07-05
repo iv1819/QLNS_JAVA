@@ -11,12 +11,17 @@ import Controller.MainMenuController;
  * @author Admin
  */
 public class MainMenu_Manager2 extends javax.swing.JFrame {
-
+    private MainMenu parent;
+    private MainMenuController controller;
+    private boolean isManager;
 
     /**
      * Creates new form MainMenu_Manager
      */
     public MainMenu_Manager2(MainMenu parent, MainMenuController controller, boolean IsManager) {
+        this.parent = parent;
+        this.controller = controller;
+        this.isManager = IsManager;
     initComponents();
 setLocationRelativeTo(null); 
     if(IsManager){
@@ -36,8 +41,12 @@ setLocationRelativeTo(null);
         // Xử lý nút Quay lại
             btnBack.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    MainMenu mainMenu = new MainMenu();
-                    mainMenu.setVisible(true);
+                    if (parent != null) {
+                        parent.setVisible(true);
+                    } else {
+                        MainMenu mainMenu = new MainMenu();
+                        mainMenu.setVisible(true);
+                    }
                     dispose();
                 }
             });
@@ -53,7 +62,7 @@ setLocationRelativeTo(null);
             // Xử lý nút Quản lý nhân viên
             btnEmployeeM.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    EmployeeM employeeM = new EmployeeM();
+                    EmployeeM employeeM = new EmployeeM(controller, parent, IsManager);
                     employeeM.setVisible(true);
                     dispose();
                 }
@@ -62,7 +71,7 @@ setLocationRelativeTo(null);
              // Xử lý nút Quản lý khách hàng
         btnCustomerM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CustomerM customerM = new CustomerM();
+                CustomerM customerM = new CustomerM(controller, parent, IsManager);
                 customerM.setVisible(true);
                 dispose();
             }
@@ -70,9 +79,10 @@ setLocationRelativeTo(null);
         // Xử lý nút Quản lý chức vụ
         btnPositionM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-        PositionM positionM = new PositionM();
+                PositionM positionM = new PositionM(controller, parent, IsManager);
                 positionM.setVisible(true);
-                dispose();            }
+                dispose();
+            }
         });
         btnPublisher.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,8 +147,12 @@ setLocationRelativeTo(null);
     // Xử lý nút Quay lại
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MainMenu mainMenu = new MainMenu();
-                mainMenu.setVisible(true);
+                if (parent != null) {
+                    parent.setVisible(true);
+                } else {
+                    MainMenu mainMenu = new MainMenu();
+                    mainMenu.setVisible(true);
+                }
                 dispose();
             }
         });
@@ -154,7 +168,7 @@ setLocationRelativeTo(null);
         // Xử lý nút Quản lý khách hàng
         btnCustomerM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CustomerM customerM = new CustomerM();
+                CustomerM customerM = new CustomerM(controller, parent, IsManager);
                 customerM.setVisible(true);
                 dispose();
             }

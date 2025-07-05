@@ -160,4 +160,71 @@ public class Employee_Connect extends Connect_sqlServer {
             return false;
         }
     }
+    
+    /**
+     * Tạo mã nhân viên tự động theo format NV001, NV002,...
+     */
+    public String taoMaNhanVienTuDong() {
+        try {
+            // Thử query đơn giản trước
+            String sql = "SELECT TOP 1 MaNV FROM NhanVien WHERE MaNV LIKE 'NV%' ORDER BY CAST(SUBSTRING(MaNV, 3, LEN(MaNV)-2) AS INT) DESC";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                String maNVCuoi = rs.getString("MaNV");
+                System.out.println("Mã nhân viên cuối cùng: " + maNVCuoi);
+                
+                // Lấy số từ mã cuối cùng (VD: NV001 -> 001)
+                if (maNVCuoi.length() >= 3) {
+                    String soCuoi = maNVCuoi.substring(2); // Bỏ "NV"
+                    try {
+                        int soMoi = Integer.parseInt(soCuoi) + 1;
+                        String maMoi = String.format("NV%03d", soMoi);
+                        System.out.println("Tạo mã mới: " + maMoi);
+                        return maMoi;
+                    } catch (NumberFormatException e) {
+                        System.err.println("Lỗi parse số từ mã: " + soCuoi);
+                        return "NV001";
+                    }
+                } else {
+                    return "NV001";
+                }
+            } else {
+                // Nếu chưa có nhân viên nào, bắt đầu từ NV001
+                System.out.println("Chưa có nhân viên nào, tạo mã đầu tiên: NV001");
+                return "NV001";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "NV001"; // Fallback
+        }
+    }
+    
+    /**
+     * Test method để kiểm tra logic tạo mã
+     */
+    public void testTaoMaNhanVien() {
+        System.out.println("=== TEST TẠO MÃ NHÂN VIÊN ===");
+        try {
+            // Kiểm tra tất cả mã hiện có
+            String sql = "SELECT MaNV FROM NhanVien WHERE MaNV LIKE 'NV%' ORDER BY MaNV";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            
+            System.out.println("Các mã nhân viên hiện có:");
+            while (rs.next()) {
+                System.out.println("- " + rs.getString("MaNV"));
+            }
+            rs.close();
+            pstmt.close();
+            
+            // Test tạo mã mới
+            String maMoi = taoMaNhanVienTuDong();
+            System.out.println("Mã mới được tạo: " + maMoi);
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
