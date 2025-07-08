@@ -68,9 +68,9 @@ public class CustomerController {
             return;
         }
         
-        // Kiểm tra định dạng số điện thoại (10-11 số)
-        if (!customer.getSdt().matches("\\d{10,11}")) {
-            view.showErrorMessage("Số điện thoại phải có 10-11 chữ số!");
+        // Kiểm tra định dạng số điện thoại (chỉ 10 số)
+        if (!customer.getSdt().matches("\\d{10}")) {
+            view.showErrorMessage("Số điện thoại phải đúng 10 chữ số!");
             return;
         }
         
@@ -102,9 +102,9 @@ public class CustomerController {
             return;
         }
         
-        // Kiểm tra định dạng số điện thoại
-        if (!customer.getSdt().matches("\\d{10,11}")) {
-            view.showErrorMessage("Số điện thoại phải có 10-11 chữ số!");
+        // Kiểm tra định dạng số điện thoại (chỉ 10 số)
+        if (!customer.getSdt().matches("\\d{10}")) {
+            view.showErrorMessage("Số điện thoại phải đúng 10 chữ số!");
             return;
         }
         

@@ -279,7 +279,7 @@ java.sql.Date ngayBanOnlyDate = java.sql.Date.valueOf(ngayBan.toLocalDate());
                 }
                 ctdhs.add(detail);
             }
-            String filePath = "C:/Users/Admin/hoadon.pdf";
+            String filePath = "C:/Users/LAPTOP/Documents/exportJAVA/hoadon.pdf";
             exportInvoiceToPDF(filePath, newOrder, ctdhs);
             view.clearReceiptTable(); 
         }

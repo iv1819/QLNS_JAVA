@@ -45,6 +45,9 @@ public class CustomerM extends javax.swing.JFrame {
         setupEventListeners();
         loadCustomers();
         generateCustomerCode();
+        // Luôn disable nút Sửa và Xóa khi khởi tạo
+        btnSua.setEnabled(false);
+        btnXoa.setEnabled(false);
     }
     
     private void setupEventListeners() {
@@ -178,8 +181,11 @@ public class CustomerM extends javax.swing.JFrame {
             txtTenKH.setText(tenKH);
             txtSdt.setText(sdt);
             
-            // Enable mã khách hàng khi sửa
-            txtMaKH.setEnabled(true);
+            // Luôn disabled trường mã khách hàng khi chọn để sửa/xóa
+            txtMaKH.setEnabled(false);
+            // Enable nút Sửa và Xóa khi chọn dòng
+            btnSua.setEnabled(true);
+            btnXoa.setEnabled(true);
         }
     }
     
@@ -189,6 +195,11 @@ public class CustomerM extends javax.swing.JFrame {
         txtSdt.setText("");
         currentSelectedCustomer = null;
         generateCustomerCode(); // Tạo mã mới cho lần thêm tiếp theo
+        // Luôn disabled trường mã khách hàng khi thêm mới
+        txtMaKH.setEnabled(false);
+        // Disable nút Sửa và Xóa khi clear input
+        btnSua.setEnabled(false);
+        btnXoa.setEnabled(false);
     }
     
     public void showMessage(String message) {

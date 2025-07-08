@@ -9,6 +9,7 @@ import Controller.MainMenuController;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import View.MainMenu_Manager2;
+import Database.Position_Connect;
 
 /**
  *
@@ -57,6 +58,7 @@ public class PositionM extends javax.swing.JFrame {
             }
             dispose();
         });
+        btnRefresh.addActionListener(e -> clearInputFields());
         // Sự kiện chọn dòng bảng
         tblChucVu.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -65,9 +67,16 @@ public class PositionM extends javax.swing.JFrame {
                 if (row >= 0) {
                     txtMaCV.setText(tblChucVu.getValueAt(row, 0).toString());
                     txtTenCV.setText(tblChucVu.getValueAt(row, 1).toString());
+                    // Luôn disabled trường mã chức vụ khi chọn dòng
+                    txtMaCV.setEnabled(false);
+                    // Enable nút Sửa và Xóa khi chọn dòng
+                    btnSua.setEnabled(true);
+                    btnXoa.setEnabled(true);
                 }
             }
         });
+        // Khi mở form, tự động sinh mã chức vụ mới và disable các nút Sửa/Xóa
+        clearInputFields();
     }
 
     /**
@@ -87,6 +96,7 @@ public class PositionM extends javax.swing.JFrame {
         btnThem = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtMaCV = new javax.swing.JTextField();
@@ -132,6 +142,8 @@ public class PositionM extends javax.swing.JFrame {
 
         btnXoa.setText("Xóa");
 
+        btnRefresh.setText("Làm mới");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -139,15 +151,17 @@ public class PositionM extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel3)
-                .addGap(251, 251, 251)
+                .addGap(170, 170, 170)
                 .addComponent(btnBack)
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
+                .addComponent(btnRefresh)
+                .addGap(18, 18, 18)
                 .addComponent(btnThem)
                 .addGap(18, 18, 18)
                 .addComponent(btnSua)
                 .addGap(18, 18, 18)
                 .addComponent(btnXoa)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,7 +172,8 @@ public class PositionM extends javax.swing.JFrame {
                     .addComponent(btnBack)
                     .addComponent(btnThem)
                     .addComponent(btnSua)
-                    .addComponent(btnXoa))
+                    .addComponent(btnXoa)
+                    .addComponent(btnRefresh))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
 
@@ -288,6 +303,7 @@ public class PositionM extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnTimKiem;
@@ -325,8 +341,14 @@ public class PositionM extends javax.swing.JFrame {
 
     // Xóa trắng các ô nhập liệu
     public void clearInputFields() {
-        txtMaCV.setText("");
+        // Tự động sinh mã chức vụ mới
+        Database.Position_Connect positionConnect = new Database.Position_Connect();
+        String maMoi = positionConnect.taoMaChucVuTuDong();
+        txtMaCV.setText(maMoi);
+        txtMaCV.setEnabled(false);
         txtTenCV.setText("");
-        txtMaCV.requestFocus();
+        // Disable nút Sửa và Xóa khi clear input
+        btnSua.setEnabled(false);
+        btnXoa.setEnabled(false);
     }
 }
