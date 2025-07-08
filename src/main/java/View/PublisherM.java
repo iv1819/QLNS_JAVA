@@ -51,6 +51,7 @@ public class PublisherM extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
+        btnXuatExcel = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -75,6 +76,13 @@ public class PublisherM extends javax.swing.JFrame {
 
         btnBack.setText("Quay Lại");
 
+        btnXuatExcel.setText("Xuất Excel");
+        btnXuatExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatExcelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -83,6 +91,8 @@ public class PublisherM extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnXuatExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
                 .addComponent(btnBack)
                 .addGap(38, 38, 38))
         );
@@ -91,7 +101,9 @@ public class PublisherM extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnBack)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnBack)
+                        .addComponent(btnXuatExcel))
                     .addComponent(jLabel1))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
@@ -312,6 +324,11 @@ public class PublisherM extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jbtnSuaActionPerformed
 
+    private void btnXuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatExcelActionPerformed
+        // TODO add your handling code here:.
+        publisherController.exportToExcel(); // Gọi phương thức xuất dữ liệu ra file Excel
+    }//GEN-LAST:event_btnXuatExcelActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -349,6 +366,7 @@ public class PublisherM extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnXuatExcel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -366,4 +384,7 @@ public class PublisherM extends javax.swing.JFrame {
     private javax.swing.JButton jbtnXoa;
     private javax.swing.JTable jtbNXB;
     // End of variables declaration//GEN-END:variables
+public javax.swing.JTable getPublisherTable() {
+        return jtbNXB; // Trả về bảng nhà xuất bản để controller có thể thao tác
+    }
 }

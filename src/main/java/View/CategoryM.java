@@ -7,12 +7,13 @@ package View;
 import java.sql.Connection;
 import java.util.ArrayList;
 import Model.Category;
-
+import javax.swing.JTable;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.CategoryController;
 import Database.Category_Connect;
+import javax.swing.JTable;
 
 /**
  *
@@ -59,6 +60,7 @@ public class CategoryM extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
+        btnXuatExcel = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jtxtTenDM = new javax.swing.JTextField();
@@ -79,6 +81,13 @@ public class CategoryM extends javax.swing.JFrame {
 
         btnBack.setText("Quay lại");
 
+        btnXuatExcel.setText("Xuất Excel");
+        btnXuatExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatExcelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -87,6 +96,8 @@ public class CategoryM extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnXuatExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnBack)
                 .addGap(27, 27, 27))
         );
@@ -95,7 +106,9 @@ public class CategoryM extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnBack)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnBack)
+                        .addComponent(btnXuatExcel))
                     .addComponent(jLabel1))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
@@ -269,6 +282,11 @@ public class CategoryM extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTbDanhMucMouseClicked
 
+    private void btnXuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatExcelActionPerformed
+        // TODO add your handling code here:
+        categoryController.exportToExcel(); // Gọi phương thức xuất Excel từ Controller
+    }//GEN-LAST:event_btnXuatExcelActionPerformed
+
     private void jbtnThemActionPerformed(java.awt.event.ActionEvent evt) {
         String tenDanhMuc = jtxtTenDM.getText().trim();
         if (tenDanhMuc.isEmpty()) {
@@ -319,6 +337,7 @@ public class CategoryM extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnXuatExcel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -332,4 +351,8 @@ public class CategoryM extends javax.swing.JFrame {
     private javax.swing.JButton jbtnXoa;
     private javax.swing.JTextField jtxtTenDM;
     // End of variables declaration//GEN-END:variables
+     public JTable getCategoryTable() {
+        // TODO Auto-generated method stub
+        return jTbDanhMuc; // Trả về bảng danh mục để controller có thể thao tác
+    }
 }

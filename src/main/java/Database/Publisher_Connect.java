@@ -10,6 +10,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Model.Publisher;
+import javax.swing.table.TableModel;
+
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -108,4 +113,21 @@ public class Publisher_Connect extends Connect_sqlServer {
         return false;
     }
     
+    public void exportToExcel(TableModel model, XSSFSheet sheet) {
+       // Header
+       XSSFRow headerRow = sheet.createRow(0);
+       for (int col = 0; col < model.getColumnCount(); col++) {
+           headerRow.createCell(col).setCellValue(model.getColumnName(col));
+       }
+
+       // Data
+       for (int row = 0; row < model.getRowCount(); row++) {
+           XSSFRow dataRow = sheet.createRow(row + 1);
+           for (int col = 0; col < model.getColumnCount(); col++) {
+               Object value = model.getValueAt(row, col);
+               dataRow.createCell(col).setCellValue(value != null ? value.toString() : "");
+           }
+       }
+   }
+
 }

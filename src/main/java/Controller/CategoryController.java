@@ -4,10 +4,16 @@
  */
 package Controller;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import Model.Category;
 
@@ -62,6 +68,37 @@ public class CategoryController {
             JOptionPane.showMessageDialog(view, "Cập nhật thành công!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Lỗi: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+      public void exportToExcel() {
+        // TODO Auto-generated method stub
+        JTable table = view.getCategoryTable(); // Lấy dữ liệu từ View
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Lưu tệp Excel");
+        int userSelection = fileChooser.showSaveDialog(view);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            try {
+                String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+                if (!filePath.endsWith(".xlsx")) {
+                    filePath += ".xlsx";
+                }
+
+                XSSFWorkbook workbook = new XSSFWorkbook();
+                XSSFSheet sheet = workbook.createSheet("Danh sách danh muc");
+
+                // ✅ Truyền TableModel vào Model để ghi dữ liệu
+                model.exportToExcel(table.getModel(), sheet);
+
+                // ✅ Ghi workbook ra file
+                try (FileOutputStream out = new FileOutputStream(filePath)) {
+                    workbook.write(out);
+                }
+                workbook.close();
+
+                javax.swing.JOptionPane.showMessageDialog(view, "Xuất dữ liệu thành công!");
+            } catch (Exception e) {
+                javax.swing.JOptionPane.showMessageDialog(view, "Lỗi: " + e.getMessage(), "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }

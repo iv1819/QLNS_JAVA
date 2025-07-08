@@ -10,6 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.table.TableModel;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 /**
  *
@@ -107,6 +110,24 @@ private String generateNewMaDM() throws SQLException {
     public Object layTatCaDanhMucInfo() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'layTatCaDanhMucInfo'");
+    }
+    public void exportToExcel(TableModel model, XSSFSheet sheet) {
+        // TODO Auto-generated method stub
+        XSSFRow headerRow = sheet.createRow(0);
+        for (int i = 0; i < model.getColumnCount(); i++) {
+            headerRow.createCell(i).setCellValue(model.getColumnName(i));
+        }
+        for (int i = 0; i < model.getRowCount(); i++) {
+            XSSFRow dataRow = sheet.createRow(i + 1);
+            for(int col = 0; col < model.getColumnCount(); col++) {
+                Object value = model.getValueAt(i, col);
+                if (value != null) {
+                    dataRow.createCell(col).setCellValue(value.toString());
+                } else {
+                    dataRow.createCell(col).setCellValue(""); // Tránh NullPointerException
+                }
+            }
+        }
     }
 
 
