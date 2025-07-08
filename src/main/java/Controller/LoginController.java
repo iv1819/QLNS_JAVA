@@ -42,13 +42,14 @@ public class LoginController {
                 return;
             }
 
+            String tennv = lg.getTenNV(user);
             // ======= Đăng nhập thành công =======
             view.dispose();   // đóng form login
 
             if ("Quản lí".equalsIgnoreCase(acc.getTenCV())) {
-                new MainMenu(true, user).setVisible(true);      // isManager = true
+                new MainMenu(true, tennv).setVisible(true);      // isManager = true
             } else {                                      // Nhân viên
-                new MainMenu(false, user).setVisible(true);     // isManager = false
+                new MainMenu(false, tennv).setVisible(true);     // isManager = false
             }
 
         } catch (SQLException ex) {

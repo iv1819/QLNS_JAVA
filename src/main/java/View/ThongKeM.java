@@ -38,7 +38,8 @@ public class ThongKeM extends javax.swing.JFrame {
         controller = new ThongKeController(this);
         controller.locSachSL(0);
         controller.locVPPSL(0);
-
+            Date to = new Date();
+            jdateEnd.setDate(to);
     }
 public void displayBooks(ArrayList<Book> books) {
         DefaultTableModel dtm = (DefaultTableModel) jtblBooks.getModel();
@@ -464,10 +465,6 @@ public void displayVPP(ArrayList<VPP> vpps) {
         if (from == null) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày bắt đầu.", "Lỗi nhập liệu", JOptionPane.WARNING_MESSAGE);
             return; // Stop execution if start date is missing
-        }
-        if (to == null) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày kết thúc.", "Lỗi nhập liệu", JOptionPane.WARNING_MESSAGE);
-            return; // Stop execution if end date is missing
         }
 
         // 2. Convert java.util.Date to java.sql.Date

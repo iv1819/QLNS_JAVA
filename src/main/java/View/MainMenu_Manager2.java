@@ -30,176 +30,150 @@ setLocationRelativeTo(null);
             bookM.setVisible(true);
             this.dispose();
         });
-        jbtnVPP.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    VppM vpp = new VppM(controller);
-                    vpp.setVisible(true);
-                                    dispose();
+        jbtnVPP.addActionListener(evt -> {
 
-                }
+                VppM vpp = new VppM(controller);
+                vpp.setVisible(true);
+                                this.dispose();
+
+                
             });
         // Xử lý nút Quay lại
-            btnBack.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnBack.addActionListener(evt -> {
                     if (parent != null) {
                         parent.setVisible(true);
                     } else {
                         MainMenu mainMenu = new MainMenu();
                         mainMenu.setVisible(true);
                     }
-                    dispose();
-                }
+                    this.dispose();
             });
 
-             jbtnOrderM.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
+             jbtnOrderM.addActionListener(evt ->{
                     OrderM orderM = new OrderM();
                     orderM.setVisible(true);
-                    dispose();
-                }
+                    this.dispose();
             });
 
             // Xử lý nút Quản lý nhân viên
-            btnEmployeeM.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnEmployeeM.addActionListener(evt ->{
                     EmployeeM employeeM = new EmployeeM(controller, parent, IsManager);
                     employeeM.setVisible(true);
-                    dispose();
-                }
+                    this.dispose();
             });
 
              // Xử lý nút Quản lý khách hàng
-        btnCustomerM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnCustomerM.addActionListener(evt -> {
                 CustomerM customerM = new CustomerM(controller, parent, IsManager);
                 customerM.setVisible(true);
-                dispose();
-            }
+                this.dispose();
         });        
         // Xử lý nút Quản lý chức vụ
-        btnPositionM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnPositionM.addActionListener(evt -> {
                 PositionM positionM = new PositionM(controller, parent, IsManager);
                 positionM.setVisible(true);
-                dispose();
-            }
+                this.dispose();
         });
-        btnPublisher.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnPublisher.addActionListener(evt -> {
                 PublisherM publisherM = new PublisherM();
                 publisherM.setVisible(true);
-                dispose();
-            }
+               this.dispose();
         });
-        btnCategoryM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnCategoryM.addActionListener(evt -> {
                 CategoryM categoryM = new CategoryM();
                 categoryM.setVisible(true);
-                dispose();
-            }
+                this.dispose();
         });
-        btnProviderM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnProviderM.addActionListener(evt -> {
                 ProviderM providerM = new ProviderM();
                 providerM.setVisible(true);
-                dispose();
-            }
+                this.dispose();
+            
         });
-        btnAccount.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnAccount.addActionListener(evt -> {
                 AccountM accountM = new AccountM();
                 accountM.setVisible(true);
-                dispose();
-            }
+               this.dispose();
         });
-        jbtnAuthor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jbtnAuthor.addActionListener(evt -> {
                 AuthorM author = new AuthorM();
                 author.setVisible(true);
-                dispose();
-            }
+                this.dispose();
         });
-        jbtnTK.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jbtnTK.addActionListener(evt ->{
                 ThongKeM tk = new ThongKeM();
                 tk.setVisible(true);
-                dispose();
-            }
+                this.dispose();
         });
     }
     else{
         btnEmployeeM.setEnabled(false);
         btnPositionM.setEnabled(false);
 
+        btnAccount.setEnabled(false);
         btnBookM.addActionListener(evt -> {
-        BookM bookM = new BookM(controller);
-        bookM.setVisible(true);
-        dispose();
+            BookM bookM = new BookM(controller);
+            bookM.setVisible(true);
+            this.dispose();
         });
-    jbtnVPP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jbtnVPP.addActionListener(evt -> {
+
                 VppM vpp = new VppM(controller);
                 vpp.setVisible(true);
-                                dispose();
+                                this.dispose();
 
-            }
-        });
-    // Xử lý nút Quay lại
-        btnBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                if (parent != null) {
-                    parent.setVisible(true);
-                } else {
-                    MainMenu mainMenu = new MainMenu();
-                    mainMenu.setVisible(true);
-                }
-                dispose();
-            }
-        });
-        
-         jbtnOrderM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OrderM orderM = new OrderM();
-                orderM.setVisible(true);
-                dispose();
-            }
-        });
-        
-        // Xử lý nút Quản lý khách hàng
-        btnCustomerM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                
+            });
+        // Xử lý nút Quay lại
+            btnBack.addActionListener(evt -> {
+                    if (parent != null) {
+                        parent.setVisible(true);
+                    } else {
+                        MainMenu mainMenu = new MainMenu();
+                        mainMenu.setVisible(true);
+                    }
+                    this.dispose();
+            });
+
+             jbtnOrderM.addActionListener(evt ->{
+                    OrderM orderM = new OrderM();
+                    orderM.setVisible(true);
+                    this.dispose();
+            });
+
+            
+
+             // Xử lý nút Quản lý khách hàng
+        btnCustomerM.addActionListener(evt -> {
                 CustomerM customerM = new CustomerM(controller, parent, IsManager);
                 customerM.setVisible(true);
-                dispose();
-            }
+                this.dispose();
         });
-        btnPublisher.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnPublisher.addActionListener(evt -> {
                 PublisherM publisherM = new PublisherM();
                 publisherM.setVisible(true);
-                dispose();
-            }
+               this.dispose();
         });
-        btnCategoryM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnCategoryM.addActionListener(evt -> {
                 CategoryM categoryM = new CategoryM();
                 categoryM.setVisible(true);
-                dispose();
-            }
+                this.dispose();
         });
-        btnProviderM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnProviderM.addActionListener(evt -> {
                 ProviderM providerM = new ProviderM();
                 providerM.setVisible(true);
-                dispose();
-            }
+                this.dispose();
+            
         });
-        jbtnTK.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jbtnAuthor.addActionListener(evt -> {
+                AuthorM author = new AuthorM();
+                author.setVisible(true);
+                this.dispose();
+        });
+        jbtnTK.addActionListener(evt ->{
                 ThongKeM tk = new ThongKeM();
                 tk.setVisible(true);
-                dispose();
-            }
+                this.dispose();
         });
     }
 }

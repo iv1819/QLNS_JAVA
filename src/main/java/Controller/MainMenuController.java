@@ -6,6 +6,7 @@ package Controller;
 
 import Model.Book;
 import Database.Book_Connect;
+import Database.Customer_Connect;
 import Database.OD_Connect;
 import Database.Order_Connect;
 import Database.VPP_Connect;
@@ -49,6 +50,7 @@ public class MainMenuController implements DataChangeListener {
     private OD_Connect odConnect; 
     private Order_Connect orderConnect; 
     private VPP_Connect vppConnect;
+    private Customer_Connect cusConnect;
     private Book currentSelectedBookForReceipt;
     private VPP currentSelectedVPPForReceipt;
 
@@ -58,6 +60,7 @@ public class MainMenuController implements DataChangeListener {
         this.odConnect = new OD_Connect();
         this.orderConnect = new Order_Connect();
         this.vppConnect = new VPP_Connect();
+        this.cusConnect = new Customer_Connect();
 
     }
     public void onBookItemSelected(Book book) {
@@ -87,20 +90,25 @@ public class MainMenuController implements DataChangeListener {
         /* Giữ trạng thái */
     private String currentCustomerName = null;
 
-    /** Gọi khi combo khách hàng đổi */
-    public void onCustomerSelected(Object sel) {
-        currentCustomerName = (sel == null) ? null : sel.toString().trim();
-        recalcTotal();                         // tính lại tổng ngay
+public String onCustomerSelected(String sel) {
+    currentCustomerName = null;
+    // Check if sel is null, empty, or not a number (only digits)
+    if(sel == null|| sel.trim().isEmpty() ||!sel.matches("\\d+")){
+        System.out.println("trong " + currentCustomerName);
     }
+    else{
+        String tenKH = cusConnect.timKhachHangSDT(sel.trim());
+        currentCustomerName = tenKH;
+    }
+    
+    recalcTotal(); // Tính lại tổng ngay
+    return currentCustomerName; // Return the customer name or null
+}
 
     /* Bất cứ khi nào bảng hóa đơn thay đổi, gọi hàm này */
     private void recalcTotal() {
-        boolean hasCustomer =
-            currentCustomerName != null &&
-            !currentCustomerName.isEmpty() &&
-            !currentCustomerName.equalsIgnoreCase("--Chọn khách hàng--");
 
-        view.updateReceiptTotal(hasCustomer);  // truyền cờ giảm giá
+        view.updateReceiptTotal(currentCustomerName != null);  // truyền cờ giảm giá
     }
 
       public void onAddReceiptItemClicked(int quantity) {
