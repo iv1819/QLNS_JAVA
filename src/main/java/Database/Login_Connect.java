@@ -42,4 +42,21 @@ public class Login_Connect extends Connect_sqlServer {
         }
         return null;   // không tìm thấy
     }
+     public String getTenNV(String username) {
+        try {
+            String sql = "SELECT TenNV FROM TaiKhoan WHERE TaiKhoan = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String tennv = rs.getString("TenNV");
+                rs.close();
+                pstmt.close();
+                return tennv;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ""; 
+    }
 }

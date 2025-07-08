@@ -223,4 +223,23 @@ public class Customer_Connect extends Connect_sqlServer {
             return false;
         }
     }
+     public String timKhachHangSDT(String sdt) {
+        ArrayList<Customer> dskh = new ArrayList<>();
+        try {
+            String sql = "SELECT TenKH FROM KhachHang WHERE Sdt LIKE ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, "%" + sdt + "%");
+            ResultSet result = preparedStatement.executeQuery();
+             if (result.next()) {
+                String tenKH = result.getString("TenKH");
+                result.close();
+                preparedStatement.close();
+                return tenKH;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ""; // Trả về null nếu không tìm thấy
+    }
+
 }

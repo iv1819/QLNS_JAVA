@@ -70,22 +70,20 @@ private DefaultTableModel tblModelHD;
         jbtnTT.addActionListener(e -> {
             // 1) Kiểm tra bảng hóa đơn
             if (tblModelHD.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(
-                    MainMenu.this,
-                    "Hoá đơn đang trống – không thể thanh toán.",
-                    "Thông báo",
-                    JOptionPane.INFORMATION_MESSAGE
-                );
+                showErrorMessage("Hoá đơn đang trống – không thể thanh toán.");
                 return;
             }
 
+            if(jtxtSdt.getText().matches("\\d+")){
+                showErrorMessage("Tên khách hàng đang là số");
+                return;
+            }
             // 2) Lấy tên KH (có thể để trống)
-            Object sel = jcbxTenKH.getSelectedItem();
+            String sel = jtxtSdt.getText();
             String tenKH = (sel == null ||
-                            sel.toString().trim().isEmpty() ||
-                            sel.toString().equalsIgnoreCase("--Chọn khách hàng--"))
+                            sel.trim().isEmpty())
                           ? null   // <‑‑ truyền null
-                          : sel.toString().trim();
+                          : sel.trim();
 
             // 3) Gọi Controller
             controller.onCheckoutClicked(tenKH, tenNV);
@@ -95,32 +93,16 @@ private DefaultTableModel tblModelHD;
                 lg.setVisible(true);
                 this.dispose();
         });
-        // Trong MainMenu constructor – sau khi initComponents()
-        jcbxTenKH.addActionListener(e -> {
-            controller.onCustomerSelected(
-                (Object) jcbxTenKH.getSelectedItem()   // có thể null
-            );
+        jbtnTimKH.addActionListener(e -> {
+            jtxtSdt.setText(controller.onCustomerSelected(jtxtSdt.getText()));
         });
 
-        populateComboBox();
         clearReceiptTable();
     }
     public DefaultTableModel getReceiptTableModel() {
     return tblModelHD;
 }
 
- private void populateComboBox() {
-        // Tải dữ liệu cho ComboBox Nhà xuất bản
-        List<String> tenKHs = controller.getAllTenKH();
-        DefaultComboBoxModel<String> khModel = new DefaultComboBoxModel<>();
-        khModel.addElement("--Chọn khách hàng--");
-        for (String name : tenKHs) {
-            
-            khModel.addElement(name);
-        }
-        jcbxTenKH.setModel(khModel);
-
-    }
     public double LayTongTien(){
         return Double.parseDouble(jtxtTongTienHD.getText().replace("$", "").replace(",", "").trim());
     }
@@ -233,7 +215,11 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
             jtxtGG.setText("10%");
             totalAmount *= 0.9;                           // ‑10 %
         }
+        else{
+            jtxtGG.setText("0%");
+        }
 
+        
         jtxtTongTienHD.setText(String.format("%.0f $", totalAmount));
         jTotalPd.setText(String.valueOf(totalItems));
     }
@@ -300,9 +286,10 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jtxtGG = new javax.swing.JLabel();
-        jcbxTenKH = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         jtxtTenNV = new javax.swing.JTextField();
+        jtxtSdt = new javax.swing.JTextField();
+        jbtnTimKH = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -548,6 +535,9 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
 
         jLabel11.setText("Nhân viên:");
 
+        jbtnTimKH.setBackground(new java.awt.Color(204, 204, 204));
+        jbtnTimKH.setText("Tìm");
+
         javax.swing.GroupLayout jUnderLayout = new javax.swing.GroupLayout(jUnder);
         jUnder.setLayout(jUnderLayout);
         jUnderLayout.setHorizontalGroup(
@@ -567,16 +557,25 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jUnderLayout.createSequentialGroup()
-                                .addComponent(jTotalPd, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
-                                .addComponent(jLabel5)
+                                .addComponent(jtxtTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jUnderLayout.createSequentialGroup()
+                                .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jtxtSdt, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jUnderLayout.createSequentialGroup()
+                                        .addComponent(jTotalPd, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(28, 28, 28)
+                                        .addComponent(jLabel5)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtxtGG, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jcbxTenKH, 0, 228, Short.MAX_VALUE)
-                            .addComponent(jtxtTenNV))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jUnderLayout.createSequentialGroup()
+                                        .addComponent(jtxtGG, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jUnderLayout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jbtnTimKH)))))))
                 .addContainerGap())
         );
         jUnderLayout.setVerticalGroup(
@@ -593,7 +592,8 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jcbxTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtxtSdt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnTimKH))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jUnderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
@@ -730,10 +730,11 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
     private javax.swing.JButton jbtnTT;
     private javax.swing.JButton jbtnThemHD;
     private javax.swing.JButton jbtnTim;
-    private javax.swing.JComboBox<String> jcbxTenKH;
+    private javax.swing.JButton jbtnTimKH;
     private javax.swing.JSpinner jspnSL;
     private javax.swing.JTable jtblHD;
     private javax.swing.JLabel jtxtGG;
+    private javax.swing.JTextField jtxtSdt;
     private javax.swing.JTextField jtxtTenNV;
     private javax.swing.JTextField jtxtTenSachTK;
     private javax.swing.JTextField jtxtTenSpHD;
