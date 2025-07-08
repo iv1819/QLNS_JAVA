@@ -35,7 +35,7 @@ public class AuthorM extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null); 
         authorController = new AuthorController(this, mainMenuController);
-        
+        authorController.addDataChangeListener(mainMenuController);
         jTable_Authors.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {

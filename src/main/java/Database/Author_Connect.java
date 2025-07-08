@@ -117,4 +117,22 @@ public class Author_Connect extends Connect_sqlServer {
             return false;
         }
     }
+     
+    public ArrayList<String> laySachTheoMaTG(String maTG) {
+    ArrayList<String> dsSach = new ArrayList<>();
+    try {
+        String sql = "SELECT TenSach FROM Sach WHERE MaTG = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, maTG);
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            dsSach.add(rs.getString("TenSach"));
+        }
+        rs.close();
+        pstmt.close();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return dsSach;
+    }
 }
