@@ -90,4 +90,43 @@ public class Position_Connect extends Connect_sqlServer {
         }
         return "";
     }
+
+    public String getMaCVByTenCV(String tenCV) {
+        try {
+            String sql = "SELECT MaCV FROM ChucVu WHERE TenCV = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, tenCV);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String maCV = rs.getString("MaCV");
+                rs.close();
+                pstmt.close();
+                return maCV;
+            }
+            rs.close();
+            pstmt.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String taoMaChucVuTuDong() {
+        try {
+            String sql = "SELECT TOP 1 MaCV FROM ChucVu WHERE MaCV LIKE 'cv_%' ORDER BY MaCV DESC";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String maCVCuoi = rs.getString("MaCV");
+                String soCuoi = maCVCuoi.substring(3); // Bỏ "cv_"
+                int soMoi = Integer.parseInt(soCuoi) + 1;
+                return String.format("cv_%02d", soMoi);
+            } else {
+                return "cv_01";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "cv_01";
+        }
+    }
 }
