@@ -95,8 +95,7 @@ setLocationRelativeTo(null);
                 accountM.setVisible(true);
                this.dispose();
         });
-        jbtnAuthor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jbtnAuthor.addActionListener(evt ->  {
                 AuthorM author = new AuthorM(controller);
                 author.setVisible(true);
                 this.dispose();
