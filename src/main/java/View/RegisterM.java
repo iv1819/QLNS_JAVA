@@ -51,6 +51,7 @@ public class RegisterM extends javax.swing.JFrame {
         String matKhau = new String(txtMK.getPassword());
         String reMatKhau = new String(txtRMK.getPassword());
         String tenChucVu = (String) jcbxChucVu.getSelectedItem();
+        String tenNV = txtTenNV.getText();
         
         if (taiKhoan.isEmpty() || matKhau.isEmpty() ||reMatKhau.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đủ thông tin!");
@@ -62,7 +63,10 @@ public class RegisterM extends javax.swing.JFrame {
             return;
         }
         
-        
+        if (tenNV.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đủ thông tin!");
+            return;
+        }
         if (accountConnect.tonTaiTaiKhoan(taiKhoan)) {
             JOptionPane.showMessageDialog(this, "Tài khoản đã tồn tại");
             return;
@@ -73,11 +77,13 @@ public class RegisterM extends javax.swing.JFrame {
         acc.setPassword(matKhau);
         acc.setTenCV(tenChucVu);
         acc.setTrangThai("No");
+        acc.setTenNV(tenNV);
+
         
         boolean success = accountConnect.themTaiKhoan(acc);
         if (success){
             JOptionPane.showMessageDialog(this, "Đăng ký thành công");
-Login lg = new Login();
+                Login lg = new Login();
                 lg.setVisible(true);
                 this.dispose();
         } else {
@@ -85,6 +91,34 @@ Login lg = new Login();
         }
     }
 
+    private boolean validateInput() {
+        String taiKhoan = txtTK.getText();
+        String matKhau = new String(txtMK.getPassword());
+        String reMatKhau = new String(txtRMK.getPassword());
+        String tenChucVu = (String) jcbxChucVu.getSelectedItem();
+        String tenNV = txtTenNV.getText();
+
+        // Kiểm tra trống
+        if (taiKhoan.isEmpty() || matKhau.isEmpty() || reMatKhau.isEmpty() || tenNV.isEmpty()) {
+            showErrorMessage("Vui lòng nhập đầy đủ thông tin tài khoản, mật khẩu, mã chức vụ và trạng thái.");
+            return false;
+        }
+
+        // Kiểm tra mật khẩu: ít nhất 8 ký tự, có ít nhất 1 ký tự đặc biệt và 1 chữ in hoa
+        if (!matKhau.matches("^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$")) {
+            showErrorMessage("Mật khẩu phải có ít nhất 8 ký tự, gồm ít nhất 1 chữ hoa và 1 ký tự đặc biệt.");
+            return false;
+        }
+        
+        //Kiểm tra repass = pass
+        if (!matKhau.equals(reMatKhau)) {
+        showErrorMessage("Mật khẩu và xác nhận mật khẩu không khớp.");
+        return false;
+    }
+
+        return true;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -107,6 +141,8 @@ Login lg = new Login();
         jLabel5 = new javax.swing.JLabel();
         txtMK = new javax.swing.JPasswordField();
         txtRMK = new javax.swing.JPasswordField();
+        jLabel6 = new javax.swing.JLabel();
+        txtTenNV = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -169,6 +205,8 @@ Login lg = new Login();
 
         jLabel5.setText("Xác nhận mật khẩu");
 
+        jLabel6.setText("Tên NV");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -187,28 +225,33 @@ Login lg = new Login();
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGap(59, 59, 59)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtTK)
-                                    .addComponent(txtMK)
-                                    .addComponent(txtRMK, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jcbxChucVu, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtTK)
+                                .addComponent(txtMK)
+                                .addComponent(txtRMK, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+                                .addComponent(jcbxChucVu, 0, 162, Short.MAX_VALUE)
+                                .addComponent(txtTenNV)))))
                 .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(22, 22, 22)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(45, 45, 45)
+                    .addComponent(jLabel2)
+                    .addComponent(txtTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                    .addComponent(txtTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(26, 26, 26)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtRMK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -244,8 +287,8 @@ Login lg = new Login();
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
         Login lg = new Login();
-                lg.setVisible(true);
-                this.dispose();
+        lg.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void txtTKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTKActionPerformed
@@ -300,13 +343,19 @@ Login lg = new Login();
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JComboBox<String> jcbxChucVu;
     private javax.swing.JPasswordField txtMK;
     private javax.swing.JPasswordField txtRMK;
     private javax.swing.JTextField txtTK;
+    private javax.swing.JTextField txtTenNV;
     // End of variables declaration//GEN-END:variables
+
+    private void showErrorMessage(String vui_lòng_nhập_đầy_đủ_thông_tin_tài_khoản_) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
 
  

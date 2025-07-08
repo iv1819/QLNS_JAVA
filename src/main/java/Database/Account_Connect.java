@@ -22,7 +22,7 @@ public class Account_Connect extends Connect_sqlServer{
     public ArrayList<Account> layToanBoTaiKhoan() {
         ArrayList<Account> dstk = new ArrayList<>();
         try {
-            String sql = "SELECT tk.TaiKhoan, tk.MatKhau, cv.TenCV, tk.TrangThai " +
+            String sql = "SELECT tk.TaiKhoan, tk.MatKhau, cv.TenCV, tk.TrangThai, tk.TenNV " +
              "FROM TaiKhoan tk JOIN ChucVu cv ON tk.MaCV = cv.MaCV";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             ResultSet result = preparedStatement.executeQuery();
@@ -33,6 +33,7 @@ public class Account_Connect extends Connect_sqlServer{
                 tk.setPassword(result.getString("MatKhau"));
                 tk.setTenCV(result.getString("TenCV"));
                 tk.setTrangThai(result.getString("TrangThai"));
+                tk.setTenNV(result.getString("TenNV"));
                 dstk.add(tk);
             }
             result.close();
@@ -66,12 +67,13 @@ public class Account_Connect extends Connect_sqlServer{
                 System.err.println("Mã chuc vu không hợp lệ.");
                 return false;
             }
-            String sql = "INSERT INTO TaiKhoan (TaiKhoan, MatKhau, MaCV, TrangThai)VALUES (?,?,?,?) ";
+            String sql = "INSERT INTO TaiKhoan (TaiKhoan, MatKhau, MaCV, TrangThai, TenNV)VALUES (?,?,?,?,?) ";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, acc.getUsername());
             stmt.setString(2, acc.getPassword());
             stmt.setString(3, macv);
             stmt.setString(4, acc.getTrangThai());
+            stmt.setString(5, acc.getTenNV());
             return stmt.executeUpdate() > 0;
         } catch (Exception e){
             e.printStackTrace();
