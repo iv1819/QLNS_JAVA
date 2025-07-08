@@ -8,6 +8,8 @@ import Database.Author_Connect;
 import Model.Author;
 import Model.VPP;
 import View.AuthorM;
+import View.DataChangeListener;
+import View.DataChangeType;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,7 +30,17 @@ public class AuthorController {
     private AuthorM view;
     private Author_Connect authorConnect;
     private MainMenuController mainMenuController;
+    private List<DataChangeListener> listeners = new ArrayList<>();
 
+   public void addDataChangeListener(DataChangeListener listener) {
+       listeners.add(listener);
+   }
+
+   private void notifyListeners(DataChangeType type) {
+       for (DataChangeListener listener : listeners) {
+           listener.onDataChanged(type);
+       }
+   }
     public AuthorController(AuthorM view,  MainMenuController mainMenuController) {
         this.view = view;
         this.authorConnect = new Author_Connect();
@@ -88,14 +100,30 @@ public class AuthorController {
     }
 
     public void deleteAuthor(String maTG) {
-        if (authorConnect.xoaTacGia(maTG)) {
-            view.showMessage("Xóa tác giả thành công!");
-            loadAllAuthors();
-            view.clearInputFields();
-        } else {
-            view.showErrorMessage("Xóa tác giả thất bại. Vui lòng kiểm tra lại mã tác giả.");
+    ArrayList<String> dsSach = authorConnect.laySachTheoMaTG(maTG);
+
+    StringBuilder message = new StringBuilder();
+    if (!dsSach.isEmpty()) {
+        message.append("⚠️ Khi xóa tác giả này, các sách sau cũng sẽ bị xóa:\n");
+        for (String tenSach : dsSach) {
+            message.append("- ").append(tenSach).append("\n");
         }
     }
+    message.append("Bạn có chắc chắn muốn xóa tác giả này không?");
+
+    int choice = javax.swing.JOptionPane.showConfirmDialog(null, message.toString(), "Xác nhận xóa", javax.swing.JOptionPane.YES_NO_OPTION);
+    if (choice == javax.swing.JOptionPane.YES_OPTION) {
+        if (authorConnect.xoaTacGia(maTG)) {
+            view.showMessage("Đã xóa tác giả.");
+            loadAllAuthors();
+            notifyListeners(DataChangeType.BOOK);
+            view.clearInputFields();
+        } else {
+            view.showErrorMessage("Xóa thất bại.");
+        }
+    }
+}
+
 
     public void searchAuthors(String tenTG) {
         ArrayList<Author> searchResults = authorConnect.timTacGiaTheoTen(tenTG);

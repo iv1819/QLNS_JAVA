@@ -114,7 +114,7 @@ setLocationRelativeTo(null);
         });
         jbtnAuthor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AuthorM author = new AuthorM();
+                AuthorM author = new AuthorM(controller);
                 author.setVisible(true);
                 dispose();
             }

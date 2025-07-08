@@ -94,8 +94,7 @@ public class AccountM extends javax.swing.JFrame {
                 txtMK.setEditable(true);
                 jcbxMCV.setSelectedItem(model.getValueAt(selectedRow, 2).toString());
                 jcbxTT.setSelectedItem(model.getValueAt(selectedRow, 3).toString());
-//                txtTenNV.setText(model.getValueAt(selectedRow, 4).toString());
-//                
+       
                 Object tenNVObj = model.getValueAt(selectedRow, 4);
                 if (tenNVObj != null && !tenNVObj.toString().isEmpty()) {
                     txtTenNV.setText(tenNVObj.toString());
