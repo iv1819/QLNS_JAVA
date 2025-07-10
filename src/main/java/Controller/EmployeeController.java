@@ -47,14 +47,59 @@ public class EmployeeController {
     }
 
     public void addEmployee(Employee employee) {
+        // Kiểm tra mã nhân viên
+        if (employee.getMaNV() == null || employee.getMaNV().trim().isEmpty()) {
+            view.showErrorMessage("Mã nhân viên không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra mã nhân viên trùng lặp
         if (employeeConnect.tonTaiMaNV(employee.getMaNV())) {
             view.showErrorMessage("Mã nhân viên đã tồn tại!");
             return;
         }
+        
+        // Kiểm tra tên nhân viên
+        if (employee.getTenNV() == null || employee.getTenNV().trim().isEmpty()) {
+            view.showErrorMessage("Tên nhân viên không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra ngày sinh
+        if (employee.getNgaySinh() == null) {
+            view.showErrorMessage("Ngày sinh không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra ngày vào làm
+        if (employee.getNgayVaoLam() == null) {
+            view.showErrorMessage("Ngày vào làm không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra chức vụ
+        if (employee.getMaCV() == null || employee.getMaCV().trim().isEmpty()) {
+            view.showErrorMessage("Chức vụ không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra định dạng số điện thoại
+        if (!isValidPhoneNumber(employee.getSdt())) {
+            return; // Thông báo lỗi đã được hiển thị trong isValidPhoneNumber
+        }
+        
+        // Kiểm tra số điện thoại trùng lặp
         if (employeeConnect.tonTaiSdt(employee.getSdt())) {
             view.showErrorMessage("Số điện thoại đã tồn tại!");
             return;
         }
+        
+        // Kiểm tra lương
+        if (employee.getLuong() <= 0) {
+            view.showErrorMessage("Lương phải lớn hơn 0!");
+            return;
+        }
+        
         if (employeeConnect.themNhanVien(employee)) {
             view.showMessage("Thêm nhân viên thành công!");
             loadAllEmployees();
@@ -64,6 +109,50 @@ public class EmployeeController {
     }
 
     public void updateEmployee(Employee employee) {
+        // Kiểm tra mã nhân viên
+        if (employee.getMaNV() == null || employee.getMaNV().trim().isEmpty()) {
+            view.showErrorMessage("Mã nhân viên không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra tên nhân viên
+        if (employee.getTenNV() == null || employee.getTenNV().trim().isEmpty()) {
+            view.showErrorMessage("Tên nhân viên không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra ngày sinh
+        if (employee.getNgaySinh() == null) {
+            view.showErrorMessage("Ngày sinh không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra ngày vào làm
+        if (employee.getNgayVaoLam() == null) {
+            view.showErrorMessage("Ngày vào làm không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra chức vụ
+        if (employee.getMaCV() == null || employee.getMaCV().trim().isEmpty()) {
+            view.showErrorMessage("Chức vụ không được để trống!");
+            return;
+        }
+        
+        // Kiểm tra định dạng số điện thoại
+        if (!isValidPhoneNumber(employee.getSdt())) {
+            return; // Thông báo lỗi đã được hiển thị trong isValidPhoneNumber
+        }
+        
+        // Kiểm tra lương
+        if (employee.getLuong() <= 0) {
+            view.showErrorMessage("Lương phải lớn hơn 0!");
+            return;
+        }
+        
+        // Tạm thời bỏ qua kiểm tra trùng lặp số điện thoại cho update 
+        // vì cần phương thức tonTaiSdtKhac tương tự như CustomerController
+        
         if (employeeConnect.capNhatNhanVien(employee)) {
             view.showMessage("Cập nhật nhân viên thành công!");
             loadAllEmployees();
@@ -90,6 +179,40 @@ public class EmployeeController {
     }
     public void refreshData() {
         loadAllEmployees();
+    }
+    
+    /**
+     * Kiểm tra định dạng số điện thoại
+     * @param sdt số điện thoại cần kiểm tra
+     * @return true nếu hợp lệ, false nếu không hợp lệ
+     */
+    private boolean isValidPhoneNumber(String sdt) {
+        if (sdt == null || sdt.trim().isEmpty()) {
+            view.showErrorMessage("Số điện thoại không được để trống!");
+            return false;
+        }
+        
+        String phone = sdt.trim();
+        
+        // Kiểm tra độ dài
+        if (phone.length() != 10) {
+            view.showErrorMessage("Số điện thoại phải có đúng 10 chữ số!");
+            return false;
+        }
+        
+        // Kiểm tra chỉ chứa số
+        if (!phone.matches("\\d+")) {
+            view.showErrorMessage("Số điện thoại chỉ được chứa các chữ số từ 0-9!");
+            return false;
+        }
+        
+        // Kiểm tra bắt đầu bằng số hợp lệ (0)
+        if (!phone.startsWith("0")) {
+            view.showErrorMessage("Số điện thoại phải bắt đầu bằng số 0!");
+            return false;
+        }
+        
+        return true;
     }
     
     public void exportEmployeeToExcel() {

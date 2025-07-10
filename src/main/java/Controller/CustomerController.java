@@ -62,16 +62,9 @@ public class CustomerController {
             return;
         }
         
-        // Kiểm tra số điện thoại
-        if (customer.getSdt() == null || customer.getSdt().trim().isEmpty()) {
-            view.showErrorMessage("Số điện thoại không được để trống!");
-            return;
-        }
-        
-        // Kiểm tra định dạng số điện thoại (chỉ 10 số)
-        if (!customer.getSdt().matches("\\d{10}")) {
-            view.showErrorMessage("Số điện thoại phải đúng 10 chữ số!");
-            return;
+        // Kiểm tra số điện thoại bằng phương thức riêng
+        if (!isValidPhoneNumber(customer.getSdt())) {
+            return; // Thông báo lỗi đã được hiển thị trong isValidPhoneNumber
         }
         
         // Kiểm tra số điện thoại trùng lặp
@@ -96,16 +89,9 @@ public class CustomerController {
             return;
         }
         
-        // Kiểm tra số điện thoại
-        if (customer.getSdt() == null || customer.getSdt().trim().isEmpty()) {
-            view.showErrorMessage("Số điện thoại không được để trống!");
-            return;
-        }
-        
-        // Kiểm tra định dạng số điện thoại (chỉ 10 số)
-        if (!customer.getSdt().matches("\\d{10}")) {
-            view.showErrorMessage("Số điện thoại phải đúng 10 chữ số!");
-            return;
+        // Kiểm tra số điện thoại bằng phương thức riêng
+        if (!isValidPhoneNumber(customer.getSdt())) {
+            return; // Thông báo lỗi đã được hiển thị trong isValidPhoneNumber
         }
         
         // Kiểm tra số điện thoại trùng lặp (trừ chính khách hàng đang sửa)
@@ -154,8 +140,40 @@ public class CustomerController {
         }
     }
     
+    /**
+     * Kiểm tra định dạng số điện thoại
+     * @param sdt số điện thoại cần kiểm tra
+     * @return true nếu hợp lệ, false nếu không hợp lệ
+     */
+    private boolean isValidPhoneNumber(String sdt) {
+        if (sdt == null || sdt.trim().isEmpty()) {
+            view.showErrorMessage("Số điện thoại không được để trống!");
+            return false;
+        }
+        
+        String phone = sdt.trim();
+        
+        // Kiểm tra độ dài
+        if (phone.length() != 10) {
+            view.showErrorMessage("Số điện thoại phải có đúng 10 chữ số!");
+            return false;
+        }
+        
+        // Kiểm tra chỉ chứa số
+        if (!phone.matches("\\d+")) {
+            view.showErrorMessage("Số điện thoại chỉ được chứa các chữ số từ 0-9!");
+            return false;
+        }
+        
+        // Kiểm tra bắt đầu bằng số hợp lệ (0)
+        if (!phone.startsWith("0")) {
+            view.showErrorMessage("Số điện thoại phải bắt đầu bằng số 0!");
+            return false;
+        }
+        
+        return true;
+    }
 
-    
     public String generateCustomerCode() {
         return customerConnect.taoMaKhachHangTuDong();
     }
