@@ -348,6 +348,9 @@ public class EmployeeM extends javax.swing.JFrame {
         
         // Bỏ chọn dòng trong bảng
         jTable_Employees.clearSelection();
+        
+        // Tải lại dữ liệu nhân viên
+        employeeController.refreshData();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     /**
@@ -440,6 +443,11 @@ public class EmployeeM extends javax.swing.JFrame {
         jLabel8.setPreferredSize(new java.awt.Dimension(113, 22));
 
         btnRefresh.setText("Làm mới");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

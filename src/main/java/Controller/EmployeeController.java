@@ -88,6 +88,10 @@ public class EmployeeController {
             view.showMessage("Không tìm thấy nhân viên nào phù hợp.");
         }
     }
+    public void refreshData() {
+        loadAllEmployees();
+    }
+    
     public void exportEmployeeToExcel() {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Book");
@@ -126,7 +130,7 @@ public class EmployeeController {
             out.close();
             workbook.close();
 
-            System.out.println("✅ Xuất file thành công tại: C:\\Users\\LAPTOP\\Documents\\exportJAVA\\donhang.xlsx");
+            System.out.println("✅ Xuất file thành công tại: C:\\Users\\LAPTOP\\Documents\\exportJAVA\\nhanvien.xlsx");
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("❌ Lỗi khi xuất file Excel.");
