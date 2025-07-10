@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -96,7 +97,9 @@ private DefaultTableModel tblModelHD;
         jbtnTimKH.addActionListener(e -> {
             jtxtSdt.setText(controller.onCustomerSelected(jtxtSdt.getText()));
         });
-
+        jbtnTim.addActionListener(e -> {
+            controller.searchSP(jtxtTK.getText());
+        });
         clearReceiptTable();
     }
     public DefaultTableModel getReceiptTableModel() {
@@ -127,7 +130,7 @@ private DefaultTableModel tblModelHD;
 private void addBookTab(String title, ArrayList<Book> books) {
     // This panel will hold the BookItemPanels in a grid
     JPanel gridPanel = new JPanel(new GridLayout(0, 4, 20, 20));
-
+    gridPanel.setBorder(new EmptyBorder(5, 20, 5, 20));
     if (books.isEmpty()) {
         gridPanel.add(new JLabel("Không có sách trong danh mục này."));
     } else {
@@ -153,6 +156,7 @@ private void addBookTab(String title, ArrayList<Book> books) {
 // Inside addVppTab (apply the same logic)
 private void addVppTab(String title, ArrayList<VPP> vpps) {
     JPanel gridPanel = new JPanel(new GridLayout(0, 4, 20, 20));
+    gridPanel.setBorder(new EmptyBorder(5, 20, 5, 20));
 
     if (vpps.isEmpty()) {
         gridPanel.add(new JLabel("Không có VPP."));
@@ -266,10 +270,8 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
         jbtnThemHD = new javax.swing.JButton();
         jBottom = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jtxtTenSachTK = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
-        jtxtTenTacGiaTK = new javax.swing.JTextField();
+        jtxtTim = new javax.swing.JLabel();
+        jtxtTK = new javax.swing.JTextField();
         jbtnTim = new javax.swing.JButton();
         jRight = new javax.swing.JPanel();
         jBanner2 = new javax.swing.JPanel();
@@ -367,7 +369,7 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jspnSL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addComponent(jbtnThemHD)
                 .addContainerGap())
         );
@@ -386,50 +388,46 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
 
         jBottom.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel8.setText("Tên sách:");
+        jLabel8.setText("Tên sản phẩm:");
 
-        jLabel9.setText("Tìm theo tên sách và tác giả");
-
-        jLabel10.setText("Tên tác giả:");
+        jtxtTim.setText("Tìm theo tên sản phẩm");
 
         jbtnTim.setBackground(new java.awt.Color(204, 204, 204));
         jbtnTim.setText("Tìm");
+        jbtnTim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnTimActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jBottomLayout = new javax.swing.GroupLayout(jBottom);
         jBottom.setLayout(jBottomLayout);
         jBottomLayout.setHorizontalGroup(
             jBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jBottomLayout.createSequentialGroup()
-                .addGroup(jBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jBottomLayout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel8)
+                        .addGap(39, 39, 39)
+                        .addComponent(jtxtTK))
                     .addGroup(jBottomLayout.createSequentialGroup()
                         .addGap(177, 177, 177)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbtnTim))
-                    .addGroup(jBottomLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtxtTenSachTK)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtxtTenTacGiaTK, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(jtxtTim, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnTim)
+                .addGap(85, 85, 85))
         );
         jBottomLayout.setVerticalGroup(
             jBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jBottomLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jbtnTim))
+                .addComponent(jtxtTim)
                 .addGap(18, 18, 18)
                 .addGroup(jBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jtxtTenSachTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(jtxtTenTacGiaTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtxtTK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnTim))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -548,7 +546,7 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
                     .addGroup(jUnderLayout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtxtTongTienHD, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                        .addComponent(jtxtTongTienHD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbtnTT, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jUnderLayout.createSequentialGroup()
@@ -665,6 +663,10 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
         // TODO add your handling code here:
     }//GEN-LAST:event_jbtnDXActionPerformed
 
+    private void jbtnTimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnTimActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtnTimActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -705,7 +707,6 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
     private javax.swing.JPanel jBanner2;
     private javax.swing.JPanel jBottom;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -714,7 +715,6 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jLeft;
     private javax.swing.JPanel jList;
     private View.MaterialTabbed jMTab;
@@ -735,10 +735,10 @@ private void addVppTab(String title, ArrayList<VPP> vpps) {
     private javax.swing.JTable jtblHD;
     private javax.swing.JLabel jtxtGG;
     private javax.swing.JTextField jtxtSdt;
+    private javax.swing.JTextField jtxtTK;
     private javax.swing.JTextField jtxtTenNV;
-    private javax.swing.JTextField jtxtTenSachTK;
     private javax.swing.JTextField jtxtTenSpHD;
-    private javax.swing.JTextField jtxtTenTacGiaTK;
+    private javax.swing.JLabel jtxtTim;
     private javax.swing.JLabel jtxtTongTienHD;
     // End of variables declaration//GEN-END:variables
 }

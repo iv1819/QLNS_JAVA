@@ -5,6 +5,7 @@
 package View;
 
 import Controller.MainMenuController;
+import Controller.MainMenuManagerController;
 
 /**
  *
@@ -14,7 +15,7 @@ public class MainMenu_Manager2 extends javax.swing.JFrame {
     private MainMenu parent;
     private MainMenuController controller;
     private boolean isManager;
-
+    private MainMenuManagerController thisControl;
     /**
      * Creates new form MainMenu_Manager
      */
@@ -22,87 +23,76 @@ public class MainMenu_Manager2 extends javax.swing.JFrame {
         this.parent = parent;
         this.controller = controller;
         this.isManager = IsManager;
+        this.thisControl = new MainMenuManagerController(controller);
     initComponents();
 setLocationRelativeTo(null); 
     if(IsManager){
         btnBookM.addActionListener(evt -> {
-            BookM bookM = new BookM(controller);
-            bookM.setVisible(true);
-            this.dispose();
+            thisControl.openBookManagement();
+                            this.dispose();
+
         });
         jbtnVPP.addActionListener(evt -> {
+                thisControl.openVPP();
+                this.dispose();
 
-                VppM vpp = new VppM(controller);
-                vpp.setVisible(true);
-                                this.dispose();
-
-                
             });
         // Xử lý nút Quay lại
             btnBack.addActionListener(evt -> {
                     if (parent != null) {
                         parent.setVisible(true);
                     } else {
-                        MainMenu mainMenu = new MainMenu();
-                        mainMenu.setVisible(true);
+                        thisControl.Back();
                     }
                     this.dispose();
             });
 
              jbtnOrderM.addActionListener(evt ->{
-                    OrderM orderM = new OrderM();
-                    orderM.setVisible(true);
+                   thisControl.openOrder();
                     this.dispose();
+
             });
 
             // Xử lý nút Quản lý nhân viên
             btnEmployeeM.addActionListener(evt ->{
-                    EmployeeM employeeM = new EmployeeM(controller, parent, IsManager);
-                    employeeM.setVisible(true);
+                    thisControl.openEmployeeManagement();
                     this.dispose();
             });
 
              // Xử lý nút Quản lý khách hàng
         btnCustomerM.addActionListener(evt -> {
-                CustomerM customerM = new CustomerM(controller, parent, IsManager);
-                customerM.setVisible(true);
+                thisControl.openCustomer();
                 this.dispose();
         });        
         // Xử lý nút Quản lý chức vụ
         btnPositionM.addActionListener(evt -> {
-                PositionM positionM = new PositionM(controller, parent, IsManager);
-                positionM.setVisible(true);
+               thisControl.openCV(parent, controller, IsManager);
                 this.dispose();
         });
         btnPublisher.addActionListener(evt -> {
-                PublisherM publisherM = new PublisherM();
-                publisherM.setVisible(true);
+               thisControl.openNCC();
                this.dispose();
         });
         btnCategoryM.addActionListener(evt -> {
-                CategoryM categoryM = new CategoryM();
-                categoryM.setVisible(true);
+                thisControl.openDM();
                 this.dispose();
         });
         btnProviderM.addActionListener(evt -> {
-                ProviderM providerM = new ProviderM();
-                providerM.setVisible(true);
+                thisControl.openNCC();
                 this.dispose();
             
         });
         btnAccount.addActionListener(evt -> {
-                AccountM accountM = new AccountM();
-                accountM.setVisible(true);
+                thisControl.openAccount();
+              
                this.dispose();
         });
         jbtnAuthor.addActionListener(evt ->  {
-                AuthorM author = new AuthorM(controller);
-                author.setVisible(true);
+                thisControl.openAuthor(controller);
                 this.dispose();
         });
         jbtnTK.addActionListener(evt ->{
-                ThongKeM tk = new ThongKeM();
-                tk.setVisible(true);
+                thisControl.openTK();
                 this.dispose();
         });
     }
@@ -112,67 +102,56 @@ setLocationRelativeTo(null);
 
         btnAccount.setEnabled(false);
         btnBookM.addActionListener(evt -> {
-            BookM bookM = new BookM(controller);
-            bookM.setVisible(true);
-            this.dispose();
+            thisControl.openBookManagement();
+                            this.dispose();
+
         });
         jbtnVPP.addActionListener(evt -> {
+                thisControl.openVPP();
+                this.dispose();
 
-                VppM vpp = new VppM(controller);
-                vpp.setVisible(true);
-                                this.dispose();
-
-                
             });
         // Xử lý nút Quay lại
             btnBack.addActionListener(evt -> {
                     if (parent != null) {
                         parent.setVisible(true);
                     } else {
-                        MainMenu mainMenu = new MainMenu();
-                        mainMenu.setVisible(true);
+                        thisControl.Back();
                     }
                     this.dispose();
             });
 
              jbtnOrderM.addActionListener(evt ->{
-                    OrderM orderM = new OrderM();
-                    orderM.setVisible(true);
+                   thisControl.openOrder();
                     this.dispose();
+
             });
 
-            
 
              // Xử lý nút Quản lý khách hàng
         btnCustomerM.addActionListener(evt -> {
-                CustomerM customerM = new CustomerM(controller, parent, IsManager);
-                customerM.setVisible(true);
+                thisControl.openCustomer();
                 this.dispose();
-        });
+        });   
         btnPublisher.addActionListener(evt -> {
-                PublisherM publisherM = new PublisherM();
-                publisherM.setVisible(true);
+               thisControl.openNCC();
                this.dispose();
         });
         btnCategoryM.addActionListener(evt -> {
-                CategoryM categoryM = new CategoryM();
-                categoryM.setVisible(true);
+                thisControl.openDM();
                 this.dispose();
         });
         btnProviderM.addActionListener(evt -> {
-                ProviderM providerM = new ProviderM();
-                providerM.setVisible(true);
+                thisControl.openNCC();
                 this.dispose();
             
         });
-        jbtnAuthor.addActionListener(evt -> {
-                AuthorM author = new AuthorM();
-                author.setVisible(true);
+        jbtnAuthor.addActionListener(evt ->  {
+                thisControl.openAuthor(controller);
                 this.dispose();
         });
         jbtnTK.addActionListener(evt ->{
-                ThongKeM tk = new ThongKeM();
-                tk.setVisible(true);
+                thisControl.openTK();
                 this.dispose();
         });
     }

@@ -66,14 +66,14 @@ public class ThongKeController {
 
     DefaultCategoryDataset dataset = new DefaultCategoryDataset();
     for (Map.Entry<String, Double> entry : data.entrySet()) {
- System.out.println("Ngày: " + entry.getKey() + ", Doanh thu: " + entry.getValue());
+ //System.out.println("Ngày: " + entry.getKey() + ", Doanh thu: " + entry.getValue());
         dataset.addValue(entry.getValue(), "Doanh thu", entry.getKey());
     }
 
     JFreeChart chart = ChartFactory.createBarChart(
             "Biểu đồ doanh thu từ " + startDate + " đến " + endDate,
             "Ngày",
-            "Doanh thu (VNĐ)",
+            "Doanh thu ($)",
             dataset,
             PlotOrientation.VERTICAL,       // Chiều: dọc hoặc ngang
             false,                           // Hiển thị chú thích (legend)

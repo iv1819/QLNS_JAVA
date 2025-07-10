@@ -112,9 +112,11 @@ private void displaySelectedDH() {
 
         Object tenKHObj = model.getValueAt(selectedRow, 1);
         jtxtTenKH.setText(tenKHObj == null ? "" : tenKHObj.toString());
-
+        
         jtxtNgayBan.setText(model.getValueAt(selectedRow, 2).toString());
         jtxtTongTien.setText(model.getValueAt(selectedRow, 3).toString());
+                jtxtTenNV.setText(model.getValueAt(selectedRow, 4).toString());
+
     }
 }
 
@@ -159,7 +161,7 @@ private void displaySelectedDH() {
         jLabel5 = new javax.swing.JLabel();
         jtxtTongTien = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jtxtTenNV = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -251,27 +253,22 @@ private void displaySelectedDH() {
         jLabel2.setText("Mã đơn hàng");
 
         jtxtMaDH.setEditable(false);
-        jtxtMaDH.setText("jTextField1");
 
         jLabel3.setText("Tên KH");
 
         jtxtTenKH.setEditable(false);
-        jtxtTenKH.setText("jTextField2");
 
         jLabel4.setText("Ngày bán");
 
         jtxtNgayBan.setEditable(false);
-        jtxtNgayBan.setText("jTextField3");
 
         jLabel5.setText("Tổng tiền");
 
         jtxtTongTien.setEditable(false);
-        jtxtTongTien.setText("jTextField4");
 
         jLabel6.setText("Tên nhân viên");
 
-        jTextField1.setEditable(false);
-        jTextField1.setText("jTextField1");
+        jtxtTenNV.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -295,7 +292,7 @@ private void displaySelectedDH() {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jtxtTenKH, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                             .addComponent(jtxtMaDH)
-                            .addComponent(jTextField1))
+                            .addComponent(jtxtTenNV))
                         .addGap(114, 114, 114)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -328,7 +325,7 @@ private void displaySelectedDH() {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtxtTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -412,7 +409,6 @@ private void displaySelectedDH() {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton jbtnNE;
     private javax.swing.JButton jbtnXE;
     private javax.swing.JButton jbtnXoa;
@@ -421,6 +417,7 @@ private void displaySelectedDH() {
     private javax.swing.JTextField jtxtMaDH;
     private javax.swing.JTextField jtxtNgayBan;
     private javax.swing.JTextField jtxtTenKH;
+    private javax.swing.JTextField jtxtTenNV;
     private javax.swing.JTextField jtxtTongTien;
     // End of variables declaration//GEN-END:variables
 }

@@ -37,12 +37,8 @@ public class MainMenuController implements DataChangeListener {
     @Override
     public void onDataChanged(DataChangeType type) {
         switch (type) {
-            case BOOK:
-                loadAndDisplayBooksByCategories();
-                break;
-            case VPP:
-                loadAndDisplayBooksByCategories();
-                break;
+            case BOOK -> loadAndDisplayBooksByCategories();
+            case VPP -> loadAndDisplayBooksByCategories();
         }
     }
     private MainMenu view; 
@@ -286,6 +282,54 @@ java.sql.Date ngayBanOnlyDate = java.sql.Date.valueOf(ngayBan.toLocalDate());
 
 public ArrayList<String> getAllTenKH(){
         return orderConnect.getAllTenKH();
+    }
+public void searchSP(String tenSP) {
+         if (tenSP == null || tenSP.trim().isEmpty()) {
+            loadAndDisplayBooksByCategories(); // If search string is empty, display all
+            return;
+        }
+
+        // Search for books and VPPs based on the search string
+        ArrayList<Book> filteredBooks = bookConnect.laySachTheoMaTen(tenSP);
+
+        LinkedHashMap<String, ArrayList<Book>> booksByCat = new LinkedHashMap<>();
+
+        // If you want to show "Tất cả Sách" only with the filtered results, you can do this:
+        // You might want to get all books again and then filter them by name,
+        // or just use the 'filteredBooks' directly.
+        // For now, let's put the filtered books under a "Search Results" category
+        // or integrate them into their existing categories.
+
+        // Option 1: Create a single "Kết quả tìm kiếm Sách" category for all found books
+        // booksByCat.put("Kết quả tìm kiếm Sách", filteredBooks);
+
+        // Option 2: Filter existing categories and include only matching books
+        // This is more aligned with "hiển thị theo tên tìm dc tương ứng với danh mục nó đang ở"
+        // Get all categories first
+        ArrayList<Category> allCategories = bookConnect.layTatCaDanhMucInfo();
+
+        for (Category dm : allCategories) {
+            ArrayList<Book> booktheoDM = bookConnect.laySachTheoMaDanhMuc(dm.getMaDanhMuc());
+            ArrayList<Book> booktk = new ArrayList<>();
+            for (Book book : booktheoDM) {
+                if (book.getTenSach().toLowerCase().contains(tenSP.toLowerCase())) {
+                    booktk.add(book);
+                }
+            }
+            if (!booktk.isEmpty()) {
+                booksByCat.put(dm.getTenDanhMuc(), booktk);
+            }
+        }
+         ArrayList<VPP> filteredVPPs = vppConnect.layVppTheoTen(tenSP);
+        if (!filteredBooks.isEmpty()) {
+             booksByCat.put("Tất cả Sách", filteredBooks);
+        }
+        view.populateCategoryTabs(booksByCat, filteredVPPs);
+
+        // Provide feedback if no results are found
+        if (filteredBooks.isEmpty() && filteredVPPs.isEmpty()) {
+            view.showMessage("Không tìm thấy sản phẩm nào phù hợp với từ khóa '" + tenSP + "'.");
+        }
     }
 
 private double parseMoney(String str) {

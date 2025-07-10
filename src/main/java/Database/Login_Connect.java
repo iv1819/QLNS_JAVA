@@ -24,7 +24,7 @@ public class Login_Connect extends Connect_sqlServer {
             FROM    TaiKhoan tk
             JOIN    ChucVu  cv ON cv.MaCV = tk.MaCV
             WHERE   tk.TaiKhoan = ?
-              AND   tk.MatKhau  = ?          -- demo: plain text
+              AND   tk.MatKhau  = ?        
         """;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
