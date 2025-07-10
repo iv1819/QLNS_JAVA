@@ -104,7 +104,7 @@ public class AuthorController {
 
     StringBuilder message = new StringBuilder();
     if (!dsSach.isEmpty()) {
-        message.append("⚠️ Khi xóa tác giả này, các sách sau cũng sẽ bị xóa:\n");
+        message.append("Khi xóa tác giả này, các sách sau cũng sẽ bị xóa:\n");
         for (String tenSach : dsSach) {
             message.append("- ").append(tenSach).append("\n");
         }
