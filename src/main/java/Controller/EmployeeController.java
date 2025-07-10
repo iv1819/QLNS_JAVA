@@ -88,6 +88,10 @@ public class EmployeeController {
             view.showMessage("Không tìm thấy nhân viên nào phù hợp.");
         }
     }
+    public void refreshData() {
+        loadAllEmployees();
+    }
+    
     public void exportEmployeeToExcel() {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Book");
