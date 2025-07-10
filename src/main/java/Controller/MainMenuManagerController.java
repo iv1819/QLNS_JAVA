@@ -73,22 +73,22 @@ public class MainMenuManagerController {
                 tk.setVisible(true);
     }
     public void openCV(MainMenu parent, MainMenuController controller, boolean IsManager){
-         PositionM positionM = new PositionM(controller, parent, IsManager);
+         PositionM positionM = new PositionM(controller, parent, IsManager, this);
                 positionM.setVisible(true);
     }
     public void openOrder() {
         OrderM orderM = new OrderM();
         orderM.setVisible(true);
     }
-    public void openCustomer() {
-        CustomerM customerManagementFrame = new CustomerM();
+    public void openCustomer(MainMenu parent, MainMenuController controller, boolean IsManager) {
+        CustomerM customerManagementFrame = new CustomerM(controller, parent, IsManager, this);
         customerManagementFrame.setVisible(true);
     }
     /**
      * Mở form quản lý nhân viên
      */
-    public void openEmployeeManagement() {
-        EmployeeM employeeManagementFrame = new EmployeeM();
+    public void openEmployeeManagement(MainMenu parent, MainMenuController controller, boolean IsManager) {
+        EmployeeM employeeManagementFrame = new EmployeeM(controller, parent, IsManager, this);
         employeeManagementFrame.setVisible(true);
     }
     

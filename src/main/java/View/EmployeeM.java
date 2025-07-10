@@ -6,6 +6,7 @@ package View;
 
 import Controller.EmployeeController;
 import Controller.MainMenuController;
+import Controller.MainMenuManagerController;
 import Model.Employee;
 import java.awt.Image;
 import java.io.File;
@@ -36,6 +37,7 @@ import java.awt.event.ActionListener;
 public class EmployeeM extends javax.swing.JFrame {
     private EmployeeController employeeController;
     private MainMenuController mainMenuController;
+    private MainMenuManagerController mainMenuManagerController;
     private Position_Connect positionConnect = new Position_Connect();
     private MainMenu parentMainMenu; // Thêm tham chiếu đến MainMenu
     private boolean isManager; // Thêm thông tin về quyền
@@ -44,16 +46,22 @@ public class EmployeeM extends javax.swing.JFrame {
      * Creates new form EmployeeM
      */
     public EmployeeM() {
-        this(null, null, false);
+        this(null, null, false, null);
     }
 
     public EmployeeM(MainMenuController mainMenuController) {
-        this(mainMenuController, null, false);
+        this(mainMenuController, null, false, null);
     }
     
     // Constructor mới để nhận tham chiếu đến MainMenu và thông tin quyền
     public EmployeeM(MainMenuController mainMenuController, MainMenu parentMainMenu, boolean isManager) {
+        this(mainMenuController, parentMainMenu, isManager, null);
+    }
+    
+    // Constructor đầy đủ với MainMenuManagerController
+    public EmployeeM(MainMenuController mainMenuController, MainMenu parentMainMenu, boolean isManager, MainMenuManagerController mainMenuManagerController) {
         this.mainMenuController = mainMenuController;
+        this.mainMenuManagerController = mainMenuManagerController;
         this.parentMainMenu = parentMainMenu;
         this.isManager = isManager;
         initComponents();
@@ -325,7 +333,11 @@ public class EmployeeM extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {
         // Quay về giao diện MainMenu_Manager2
-        if (parentMainMenu != null) {
+        if (mainMenuManagerController != null && parentMainMenu != null) {
+            // Sử dụng MainMenuManagerController để quay lại
+            MainMenu_Manager2 managerFrame = new MainMenu_Manager2(parentMainMenu, mainMenuController, isManager);
+            managerFrame.setVisible(true);
+        } else if (parentMainMenu != null) {
             // Tạo lại MainMenu_Manager2 với thông tin đúng
             MainMenu_Manager2 managerFrame = new MainMenu_Manager2(parentMainMenu, mainMenuController, isManager);
             managerFrame.setVisible(true);

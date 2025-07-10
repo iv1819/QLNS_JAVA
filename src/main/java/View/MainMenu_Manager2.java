@@ -55,13 +55,13 @@ setLocationRelativeTo(null);
 
             // Xử lý nút Quản lý nhân viên
             btnEmployeeM.addActionListener(evt ->{
-                    thisControl.openEmployeeManagement();
+                    thisControl.openEmployeeManagement(parent, controller, IsManager);
                     this.dispose();
             });
 
              // Xử lý nút Quản lý khách hàng
         btnCustomerM.addActionListener(evt -> {
-                thisControl.openCustomer();
+                thisControl.openCustomer(parent, controller, IsManager);
                 this.dispose();
         });        
         // Xử lý nút Quản lý chức vụ
@@ -130,7 +130,7 @@ setLocationRelativeTo(null);
 
              // Xử lý nút Quản lý khách hàng
         btnCustomerM.addActionListener(evt -> {
-                thisControl.openCustomer();
+                thisControl.openCustomer(parent, controller, IsManager);
                 this.dispose();
         });   
         btnPublisher.addActionListener(evt -> {
